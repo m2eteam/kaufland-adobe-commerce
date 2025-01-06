@@ -1,0 +1,48 @@
+<?php
+
+/** @var \M2E\Kaufland\Block\Adminhtml\Kaufland\Listing\Product\Add\Review $block */
+
+$buttons = sprintf("<div>%s&nbsp;%s&nbsp;%s",
+    $block->getChildHtml('review'),
+    __('or'),
+    $block->getChildHtml('preview')
+);
+
+($block->getSource() === \M2E\Kaufland\Block\Adminhtml\Kaufland\Listing\Product\Add\SourceMode::MODE_OTHER)
+    ? $buttons .= "&nbsp; {$block->getChildHtml('back_to_listing_other')}"
+    : $buttons .= "&nbsp; {$block->getChildHtml('save_and_list')}";
+
+$buttons .= '</div>';
+
+?>
+
+<div class="block_notices_module" title="" subtitle="" collapseable="no" hideblock="no" always_show="yes">
+
+    <?php
+    /** @var \M2E\Kaufland\Block\Adminhtml\HelpBlock $help */
+    $help = $block->getLayout()->createBlock(\M2E\Kaufland\Block\Adminhtml\HelpBlock::class);
+    $text = __('Product(s) have been');
+    $added = __('Added');
+    $text2 = __('to the Listing.');
+    $text3 = __('At this point you can either');
+    $text4 = __('Go To The Listing');
+    $text5 = __('or');
+    $text6 = __('List Added Products');
+    $now = __('Now');
+    $help->setData(
+        [
+            'no_collapse' => true,
+            'no_hide' => true,
+            'always_show' => true,
+            'content' =>
+                $text . '<strong>' . ' ' . $added . ' ' . '</strong>' . $text2 . '<br/><br/>' .
+                $text3 . '<strong>' . ' ' . $text4 . ' ' . '</strong>,' . ' ' . $text5 . ' ' . '<strong>' .
+                ' ' . $text6 . '</strong>' . ' ' . $now . '<br/><br/>' .
+                $buttons,
+            'style' => 'margin-bottom: 0',
+        ]
+    );
+
+    echo $help->toHtml(); ?>
+
+</div>

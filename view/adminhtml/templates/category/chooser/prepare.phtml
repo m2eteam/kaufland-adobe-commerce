@@ -1,0 +1,32 @@
+<?php
+/**
+ * @var \M2E\Kaufland\Block\Adminhtml\Category\Chooser\Prepare $block
+ */
+?>
+
+<script>
+    require([
+        'Kaufland/Category/Chooser'
+    ], () => {
+        window.KauflandCategoryChooserObj = new KauflandCategoryChooser(
+            <?= $block->getStorefrontId() ?>,
+            <?= $block->getAccountId() ?>
+        );
+    });
+</script>
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "category_search": {
+                        "component": "M2E_Kaufland/js/Category/Chooser/Tabs/Search",
+                        "searchUrl": "<?= $block->getSearchUrl() ?>",
+                        "storefrontId": <?= $block->getStorefrontId() ?>
+                    }
+                }
+            }
+        }
+    }
+</script>

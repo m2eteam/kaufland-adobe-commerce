@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin" title="Kaufland">
+                <resource id="M2E_Kaufland::main" title="Kaufland Integration" sortOrder="62">
+                    <resource id="M2E_Kaufland::listings" title="Listings" sortOrder="1">
+                        <resource id="M2E_Kaufland::listings_items" title="Items" sortOrder="1"/>
+                        <resource id="M2E_Kaufland::listings_logs" title="Logs &#38; Events" sortOrder="2"/>
+                    </resource>
+                    <resource id="M2E_Kaufland::sales" title="Sales" sortOrder="2">
+                        <resource id="M2E_Kaufland::sales_orders" title="Orders" sortOrder="1"/>
+                        <resource id="M2E_Kaufland::sales_logs" title="Logs &#38; Events" sortOrder="2"/>
+                    </resource>
+                    <resource id="M2E_Kaufland::configuration" title="Configuration" sortOrder="3">
+                        <resource id="M2E_Kaufland::configuration_accounts" title="Accounts" sortOrder="1"/>
+                        <resource id="M2E_Kaufland::configuration_categories" title="Categories" sortOrder="2"/>
+                        <resource id="M2E_Kaufland::configuration_templates" title="Policies" sortOrder="3"/>
+                        <resource id="M2E_Kaufland::configuration_settings" title="Settings" sortOrder="4"/>
+                    </resource>
+                    <resource id="M2E_Kaufland::help_center" title="Help Center" sortOrder="4">
+                        <resource id="M2E_Kaufland::help_center_health_status" title="Health Status" sortOrder="1"/>
+                        <resource id="M2E_Kaufland::help_center_synchronization_log" title="Synchronization Logs"
+                                  sortOrder="2"/>
+                        <resource id="M2E_Kaufland::help_center_m2e_support" title="M2E Support" sortOrder="3"/>
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

@@ -1,0 +1,38 @@
+<?php
+
+/** @var \M2E\Kaufland\Block\Adminhtml\Kaufland\Template\Category\Chooser\Tabs\Browse $block */
+
+$isWizard = !$block->viewHelper->isInstallationWizardFinished();
+
+$block->jsUrl->add($block->getUrl('*/general/getChildCategories'), 'general/getChildCategories');
+
+$block->js->add(
+    "
+require([
+    'Kaufland/Kaufland/Template/Category/Chooser/Tabs/Browse'
+], function(){
+
+    window.KauflandTemplateCategoryChooserTabsBrowseObj = new KauflandTemplateCategoryChooserTabsBrowse();
+
+    KauflandTemplateCategoryChooserTabsBrowseObj.setStorefrontId(KauflandCategoryChooserObj.getStorefrontId());
+    KauflandTemplateCategoryChooserTabsBrowseObj.setAccountId(KauflandCategoryChooserObj.getAccountId());
+    KauflandTemplateCategoryChooserTabsBrowseObj.renderTopLevelCategories('chooser_browser');
+    KauflandTemplateCategoryChooserTabsBrowseObj.observe('leaf_selected', function(selected) {
+        var leafId = selected[selected.length-1];
+        KauflandCategoryChooserObj.selectCategory(leafId);
+    });
+
+});
+
+"
+);
+?>
+
+<style>
+    .category-children-block {
+        display: inline-block;
+        margin-left: 10px;
+    }
+</style>
+
+<div id="chooser_browser"></div>

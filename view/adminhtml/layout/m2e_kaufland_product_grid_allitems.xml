@@ -1,0 +1,27 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="m2e_kaufland_general_handler"/>
+    <body>
+        <referenceBlock name="menu">
+            <action method="setActive">
+                <argument name="itemId" xsi:type="string">M2E_Kaufland::listings_search</argument>
+            </action>
+        </referenceBlock>
+
+        <referenceContainer name="content">
+            <container name="m2e.kaufland.listing_tabs">
+                <block class="M2E\Kaufland\Block\Adminhtml\Kaufland\Listing\Tabs">
+                    <arguments>
+                        <argument name="active_tab" xsi:type="string">all_items</argument>
+                    </arguments>
+                </block>
+            </container>
+        </referenceContainer>
+
+        <referenceContainer name="content">
+            <uiComponent name="m2e_kaufland_product_all_items_grid"/>
+        </referenceContainer>
+
+    </body>
+
+</page>

@@ -1,0 +1,19 @@
+<?php
+/**
+ * @var \Magento\Framework\View\TemplateEngine\Php $this
+ * @var \M2E\Kaufland\Block\Adminhtml\Listing\Wizard\Product\SearchChannelId $block
+ */
+?>
+
+<div id='<?= $block->getProgressBarElementId(); ?>'></div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+          "Kaufland/Listing/Wizard/Product/Search": {
+            "is_need_search": <?= json_encode($block->isNeedSearch()); ?>,
+            "url_for_search": "<?= $block->getLinkForSearch(); ?>",
+            "progress_bar_el_id": "<?= $block->getProgressBarElementId(); ?>"
+          }
+        }
+    }
+</script>

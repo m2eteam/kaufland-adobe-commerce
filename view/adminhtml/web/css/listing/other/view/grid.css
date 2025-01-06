@@ -1,0 +1,20 @@
+#kauflandListingOtherViewGrid_table .grid-listing-column-title,
+#kauflandListingOtherGrid_table .grid-listing-column-title {
+    width: 30%;
+}
+
+#kauflandListingOtherViewGrid_table .grid-listing-column-online_price {
+    width: 80px;
+}
+
+#kauflandListingOtherViewGrid_table .grid-listing-column-end_date {
+    width: 150px;
+}
+
+#listingOtherMappingGrid_table .grid-listing-column-product_id {
+    width: 150px;
+}
+
+#kauflandListingOtherViewGrid_table .grid-listing-column-online_qty {
+    width: 130px;
+}

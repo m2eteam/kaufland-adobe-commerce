@@ -1,0 +1,32 @@
+/* Kaufland Fee */
+/* ================================================ */
+
+.kaufland-fee {
+    color: #303030;
+}
+
+/* ================================================ */
+
+/* Kaufland Auction */
+/* ================================================ */
+
+.kaufland-auction-grid-tooltip .admin__field-tooltip .admin__field-tooltip-content {
+    bottom: 40px;
+    right: -37px;
+    width: 240px;
+}
+
+.kaufland-auction-grid-tooltip .admin__field-tooltip .admin__field-tooltip-action:before {
+    font-size: 1.5rem;
+    content: '\e61a';
+}
+
+.kaufland-status-wrapper .admin__field-tooltip .admin__field-tooltip-action:before {
+    margin-top: -10px;
+}
+
+/* ================================================ */
+
+.specific-table {
+    margin-bottom: 20px;
+}

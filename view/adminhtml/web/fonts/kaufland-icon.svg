@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>Copyright (C) 2024 by original authors @ fontello.com</metadata>
+<defs>
+<font id="kaufland-icon" horiz-adv-x="1000" >
+<font-face font-family="kaufland-icon" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
+<missing-glyph horiz-adv-x="1000" />
+<glyph glyph-name="kaufland-icon" unicode="&#xe800;" d="M59 776v-409h408v409h-408z m481 0v-409l408 409h-408z m-481-481v-408h408v408h-408z m481 0v-408h408l-408 408z" horiz-adv-x="1000" />
+
+<glyph glyph-name="external-link" unicode="&#xe801;" d="M84 224v291h362l-83-83h-197l1-416h415l1 188 81 81v-351h-580v290z m253-41l-111 112 234 233-109 110 130 129h435v-449l-130-129-54 54c-30 30-55 54-55 54s-52-50-114-112c-62-62-113-113-114-113s-50 50-112 111z m422 169c41-42 75-76 76-75s0 92-1 203l0 203-48 0c-26 1-118 1-204 1h-155l154-154-241-240 103-103 240 240 76-75z" horiz-adv-x="1000" />
+</font>
+</defs>
+</svg>

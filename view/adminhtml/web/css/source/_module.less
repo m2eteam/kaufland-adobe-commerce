@@ -1,0 +1,26 @@
+@m2e-kaufland-icons-admin__font-name-path: 'M2E_Kaufland::fonts/kaufland-icon';
+@m2e-kaufland-icons-admin__font-name: 'm2e-kaufland';
+
+.lib-font-face(
+  @family-name: @m2e-kaufland-icons-admin__font-name,
+  @font-path: @m2e-kaufland-icons-admin__font-name-path,
+  @font-weight: normal,
+  @font-style: normal
+);
+
+.admin__menu .item-main-maintenance.parent.level-0 > a:before,
+.admin__menu .item-main-maintenance.level-0 > a:before {
+  font-family: @m2e-kaufland-icons-admin__font-name;
+  font-size: 2.8rem;
+  margin-bottom: 1rem;
+  content: "\e800";
+}
+
+.admin__menu .item-main.parent.level-0 > a:before,
+.admin__menu .item-main.level-0 > a:before {
+  font-family: @m2e-kaufland-icons-admin__font-name;
+  font-size: 3.2rem;
+  margin-bottom: 1rem;
+  line-height: 25px;
+  content: "\e800";
+}
