@@ -25,7 +25,7 @@ class Environment implements \M2E\Core\Model\Module\EnvironmentInterface
 
     public function isDevelopmentEnvironment(): bool
     {
-        return $this->getAdapter()->isProductionEnvironment();
+        return $this->getAdapter()->isDevelopmentEnvironment();
     }
 
     public function enableProductionEnvironment(): void
