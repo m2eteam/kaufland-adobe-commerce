@@ -9,12 +9,14 @@ class MapProductPopupHtml extends \M2E\Kaufland\Controller\Adminhtml\AbstractLis
     public function execute()
     {
         $productOtherId = $this->getRequest()->getParam('other_product_id');
+        $accountId = $this->getRequest()->getParam('account_id');
         $block = $this->getLayout()->createBlock(
             \M2E\Kaufland\Block\Adminhtml\Listing\Mapping\View::class,
             '',
             [
                 'data' => [
                     'other_product_id' => $productOtherId,
+                    'account_id' => $accountId,
                     'grid_url' => '*/product_unmanaged_mapping/mapGrid',
                 ],
             ]

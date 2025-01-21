@@ -4,6 +4,7 @@ namespace M2E\Kaufland\Block\Adminhtml\Kaufland\Listing\View\Settings;
 
 use M2E\Kaufland\Block\Adminhtml\Kaufland\Listing\View\Settings\Grid\Column\Filter\PolicySettings
     as PolicySettingsFilter;
+use M2E\Kaufland\Model\ResourceModel\Category\Dictionary as CategoryDictionaryResource;
 use M2E\Kaufland\Model\ResourceModel\Product as ListingProductResource;
 use M2E\Kaufland\Model\ResourceModel\Template\SellingFormat as SellingFormatResource;
 use M2E\Kaufland\Model\ResourceModel\Template\Synchronization as SynchronizationResource;
@@ -18,6 +19,7 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Listing\View\AbstractGrid
     private \M2E\Kaufland\Model\Magento\ProductFactory $magentoProductFactory;
     private SellingFormatResource $sellingFormatResource;
     private SynchronizationResource $synchronizationResource;
+    private CategoryDictionaryResource $categoryDictionaryResource;
     private \M2E\Kaufland\Model\Template\SellingFormat\Repository $sellingFormatRepository;
     private \M2E\Kaufland\Model\Template\Synchronization\Repository $synchronizationRepository;
     private \M2E\Kaufland\Model\Template\Description\Repository $descriptionRepository;
@@ -28,6 +30,7 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Listing\View\AbstractGrid
         \M2E\Kaufland\Model\Template\Description\Repository $descriptionRepository,
         SellingFormatResource $sellingFormatResource,
         SynchronizationResource $synchronizationResource,
+        CategoryDictionaryResource $categoryDictionaryResource,
         \M2E\Kaufland\Model\Magento\ProductFactory $magentoProductFactory,
         ListingProductResource $listingProductResource,
         \M2E\Kaufland\Model\ResourceModel\Magento\Product\CollectionFactory $magentoProductCollectionFactory,
@@ -49,6 +52,7 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Listing\View\AbstractGrid
         $this->sellingFormatRepository = $sellingFormatRepository;
         $this->synchronizationRepository = $synchronizationRepository;
         $this->descriptionRepository = $descriptionRepository;
+        $this->categoryDictionaryResource = $categoryDictionaryResource;
         parent::__construct(
             $context,
             $backendHelper,
@@ -95,12 +99,12 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Listing\View\AbstractGrid
                 'additional_data' => ListingProductResource::COLUMN_ADDITIONAL_DATA,
                 'available_qty' => ListingProductResource::COLUMN_ONLINE_QTY,
                 'online_category_id' => ListingProductResource::COLUMN_ONLINE_CATEGORY_ID,
-                'online_categories_data' => ListingProductResource::COLUMN_ONLINE_CATEGORIES_DATA,
                 'online_current_price' => ListingProductResource::COLUMN_ONLINE_PRICE,
                 'template_selling_format_mode' => ListingProductResource::COLUMN_TEMPLATE_SELLING_FORMAT_MODE,
                 'template_synchronization_mode' => ListingProductResource::COLUMN_TEMPLATE_SYNCHRONIZATION_MODE,
                 'template_selling_format_id' => ListingProductResource::COLUMN_TEMPLATE_SELLING_FORMAT_ID,
                 'template_synchronization_id' => ListingProductResource::COLUMN_TEMPLATE_SYNCHRONIZATION_ID,
+                'template_category_id' => ListingProductResource::COLUMN_TEMPLATE_CATEGORY_ID,
             ],
             sprintf(
                 '{{table}}.%s = %s',
@@ -109,6 +113,7 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Listing\View\AbstractGrid
             )
         );
 
+        $categoryDictionaryTableName = $this->categoryDictionaryResource->getMainTable();
         $templateSellingFormatTableName = $this->sellingFormatResource->getMainTable();
         $templateSynchronizationTableName = $this->synchronizationResource->getMainTable();
         $collection
@@ -123,6 +128,12 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Listing\View\AbstractGrid
                 ['ts' => $templateSynchronizationTableName],
                 sprintf('%s = template_synchronization_id', SynchronizationResource::COLUMN_ID),
                 ['synchronization_policy_title' => SynchronizationResource::COLUMN_TITLE],
+                null,
+                'left'
+            )->joinTable(
+                ['cd' => $categoryDictionaryTableName],
+                sprintf('%s = template_category_id', CategoryDictionaryResource::COLUMN_ID),
+                ['categories_data' => CategoryDictionaryResource::COLUMN_PATH],
                 null,
                 'left'
             );
@@ -251,7 +262,7 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Listing\View\AbstractGrid
 
     public function callbackColumnCategory($value, $row, $column, $isExport): string
     {
-        $categoryTitle = $row->getData('online_categories_data');
+        $categoryTitle = $row->getData('categories_data');
 
         return <<<HTML
     <div>
@@ -341,7 +352,7 @@ HTML;
     {
         $filter = $column->getFilter();
         if ($value = $filter->getValue()) {
-            $collection->getSelect()->where('online_categories_data LIKE ?', '%' . $value . '%');
+            $collection->getSelect()->where('categories_data LIKE ?', '%' . $value . '%');
         }
     }
 

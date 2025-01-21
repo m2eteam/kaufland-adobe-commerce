@@ -27,11 +27,12 @@ class Map extends \M2E\Kaufland\Controller\Adminhtml\AbstractListing
     {
         $productId = $this->getRequest()->getParam('product_id'); // Magento
         $productOtherId = (int)$this->getRequest()->getParam('other_product_id');
+        $accountId = (int)$this->getRequest()->getParam('account_id');
 
         if (!$productId || !$productOtherId) {
             $this->getMessageManager()->addErrorMessage('Params not valid.');
 
-            return $this->_redirect('*/product_grid/unmanaged/');
+            return $this->_redirect('*/product_grid/unmanaged/', ['account' => $accountId]);
         }
 
         $collection = $this->productCollectionFactory->create();
@@ -41,7 +42,7 @@ class Map extends \M2E\Kaufland\Controller\Adminhtml\AbstractListing
         if ($magentoCatalogProductModel->isEmpty()) {
             $this->getMessageManager()->addErrorMessage('Params not valid.');
 
-            return $this->_redirect('*/product_grid/unmanaged/');
+            return $this->_redirect('*/product_grid/unmanaged/', ['account' => $accountId]);
         }
 
         $productId = $magentoCatalogProductModel->getId();
@@ -50,6 +51,6 @@ class Map extends \M2E\Kaufland\Controller\Adminhtml\AbstractListing
 
         $this->mappingService->mapProduct($productOtherInstance, (int)$productId);
 
-        return $this->_redirect('*/product_grid/unmanaged/');
+        return $this->_redirect('*/product_grid/unmanaged/', ['account' => $accountId]);
     }
 }

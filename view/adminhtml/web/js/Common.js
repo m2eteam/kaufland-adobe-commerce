@@ -365,7 +365,7 @@ define([
         // ---------------------------------------
 
         alert: function (text, callback) {
-            alert({
+            alert(text, {
                 actions: {
                     cancel: callback || function () {
                     }

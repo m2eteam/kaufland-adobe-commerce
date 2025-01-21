@@ -46,6 +46,26 @@ class Repository
         return array_values($collection->getItems());
     }
 
+    /**
+     * @return Attribute[]
+     */
+    public function findByDictionaryIdAndAttributeIds(
+        int $dictionaryId,
+        array $attributeIds
+    ): array {
+        $collection = $this->attributeCollectionFactory->create();
+        $collection->addFieldToFilter(
+            AttributeResource::COLUMN_CATEGORY_DICTIONARY_ID,
+            ['eq' => $dictionaryId]
+        );
+        $collection->addFieldToFilter(
+            AttributeResource::COLUMN_ATTRIBUTE_ID,
+            ['in' => $attributeIds]
+        );
+
+        return array_values($collection->getItems());
+    }
+
     public function getCountByDictionaryId(int $dictionaryId): int
     {
         $collection = $this->attributeCollectionFactory->create();

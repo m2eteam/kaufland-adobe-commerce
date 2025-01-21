@@ -1323,6 +1323,22 @@ class Product
         return $attribute->getFrontendInput();
     }
 
+    public function getAttributeStoreLabel($attributeCode): string
+    {
+        $productObject = $this->getProduct();
+
+        /** @var \Magento\Eav\Model\Entity\Attribute\AbstractAttribute $attribute */
+        $attribute = $productObject->getResource()->getAttribute($attributeCode);
+
+        if (!$attribute) {
+            $this->addNotFoundAttributes($attributeCode);
+
+            return '';
+        }
+
+        return $attribute->getFrontendLabel();
+    }
+
     public function getAttributeValue($attributeCode, $convertBoolean = true): string
     {
         $productObject = $this->getProduct();

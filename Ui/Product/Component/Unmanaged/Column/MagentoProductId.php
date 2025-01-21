@@ -45,7 +45,7 @@ class MagentoProductId extends \Magento\Ui\Component\Listing\Columns\Column
                     (int)$row['id'],
                     (int)$row['id'],
                     $productTitle,
-                    $this->urlBuilder->getUrl('m2e_kaufland/product_unmanaged_mapping/mapProductPopupHtml'),
+                    $this->urlBuilder->getUrl('m2e_kaufland/product_unmanaged_mapping/mapProductPopupHtml', ['account_id' => (int)$row['account_id']]),
                     __('Link')
                 );
 

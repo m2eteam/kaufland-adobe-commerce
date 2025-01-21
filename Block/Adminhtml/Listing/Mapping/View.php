@@ -34,6 +34,7 @@ class View extends \M2E\Kaufland\Block\Adminhtml\Magento\Grid\AbstractContainer
             [
                 'data' => [
                     'other_product_id' => $this->getData('other_product_id'),
+                    'account_id' => $this->getData('account_id'),
                     'grid_url' => $this->getData('grid_url'),
                 ],
             ]

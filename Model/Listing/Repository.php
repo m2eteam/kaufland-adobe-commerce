@@ -60,6 +60,16 @@ class Repository
         $this->listingResource->delete($listing);
     }
 
+    /**
+     * @return \M2E\Kaufland\Model\Listing[]
+     */
+    public function getAll(): array
+    {
+        $collection = $this->listingCollectionFactory->create();
+
+        return array_values($collection->getItems());
+    }
+
     // ----------------------------------------
 
     public function isExistListingByDescriptionPolicy(int $policyId): bool

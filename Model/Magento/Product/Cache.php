@@ -210,6 +210,13 @@ class Cache extends \M2E\Kaufland\Model\Magento\Product
         return $this->getMethodData(__FUNCTION__, $args);
     }
 
+    public function getAttributeStoreLabel($attributeCode): string
+    {
+        $args = func_get_args();
+
+        return $this->getMethodData(__FUNCTION__, $args);
+    }
+
     public function getThumbnailImage()
     {
         return $this->getMethodData(__FUNCTION__);

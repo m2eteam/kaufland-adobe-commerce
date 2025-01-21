@@ -3,7 +3,6 @@
       layout="admin-1column"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-
         <referenceContainer name="content">
             <block class="M2E\Kaufland\Block\Adminhtml\Category\Chooser\Prepare"/>
 
@@ -15,5 +14,18 @@
                 </block>
             </container>
         </referenceContainer>
+
+        <block class="M2E\Core\Block\Adminhtml\Widget\SmartTitle" name="page.title"
+               template="M2E_Core::widget/smart_title.phtml">
+            <arguments>
+                <argument name="base_prefix" translate="true" xsi:type="string">M2E Kaufland Listing</argument>
+                <argument name="data_provider" xsi:type="object">
+                    M2E\Kaufland\Model\Listing\Ui\SmartTitle\DataProvider
+                </argument>
+                <argument name="url_builder" xsi:type="object">
+                    M2E\Kaufland\Model\Listing\Ui\SmartTitle\UrlBuilder
+                </argument>
+            </arguments>
+        </block>
     </body>
 </page>

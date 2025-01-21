@@ -28,7 +28,7 @@ class RetrieveValue
 
         // ----------------------------------------
 
-        $result = $this->magentoProduct->getAttributeValue($attributeCode, true);
+        $result = $this->magentoProduct->getAttributeValue($attributeCode);
         if (!empty($result)) {
             return $result;
         }

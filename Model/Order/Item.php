@@ -17,11 +17,9 @@ class Item extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
     private \M2E\Kaufland\Model\Order\Item\ProxyObjectFactory $proxyObjectFactory;
     private ?\M2E\Kaufland\Model\Product $listingProduct = null;
     private \M2E\Core\Helper\Magento\Store $magentoStoreHelper;
-    private \M2E\Kaufland\Model\Magento\Product\BuilderFactory $productBuilderFactory;
     private \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $magentoProductCollectionFactory;
     private \M2E\Kaufland\Helper\Component\Kaufland $kauflndHelper;
     private \M2E\Kaufland\Helper\Magento\Product $magentoProductHelper;
-    private \M2E\Kaufland\Model\Kaufland\Order\Item\ImporterFactory $orderItemImporterFactory;
     private \M2E\Kaufland\Model\Order\Item\OptionsFinder $optionsFinder;
     /** @var \M2E\Kaufland\Model\ProductFactory */
     private \M2E\Kaufland\Model\Product\Repository $kauflandProductRepository;
@@ -33,10 +31,8 @@ class Item extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
     public function __construct(
         Repository $repository,
         \M2E\Kaufland\Model\Order\Item\OptionsFinder $optionsFinder,
-        \M2E\Kaufland\Model\Kaufland\Order\Item\ImporterFactory $orderItemImporterFactory,
         \M2E\Kaufland\Helper\Magento\Product $magentoProductHelper,
         \M2E\Kaufland\Helper\Component\Kaufland $kauflndHelper,
-        \M2E\Kaufland\Model\Magento\Product\BuilderFactory $productBuilderFactory,
         \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $magentoProductCollectionFactory,
         \M2E\Core\Helper\Magento\Store $magentoStoreHelper,
         \M2E\Kaufland\Model\Order\Item\ProxyObjectFactory $proxyObjectFactory,
@@ -64,11 +60,9 @@ class Item extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         $this->magentoProductFactory = $magentoProductFactory;
         $this->proxyObjectFactory = $proxyObjectFactory;
         $this->magentoStoreHelper = $magentoStoreHelper;
-        $this->productBuilderFactory = $productBuilderFactory;
         $this->magentoProductCollectionFactory = $magentoProductCollectionFactory;
         $this->kauflndHelper = $kauflndHelper;
         $this->magentoProductHelper = $magentoProductHelper;
-        $this->orderItemImporterFactory = $orderItemImporterFactory;
         $this->optionsFinder = $optionsFinder;
         $this->kauflandProductRepository = $kauflandProductRepository;
         $this->otherRepository = $otherRepository;
@@ -718,60 +712,9 @@ class Item extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
      */
     protected function createProduct(): \Magento\Catalog\Model\Product
     {
-        if (!$this->getAccount()->getOrdersSettings()->isUnmanagedListingCreateProductAndOrderEnabled()) {
-            throw new \M2E\Kaufland\Model\Order\Exception\ProductCreationDisabled(
-                (string)__('Product creation is disabled in "Account > Orders > Product Not Found".')
-            );
-        }
-
-        $order = $this->getOrder();
-
-        $itemImporter = $this->orderItemImporterFactory->create($this);
-
-        $rawItemData = $itemImporter->getDataFromChannel();
-
-        if (empty($rawItemData)) {
-            throw new \M2E\Kaufland\Model\Exception('Data obtaining for Kaufland Item failed. Please try again later.');
-        }
-
-        $productData = $itemImporter->prepareDataForProductCreation($rawItemData);
-
-        // Try to find exist product with sku from Kaufland
-        // ---------------------------------------
-        $collection = $this->magentoProductCollectionFactory->create();
-        $collection->setStoreId($this->getOrder()->getAssociatedStoreId());
-        $collection->addAttributeToSelect('sku');
-        $collection->addAttributeToFilter('sku', $productData['sku']);
-        /** @var \Magento\Catalog\Model\Product $product */
-        $product = $collection->getFirstItem();
-
-        if ($product->getId()) {
-            return $product;
-        }
-
-        // ---------------------------------------
-
-        $storeId = $this->getAccount()->getMagentoOrdersListingsOtherStoreId();
-        if ($storeId == 0) {
-            $storeId = $this->magentoStoreHelper->getDefaultStoreId();
-        }
-
-        $productData['store_id'] = $storeId;
-        $productData['tax_class_id'] = $this->getAccount()->getMagentoOrdersListingsOtherProductTaxClassId();
-
-        // Create product in magento
-        // ---------------------------------------
-        $productBuilder = $this->productBuilderFactory->create();
-        $productBuilder->setData($productData);
-        $productBuilder->buildProduct();
-        // ---------------------------------------
-
-        $order->addSuccessLog(
-            'Product for Kaufland Item #%id% was created in Magento Catalog.',
-            ['!id' => $this->getKauflandOrderItemId()]
+        throw new \M2E\Kaufland\Model\Order\Exception\ProductCreationDisabled(
+            (string)__('The product associated with this order could not be found in the Magento catalog.'),
         );
-
-         return $productBuilder->getProduct();
     }
 
     protected function associateWithProductEvent(\Magento\Catalog\Model\Product $product)

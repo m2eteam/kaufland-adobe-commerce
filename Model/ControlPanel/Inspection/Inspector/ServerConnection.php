@@ -11,11 +11,14 @@ use M2E\Kaufland\Model\ControlPanel\Inspection\Issue\Factory as IssueFactory;
 class ServerConnection implements InspectorInterface
 {
     private IssueFactory $issueFactory;
+    private \M2E\Kaufland\Model\Connector\Client\Single $serverClient;
 
     public function __construct(
-        IssueFactory $issueFactory
+        IssueFactory $issueFactory,
+        \M2E\Kaufland\Model\Connector\Client\Single $serverClient
     ) {
         $this->issueFactory = $issueFactory;
+        $this->serverClient = $serverClient;
     }
 
     public function process(): array
@@ -23,7 +26,7 @@ class ServerConnection implements InspectorInterface
         $issues = [];
 
         try {
-            throw new \LogicException('Not implemented');
+            $this->serverClient->process(new \M2E\Kaufland\Model\Connector\Command\Server\CheckStateCommand());
         } catch (Connection $exception) {
             $issues[] = $this->issueFactory->create(
                 $exception->getMessage(),

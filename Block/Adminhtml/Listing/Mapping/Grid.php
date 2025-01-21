@@ -176,7 +176,14 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Magento\Grid\AbstractGrid
 
     public function callbackColumnActions($value, $row, $column, $isExport)
     {
-        $url = $this->getUrl('m2e_kaufland/product_unmanaged_mapping/map', ['product_id' => $row->getId(), 'other_product_id' => $this->getData('other_product_id')]);
+        $url = $this->getUrl(
+            'm2e_kaufland/product_unmanaged_mapping/map',
+            [
+                'product_id' => $row->getId(),
+                'other_product_id' => $this->getData('other_product_id'),
+                'account_id' => $this->getData('account_id'),
+            ]
+        );
         $actions = '<a href="javascript:void(0);" onclick="setLocation(\'' . $url . '\')">';
         $actions .= __('Link To This Product') . '</a>';
 
