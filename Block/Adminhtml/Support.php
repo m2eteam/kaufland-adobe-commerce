@@ -34,7 +34,7 @@ class Support extends \M2E\Kaufland\Block\Adminhtml\Magento\AbstractBlock
                 in response to your request.</p>',
                 'https://docs-m2.m2epro.com/m2e-kaufland-user-guide',
                 'https://help.m2epro.com/en/support/solutions/9000117126',
-                \M2E\Kaufland\Helper\Module\Support::YOUTUBE_CHANNEL_URL
+                'https://www.youtube.com/channel/UChPCt1cp3Hp3u63f-lNBUnA'
             ),
         ]);
 

@@ -4,7 +4,7 @@ namespace M2E\Kaufland\Helper\Module;
 
 class Configuration
 {
-    private const CONFIG_GROUP = '/general/configuration/';
+    public const CONFIG_GROUP = '/general/configuration/';
 
     /** @var \M2E\Kaufland\Model\Config\Manager */
     private $config;
@@ -48,6 +48,14 @@ class Configuration
         return (int)$this->config->getGroupValue(
             self::CONFIG_GROUP,
             'product_force_qty_value'
+        );
+    }
+
+    public function getProductInspectorMode(): int
+    {
+        return (int)$this->config->getGroupValue(
+            self::CONFIG_GROUP,
+            'listing_product_inspector_mode'
         );
     }
 
@@ -155,6 +163,14 @@ class Configuration
                 self::CONFIG_GROUP,
                 'magento_attribute_price_type_converting_mode',
                 $values['magento_attribute_price_type_converting_mode']
+            );
+        }
+
+        if (isset($values['listing_product_inspector_mode'])) {
+            $this->config->setGroupValue(
+                self::CONFIG_GROUP,
+                'listing_product_inspector_mode',
+                $values['listing_product_inspector_mode']
             );
         }
     }

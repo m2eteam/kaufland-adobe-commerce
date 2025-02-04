@@ -47,11 +47,6 @@ class Processing extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         return $this;
     }
 
-    public function getId(): int
-    {
-        return (int)parent::getId();
-    }
-
     public function isTypeSingle(): bool
     {
         return $this->getType() === self::TYPE_SIMPLE;

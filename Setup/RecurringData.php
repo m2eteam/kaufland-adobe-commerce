@@ -12,7 +12,7 @@ class RecurringData implements InstallDataInterface
 {
     private const MINIMUM_REQUIRED_MAGENTO_VERSION = '2.4.0';
 
-    private \M2E\Kaufland\Helper\Module\Maintenance $maintenanceHelper;
+    private \M2E\Kaufland\Helper\Module\Maintenance $maintenance;
     private \M2E\Core\Model\Setup\InstallChecker $installChecker;
     private \Magento\Framework\App\ProductMetadataInterface $productMetadata;
     private \M2E\Core\Model\Setup\InstallerFactory $installerFactory;
@@ -23,7 +23,7 @@ class RecurringData implements InstallDataInterface
     private \M2E\Kaufland\Setup\MigrateToCore $migrateToCore;
 
     public function __construct(
-        \M2E\Kaufland\Helper\Module\Maintenance $maintenanceHelper,
+        \M2E\Kaufland\Helper\Module\Maintenance $maintenance,
         \Magento\Framework\App\ProductMetadataInterface $productMetadata,
         \M2E\Core\Model\Setup\InstallChecker $installChecker,
         \M2E\Core\Model\Setup\InstallerFactory $installerFactory,
@@ -33,7 +33,7 @@ class RecurringData implements InstallDataInterface
         UpgradeCollection $upgradeCollection,
         \M2E\Kaufland\Setup\MigrateToCore $migrateToCore
     ) {
-        $this->maintenanceHelper = $maintenanceHelper;
+        $this->maintenance = $maintenance;
         $this->installChecker = $installChecker;
         $this->installerFactory = $installerFactory;
         $this->productMetadata = $productMetadata;
@@ -48,7 +48,7 @@ class RecurringData implements InstallDataInterface
     {
         $this->checkMagentoVersion($this->productMetadata->getVersion());
 
-        $this->maintenanceHelper->enable();
+        $this->maintenance->enable();
 
         if ($this->migrateToCore->isNeedMigrate()) {
             $this->migrateToCore->migrate($setup->getConnection());
@@ -73,13 +73,13 @@ class RecurringData implements InstallDataInterface
                 ->upgrade();
         }
 
-        $this->maintenanceHelper->disable();
+        $this->maintenance->disable();
     }
 
     private function checkMagentoVersion(string $magentoVersion): void
     {
         if (!version_compare($magentoVersion, self::MINIMUM_REQUIRED_MAGENTO_VERSION, '>=')) {
-            $this->maintenanceHelper->enableDueLowMagentoVersion();
+            $this->maintenance->enableDueLowMagentoVersion();
 
             $message = sprintf(
                 'Magento version %s is not compatible with M2E Extension.',

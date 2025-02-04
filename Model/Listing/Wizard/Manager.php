@@ -52,7 +52,7 @@ class Manager
 
     public function getWizardId(): int
     {
-        return $this->wizard->getId();
+        return (int)$this->wizard->getId();
     }
 
     public function getWizard(): \M2E\Kaufland\Model\Listing\Wizard

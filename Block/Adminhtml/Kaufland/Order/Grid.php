@@ -319,8 +319,13 @@ class Grid extends AbstractGrid
 
     public function callbackPurchaseCreateDate($value, \M2E\Kaufland\Model\Order $row, $column, $isExport)
     {
+        $purchaseDate = $row->getPurchaseCreateDate();
+        if (empty($purchaseDate)) {
+            return '';
+        }
+
         return $this->_localeDate->formatDate(
-            $row->getPurchaseCreateDate(),
+            $purchaseDate,
             \IntlDateFormatter::MEDIUM,
             true
         );
@@ -328,8 +333,13 @@ class Grid extends AbstractGrid
 
     public function callbackShippingDateTo($value, \M2E\Kaufland\Model\Order $row, $column, $isExport)
     {
+        $shippingDate = $row->getDeliveryTime();
+        if (empty($shippingDate)) {
+            return '';
+        }
+
         return $this->_localeDate->formatDate(
-            $row->getDeliveryTime(),
+            $shippingDate,
             \IntlDateFormatter::MEDIUM,
             true
         );
@@ -430,7 +440,7 @@ HTML;
                 $product = null;
 
                 $this->logService->addMessage(
-                    $row->getId(),
+                    $row,
                     $e->getMessage(),
                     \M2E\Kaufland\Model\Log\AbstractModel::TYPE_ERROR
                 );

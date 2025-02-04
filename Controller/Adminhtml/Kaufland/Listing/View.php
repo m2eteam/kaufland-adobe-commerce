@@ -33,17 +33,22 @@ class View extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\AbstractListing
 
     public function execute()
     {
-        if ($this->getRequest()->getQuery('ajax')) {
-            $id = $this->getRequest()->getParam('id');
+        $id = $this->getRequest()->getParam('id');
 
+        try {
             $listing = $this->listingRepository->get((int)$id);
-            $this->uiListingRuntimeStorage->setListing($listing);
+        } catch (\M2E\Kaufland\Model\Exception\Logic $exception) {
+            $this->getMessageManager()->addError(__('Listing does not exist.'));
 
-            $this->globalData->setValue('view_listing', $listing);
+            return $this->_redirect('*/fkaufland_listing/index');
+        }
 
+        $this->uiListingRuntimeStorage->setListing($listing);
+
+        if ($this->getRequest()->getQuery('ajax')) {
             // Set rule model
             // ---------------------------------------
-            $this->setRuleData('Kaufland_rule_view_listing');
+            $this->setRuleData('kaufland_rule_view_listing', $listing);
             // ---------------------------------------
 
             $this->setAjaxContent(
@@ -72,19 +77,6 @@ class View extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\AbstractListing
             ]);
         }
 
-        $id = $this->getRequest()->getParam('id');
-
-        try {
-            $listing = $this->listingRepository->get((int)$id);
-        } catch (\M2E\Kaufland\Model\Exception\Logic $exception) {
-            $this->getMessageManager()->addError(__('Listing does not exist.'));
-
-            return $this->_redirect('*/fkaufland_listing/index');
-        }
-
-        $this->globalData->setValue('view_listing', $listing);
-        $this->uiListingRuntimeStorage->setListing($listing);
-
         $existWizard = $this->wizardRepository->findNotCompletedByListingAndType($listing, \M2E\Kaufland\Model\Listing\Wizard::TYPE_GENERAL);
 
         if (($existWizard !== null) && (!$existWizard->isCompleted())) {
@@ -99,7 +91,7 @@ class View extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\AbstractListing
 
         // Set rule model
         // ---------------------------------------
-        $this->setRuleData('Kaufland_rule_view_listing');
+        $this->setRuleData('kaufland_rule_view_listing', $listing);
         // ---------------------------------------
 
         $this->setPageHelpLink('https://docs-m2.m2epro.com/m2e-kaufland-listings');
@@ -122,12 +114,11 @@ class View extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\AbstractListing
         return $this->getResult();
     }
 
-    protected function setRuleData($prefix)
+    protected function setRuleData($prefix, \M2E\Kaufland\Model\Listing $listing)
     {
-        $listingData = $this->globalData->getValue('view_listing');
+        $storeId = $listing->getStoreId();
+        $prefix .= $listing->getId();
 
-        $storeId = isset($listingData['store_id']) ? (int)$listingData['store_id'] : 0;
-        $prefix .= isset($listingData['id']) ? '_' . $listingData['id'] : '';
         $this->globalData->setValue('rule_prefix', $prefix);
 
         $ruleModel = $this->productRuleFactory->create()->setData(

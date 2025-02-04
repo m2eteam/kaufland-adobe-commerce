@@ -76,6 +76,9 @@ class Config implements \M2E\Core\Model\Setup\Upgrade\Entity\ConfigInterface
                 \M2E\Kaufland\Setup\Update\y24_m12\RemoveUnusedConfigAndRegistryData::class,
                 \M2E\Kaufland\Setup\Update\y24_m12\AddBillingDetailsToOrderTable::class
             ],
+            'y25_m01' => [
+                \M2E\Kaufland\Setup\Update\y25_m01\AddTrackDirectDatabaseChanges::class
+            ],
         ];
     }
 }

@@ -24,16 +24,19 @@ class Unmapping extends \M2E\Kaufland\Controller\Adminhtml\AbstractListing
 
     public function execute()
     {
+        $accountId = (int)$this->getRequest()->getParam('account_id');
+
         $products = $this->listingOtherRepository->findForUnmappingByMassActionSelectedProducts(
-            $this->massActionFilter
+            $this->massActionFilter,
+            $accountId
         );
 
         if (empty($products)) {
-            return $this->_redirect('*/product_grid/unmanaged/');
+            return $this->_redirect('*/product_grid/unmanaged/', ['account' => $accountId]);
         }
 
         $this->mappingService->unMap($products);
 
-        return $this->_redirect('*/product_grid/unmanaged/');
+        return $this->_redirect('*/product_grid/unmanaged/', ['account' => $accountId]);
     }
 }

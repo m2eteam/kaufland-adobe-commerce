@@ -4,9 +4,14 @@ namespace M2E\Kaufland\Model\Magento\Product;
 
 class Rule extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
 {
-    protected $_form;
-    protected $productFactory;
-    protected $resourceIterator;
+    protected \Magento\Framework\Data\Form $_form;
+
+    /**
+     * @psalm-suppress UndefinedClass
+     * @var \Magento\Catalog\Model\ProductFactory
+     */
+    protected \Magento\Catalog\Model\ProductFactory $productFactory;
+    protected \Magento\Framework\Model\ResourceModel\Iterator $resourceIterator;
 
     /** @var \M2E\Kaufland\Model\Magento\Product\Rule\Condition\AbstractModel */
     protected $_conditions = null;
@@ -14,11 +19,16 @@ class Rule extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
     protected $_productIds = [];
 
     protected $_collectedAttributes = [];
+    private \M2E\Kaufland\Model\Magento\Product\Rule\Condition\CombineFactory $ruleConditionCombineFactory;
 
+    /**
+     * @psalm-suppress UndefinedClass
+     */
     public function __construct(
         \Magento\Framework\Data\Form $form,
         \Magento\Catalog\Model\ProductFactory $productFactory,
         \Magento\Framework\Model\ResourceModel\Iterator $resourceIterator,
+        \M2E\Kaufland\Model\Magento\Product\Rule\Condition\CombineFactory $ruleConditionCombineFactory,
         \M2E\Kaufland\Model\Factory $modelFactory,
         \M2E\Kaufland\Model\ActiveRecord\Factory $activeRecordFactory,
         \Magento\Framework\Model\Context $context,
@@ -27,9 +37,6 @@ class Rule extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
         array $data = []
     ) {
-        $this->_form = $form;
-        $this->productFactory = $productFactory;
-        $this->resourceIterator = $resourceIterator;
         parent::__construct(
             $modelFactory,
             $activeRecordFactory,
@@ -39,9 +46,14 @@ class Rule extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
             $resourceCollection,
             $data
         );
+
+        $this->_form = $form;
+        $this->productFactory = $productFactory;
+        $this->resourceIterator = $resourceIterator;
+        $this->ruleConditionCombineFactory = $ruleConditionCombineFactory;
     }
 
-    //########################################
+    // ---------------------------------------
 
     /**
      * Create rule instance from serialized array
@@ -84,7 +96,7 @@ class Rule extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         $this->loadFromSerialized($this->getSerializedFromPost($post));
     }
 
-    //########################################
+    // ---------------------------------------
 
     /**
      * Get serialized array from post array
@@ -106,7 +118,7 @@ class Rule extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         return json_encode($conditionsArray[$prefix][1], JSON_THROW_ON_ERROR);
     }
 
-    //########################################
+    // ---------------------------------------
 
     public function getTitle()
     {
@@ -168,7 +180,7 @@ class Rule extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
 
     // ---------------------------------------
 
-    public function getForm()
+    public function getForm(): \Magento\Framework\Data\Form
     {
         return $this->_form;
     }
@@ -200,7 +212,7 @@ class Rule extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         return $this->_conditions->setJsFormObject($prefix)->setStoreId($this->getStoreId());
     }
 
-    //########################################
+    // ---------------------------------------#
 
     /**
      * @return bool
@@ -252,9 +264,11 @@ class Rule extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
 
         $idFieldName = $collection->getIdFieldName();
         if (empty($idFieldName)) {
+            /** @psalm-suppress UndefinedClass */
             $idFieldName = $this->productFactory->create()->getIdFieldName();
         }
 
+        /** @psalm-suppress UndefinedClass */
         $this->resourceIterator->walk(
             $collection->getSelect(),
             [[$this, 'callbackValidateProduct']],
@@ -269,9 +283,9 @@ class Rule extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         $collection->addFieldToFilter($idFieldName, ['in' => $this->_productIds]);
     }
 
-    //########################################
+    // ---------------------------------------
 
-    public function callbackValidateProduct($args)
+    public function callbackValidateProduct(array $args)
     {
         $product = clone $args['product'];
         $args['row']['store_id'] = $args['store_id'];
@@ -282,17 +296,14 @@ class Rule extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         }
     }
 
-    /**
-     * @return string
-     */
-    public function getConditionClassName()
+    public function getConditionObj(): \M2E\Kaufland\Model\Magento\Product\Rule\Condition\AbstractModel
     {
-        return 'Magento_Product_Rule_Condition_Combine';
+        return $this->ruleConditionCombineFactory->create();
     }
 
     protected function getConditionInstance($prefix)
     {
-        $conditionInstance = $this->modelFactory->getObject($this->getConditionClassName())
+        $conditionInstance = $this->getConditionObj()
                                                 ->setRule($this)
                                                 ->setPrefix($prefix)
                                                 ->setValue(true)
@@ -306,7 +317,7 @@ class Rule extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         return $conditionInstance;
     }
 
-    protected function _convertFlatToRecursive(array $data, $prefix)
+    protected function _convertFlatToRecursive(array $data, $prefix): array
     {
         $arr = [];
         foreach ($data as $id => $value) {
@@ -326,7 +337,7 @@ class Rule extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         return $arr;
     }
 
-    //########################################
+    // ---------------------------------------
 
     protected function _beforeSave()
     {
@@ -336,7 +347,7 @@ class Rule extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         return parent::_beforeSave();
     }
 
-    //########################################
+    // ---------------------------------------
 
     /**
      *  $ruleModel = $this->activeRecordFactory->getObject('Magento_Product_Rule')->setData(

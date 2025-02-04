@@ -84,11 +84,6 @@ class Storefront extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         return $this->account = $account;
     }
 
-    public function getId(): int
-    {
-        return (int)parent::getId();
-    }
-
     public function getAccountId(): int
     {
         return (int)$this->getData(StorefrontResource::COLUMN_ACCOUNT_ID);

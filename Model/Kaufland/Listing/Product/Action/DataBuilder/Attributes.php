@@ -12,6 +12,7 @@ class Attributes extends AbstractDataBuilder
     private \M2E\Kaufland\Model\Category\Tree\Repository $categoryTreeRepository;
     private \M2E\Kaufland\Model\Category\Attribute\Repository $categoryAttributeRepository;
     private \M2E\Kaufland\Model\Magento\Product\Attribute\RetrieveValueFactory $magentoAttributeRetriever;
+    private \M2E\Kaufland\Helper\Module\Renderer\Description $descriptionRender;
     private int $onlineCategoryId;
     private string $onlineCategoriesAttributesData = '';
 
@@ -19,12 +20,14 @@ class Attributes extends AbstractDataBuilder
         \M2E\Core\Helper\Magento\Attribute $magentoAttributeHelper,
         \M2E\Kaufland\Model\Category\Tree\Repository $categoryTreeRepository,
         \M2E\Kaufland\Model\Category\Attribute\Repository $categoryAttributeRepository,
-        \M2E\Kaufland\Model\Magento\Product\Attribute\RetrieveValueFactory $magentoAttributeRetriever
+        \M2E\Kaufland\Model\Magento\Product\Attribute\RetrieveValueFactory $magentoAttributeRetriever,
+        \M2E\Kaufland\Helper\Module\Renderer\Description $descriptionRender
     ) {
         parent::__construct($magentoAttributeHelper);
         $this->categoryTreeRepository = $categoryTreeRepository;
         $this->categoryAttributeRepository = $categoryAttributeRepository;
         $this->magentoAttributeRetriever = $magentoAttributeRetriever;
+        $this->descriptionRender = $descriptionRender;
     }
 
     public function getBuilderData(): array
@@ -77,9 +80,10 @@ class Attributes extends AbstractDataBuilder
                 continue;
             }
 
+            $magentoProduct = $this->getListingProduct()->getMagentoProduct();
+
             if ($attribute->isValueModeCustomAttribute()) {
                 $attributeCode = $attribute->getCustomAttributeValue();
-                $magentoProduct = $this->getListingProduct()->getMagentoProduct();
 
                 $magentoAttributeRetriever = $this->magentoAttributeRetriever->create($magentoProduct);
                 $attributeVal = $magentoAttributeRetriever->tryRetrieve(
@@ -95,7 +99,7 @@ class Attributes extends AbstractDataBuilder
 
             if ($attribute->isValueModeCustomValue()) {
                 $value = $attribute->getCustomValue();
-                $attributes[$attribute->getAttributeNick()] = $value;
+                $attributes[$attribute->getAttributeNick()] = $this->descriptionRender->parseWithoutMagentoTemplate($value, $magentoProduct);
             }
         }
 

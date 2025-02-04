@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace M2E\Kaufland\Model\Magento\Product\Rule\Custom;
+namespace M2E\Kaufland\Model\Magento\Product\Rule\Condition;
 
-class QtyFactory
+class CombineFactory
 {
     private \Magento\Framework\ObjectManagerInterface $objectManager;
 
@@ -13,8 +13,8 @@ class QtyFactory
         $this->objectManager = $objectManager;
     }
 
-    public function create(): Qty
+    public function create(): Combine
     {
-        return $this->objectManager->create(Qty::class);
+        return $this->objectManager->create(Combine::class);
     }
 }

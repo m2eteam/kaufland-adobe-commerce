@@ -193,16 +193,6 @@ class Order extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         return parent::delete();
     }
 
-    public function getId(): ?int
-    {
-        $orderId = parent::getId();
-        if ($orderId === null) {
-            return null;
-        }
-
-        return $orderId;
-    }
-
     public function findItem(int $id): ?\M2E\Kaufland\Model\Order\Item
     {
         foreach ($this->getItems() as $item) {

@@ -104,11 +104,6 @@ class Wizard extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
 
     // ----------------------------------------
 
-    public function getId(): int
-    {
-        return (int)parent::getId();
-    }
-
     public function getListingId(): int
     {
         return (int)$this->getData(\M2E\Kaufland\Model\ResourceModel\Listing\Wizard::COLUMN_LISTING_ID);

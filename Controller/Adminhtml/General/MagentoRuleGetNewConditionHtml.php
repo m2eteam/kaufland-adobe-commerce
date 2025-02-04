@@ -4,18 +4,14 @@ namespace M2E\Kaufland\Controller\Adminhtml\General;
 
 class MagentoRuleGetNewConditionHtml extends \M2E\Kaufland\Controller\Adminhtml\AbstractGeneral
 {
-    private \M2E\Kaufland\Model\Factory $factory;
-
-    private \M2E\Kaufland\Model\ActiveRecord\Factory $activeRecordModelFactory;
+    private \Magento\Framework\ObjectManagerInterface $objectManager;
 
     public function __construct(
-        \M2E\Kaufland\Model\Factory $factory,
-        \M2E\Kaufland\Model\ActiveRecord\Factory $activeRecordFactory
+        \Magento\Framework\ObjectManagerInterface $objectManager
     ) {
         parent::__construct();
 
-        $this->factory = $factory;
-        $this->activeRecordModelFactory = $activeRecordFactory;
+        $this->objectManager = $objectManager;
     }
 
     public function execute()
@@ -34,15 +30,17 @@ class MagentoRuleGetNewConditionHtml extends \M2E\Kaufland\Controller\Adminhtml\
             $attributeCode = !empty($typeArr[2]) ? $typeArr[2] : '';
         }
 
-        $model = $this->factory->getObject($type)
-                               ->setId($id)
-                               ->setType($type)
-                               ->setRule(
-                                   $this->activeRecordModelFactory->getObject($ruleModelPrefix . 'Magento\Product\Rule')
-                               )
-                               ->setPrefix($prefix);
+        $ruleClass = '\M2E\Kaufland\Model\\' . $ruleModelPrefix . 'Magento\Product\Rule';
 
-        if ($type == $ruleModelPrefix . 'Magento\Product\Rule\Condition\Combine') {
+        /** @var \M2E\Kaufland\Model\Magento\Product\Rule\Condition\AbstractModel $model */
+        $model = $this->objectManager->create($type);
+
+        $model->setId($id)
+              ->setType($type)
+              ->setRule($this->objectManager->create($ruleClass))
+              ->setPrefix($prefix);
+
+        if ($type == '\M2E\Kaufland\Model\\' . $ruleModelPrefix . 'Magento\Product\Rule\Condition\Combine') {
             $model->setData($prefix, []);
         }
 

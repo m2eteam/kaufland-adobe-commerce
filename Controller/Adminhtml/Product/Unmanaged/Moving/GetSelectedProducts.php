@@ -24,7 +24,12 @@ class GetSelectedProducts extends \M2E\Kaufland\Controller\Adminhtml\AbstractLis
 
     public function execute()
     {
-        $products = $this->otherRepository->findForMovingByMassActionSelectedProducts($this->massActionFilter);
+        $accountId = (int)$this->getRequest()->getParam('account_id');
+
+        $products = $this->otherRepository->findForMovingByMassActionSelectedProducts(
+            $this->massActionFilter,
+            $accountId
+        );
         $ids = [];
         foreach ($products as $product) {
             $ids[] = (int)$product->getId();

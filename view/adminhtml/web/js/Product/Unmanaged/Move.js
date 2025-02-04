@@ -6,11 +6,12 @@ define([
     'use strict';
 
     return {
-        startMoveForProduct: (id, urlPrepareMove, urlGrid, urlListingCreate) => {
+        startMoveForProduct: (id, urlPrepareMove, urlGrid, urlListingCreate, accountId) => {
             PrepareProducts.prepareProducts(
                     urlPrepareMove,
                     [id],
-                    function (accountId, storefrontId) {
+                    accountId,
+                    function (storefrontId) {
                         MoveProcess.openMoveToListingGrid(
                                 urlGrid,
                                 urlListingCreate,
@@ -21,15 +22,17 @@ define([
             );
         },
 
-        startMoveForProducts: (massActionData, urlPrepareMove, urlGrid, urlGetSelectedProducts, urlListingCreate) => {
+        startMoveForProducts: (massActionData, urlPrepareMove, urlGrid, urlGetSelectedProducts, urlListingCreate, accountId) => {
             RetrieveSelected.getSelectedProductIds(
                     massActionData,
                     urlGetSelectedProducts,
+                    accountId,
                     function (selectedProductIds) {
                         PrepareProducts.prepareProducts(
                                 urlPrepareMove,
                                 selectedProductIds,
-                                function (accountId, storefrontId) {
+                                accountId,
+                                function (storefrontId) {
                                     MoveProcess.openMoveToListingGrid(
                                             urlGrid,
                                             urlListingCreate,

@@ -1,44 +1,55 @@
 <?php
 
+declare(strict_types=1);
+
 namespace M2E\Kaufland\Model\Kaufland\Magento\Product\Rule\Condition;
 
 class Combine extends \M2E\Kaufland\Model\Magento\Product\Rule\Condition\Combine
 {
-    public function __construct(
-        \M2E\Kaufland\Model\Magento\Product\Rule\Condition\ProductFactory $ruleConditionProductFactory,
-        \Magento\Framework\ObjectManagerInterface $objectManager,
-        \Magento\Rule\Model\Condition\Context $context,
-        array $data = []
-    ) {
-        parent::__construct($ruleConditionProductFactory, $objectManager, $context, $data);
-        $this->setType('Kaufland_Magento_Product_Rule_Condition_Combine');
-    }
+    private const CONDITION_SUFFIX = 'kaufland';
 
     /**
      * @return string
      */
-    protected function getConditionCombine()
+    protected function getConditionCombine(): string
     {
-        return $this->getType() . '|kaufland|';
+        return $this->getType() . '|' . self::CONDITION_SUFFIX . '|';
     }
 
     /**
      * @return string
      */
-    protected function getCustomLabel()
+    protected function getCustomLabel(): string
     {
         return (string)__('Kaufland Values');
     }
 
-    /**
-     * @return array
-     */
-    protected function getCustomOptions()
+    protected function getCustomOptions(): array
     {
         $attributes = $this->getCustomOptionsAttributes();
 
-        return !empty($attributes) ?
-            $this->getOptions('Kaufland_Magento_Product_Rule_Condition_Product', $attributes, ['kaufland'])
-            : [];
+        if (empty($attributes)) {
+            return [];
+        }
+
+        return $this->getOptions(
+            \M2E\Kaufland\Model\Kaufland\Magento\Product\Rule\Condition\Product::class,
+            $attributes,
+            [self::CONDITION_SUFFIX]
+        );
+    }
+
+    protected function getCustomOptionsAttributes(): array
+    {
+        return [
+            \M2E\Kaufland\Model\Magento\Product\Rule\Custom\Kaufland\OnlineCategory::NICK => __('Category ID'),
+            \M2E\Kaufland\Model\Magento\Product\Rule\Custom\Kaufland\OnlineQty::NICK => __('Available QTY'),
+            \M2E\Kaufland\Model\Magento\Product\Rule\Custom\Kaufland\OnlineSku::NICK => __('SKU'),
+            \M2E\Kaufland\Model\Magento\Product\Rule\Custom\Kaufland\OnlineTitle::NICK => __('Title'),
+            \M2E\Kaufland\Model\Magento\Product\Rule\Custom\Kaufland\Status::NICK => __('Status'),
+            \M2E\Kaufland\Model\Magento\Product\Rule\Custom\Kaufland\UnitId::NICK => __('Unit ID'),
+            \M2E\Kaufland\Model\Magento\Product\Rule\Custom\Kaufland\ProductId::NICK => __('Product ID'),
+            \M2E\Kaufland\Model\Magento\Product\Rule\Custom\Kaufland\OnlinePrice::NICK => __('Price'),
+        ];
     }
 }

@@ -131,11 +131,6 @@ class Account extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
 
     // ----------------------------------------
 
-    public function getId(): int
-    {
-        return (int)parent::getId();
-    }
-
     /**
      * @param Storefront[] $storefronts
      *

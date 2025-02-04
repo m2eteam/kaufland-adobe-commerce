@@ -7,20 +7,20 @@ class Service
     private int $initiator = \M2E\Core\Helper\Data::INITIATOR_EXTENSION;
 
     private \M2E\Kaufland\Model\Order\LogFactory $orderLogFactory;
-    private \M2E\Kaufland\Model\ResourceModel\Order\Log $orderLogResource;
     private \M2E\Kaufland\Model\OrderFactory $orderFactory;
     private \M2E\Kaufland\Model\ResourceModel\Order $orderResource;
     private \M2E\Kaufland\Model\ResourceModel\Order\Log\CollectionFactory $orderLogCollection;
+    private \M2E\Kaufland\Model\Order\Log\Repository $orderLogRepository;
 
     public function __construct(
         \M2E\Kaufland\Model\Order\LogFactory $orderLogFactory,
-        \M2E\Kaufland\Model\ResourceModel\Order\Log $orderLogResource,
+        \M2E\Kaufland\Model\Order\Log\Repository $orderLogRepository,
         \M2E\Kaufland\Model\OrderFactory $orderFactory,
         \M2E\Kaufland\Model\ResourceModel\Order $orderResource,
         \M2E\Kaufland\Model\ResourceModel\Order\Log\CollectionFactory $orderLogCollection
     ) {
         $this->orderLogFactory = $orderLogFactory;
-        $this->orderLogResource = $orderLogResource;
+        $this->orderLogRepository = $orderLogRepository;
         $this->orderFactory = $orderFactory;
         $this->orderResource = $orderResource;
         $this->orderLogCollection = $orderLogCollection;
@@ -39,7 +39,7 @@ class Service
     }
 
     /**
-     * @param \M2E\Kaufland\Model\Order|int|string $order
+     * @param \M2E\Kaufland\Model\Order $order
      * @param string $description
      * @param int $type
      * @param array $additionalData
@@ -50,20 +50,12 @@ class Service
      * @throws \Magento\Framework\Exception\AlreadyExistsException
      */
     public function addMessage(
-        $order,
+        \M2E\Kaufland\Model\Order $order,
         string $description,
         int $type,
         array $additionalData = [],
         bool $isUnique = false
     ): bool {
-        if (!($order instanceof \M2E\Kaufland\Model\Order)) {
-            $order = $this->findOrder($order);
-        }
-
-        if ($order->isObjectNew()) {
-            return false;
-        }
-
         if (
             $isUnique
             && $this->isExist($order->getId(), $description)
@@ -81,7 +73,7 @@ class Service
         $orderLog->setAdditionalData(\M2E\Core\Helper\Json::encode($additionalData));
         $orderLog->setCreateDate(\M2E\Core\Helper\Date::createCurrentGmt()->format('Y-m-d H:i:s'));
 
-        $this->orderLogResource->save($orderLog);
+        $this->orderLogRepository->save($orderLog);
 
         return true;
     }

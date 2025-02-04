@@ -1,8 +1,9 @@
 define([
+    'jquery',
     'Magento_Ui/js/grid/massactions',
     'Kaufland/Product/Unmanaged/Move',
     'Kaufland/Common'
-], function (Massactions, Move) {
+], function ($, Massactions, Move) {
     'use strict';
 
     return Massactions.extend({
@@ -16,8 +17,9 @@ define([
                 const urlGrid = action.url_grid;
                 const urlGetSelectedProducts = action.url_get_selected_products;
                 const urlListingCreate = action.url_listing_create;
+                let accountId = $('#account_switcher').val();
 
-                Move.startMoveForProducts(massActionData, urlPrepareMove, urlGrid, urlGetSelectedProducts, urlListingCreate);
+                Move.startMoveForProducts(massActionData, urlPrepareMove, urlGrid, urlGetSelectedProducts, urlListingCreate, accountId);
                 CommonObj.scrollPageToTop();
             } else {
                 this._super();

@@ -37,7 +37,7 @@ class Permanent implements \M2E\Kaufland\Helper\Data\Cache\BaseInterface
             $lifetime = 60 * 60 * 24;
         }
 
-        $this->cacheAdapter->set($key, $value, $lifetime, $tags);
+        $this->getAdapter()->set($key, $value, $lifetime, $tags);
     }
 
     // ----------------------------------------
@@ -47,7 +47,7 @@ class Permanent implements \M2E\Kaufland\Helper\Data\Cache\BaseInterface
      */
     public function removeValue($key): void
     {
-        $this->cacheAdapter->remove($key);
+        $this->getAdapter()->remove($key);
     }
 
     /**
@@ -55,7 +55,7 @@ class Permanent implements \M2E\Kaufland\Helper\Data\Cache\BaseInterface
      */
     public function removeTagValues($tag): void
     {
-        $this->cacheAdapter->removeByTag($tag);
+        $this->getAdapter()->removeByTag($tag);
     }
 
     /**
@@ -63,7 +63,7 @@ class Permanent implements \M2E\Kaufland\Helper\Data\Cache\BaseInterface
      */
     public function removeAllValues(): void
     {
-        $this->cacheAdapter->removeAllValues();
+        $this->getAdapter()->removeAllValues();
     }
 
     public function getAdapter(): Adapter

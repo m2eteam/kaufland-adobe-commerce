@@ -61,11 +61,6 @@ class Product extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         $this->wizard = $wizard;
     }
 
-    public function getId(): int
-    {
-        return (int)parent::getId();
-    }
-
     public function getWizard(): \M2E\Kaufland\Model\Listing\Wizard
     {
         /** @psalm-suppress RedundantPropertyInitializationCheck */

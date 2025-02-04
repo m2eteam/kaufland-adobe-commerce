@@ -1,9 +1,13 @@
 <?php
 
-namespace M2E\Kaufland\Model\Magento\Product\Rule\Custom;
+declare(strict_types=1);
 
-class Stock extends AbstractModel
+namespace M2E\Kaufland\Model\Magento\Product\Rule\Custom\Magento;
+
+class Stock extends \M2E\Kaufland\Model\Magento\Product\Rule\Custom\AbstractCustomFilter
 {
+    public const NICK = 'magento_stock';
+
     private \M2E\Kaufland\Model\Magento\ProductFactory $magentoProductFactory;
     private \M2E\Core\Helper\Magento $magentoHelper;
 
@@ -18,15 +22,7 @@ class Stock extends AbstractModel
     /**
      * @return string
      */
-    public function getAttributeCode(): string
-    {
-        return 'is_in_stock';
-    }
-
-    /**
-     * @return string
-     */
-    public function getLabel()
+    public function getLabel(): string
     {
         return (string)__('Stock Availability');
     }
@@ -54,7 +50,7 @@ class Stock extends AbstractModel
      */
     public function getInputType(): string
     {
-        return 'select';
+        return \M2E\Kaufland\Model\Magento\Product\Rule\Condition\AbstractModel::VALUE_ELEMENT_TYPE_SELECT;
     }
 
     /**
@@ -62,7 +58,7 @@ class Stock extends AbstractModel
      */
     public function getValueElementType(): string
     {
-        return 'select';
+        return \M2E\Kaufland\Model\Magento\Product\Rule\Condition\AbstractModel::VALUE_ELEMENT_TYPE_SELECT;
     }
 
     /**

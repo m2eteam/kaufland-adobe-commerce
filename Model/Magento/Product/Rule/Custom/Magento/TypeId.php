@@ -1,9 +1,13 @@
 <?php
 
-namespace M2E\Kaufland\Model\Magento\Product\Rule\Custom;
+declare(strict_types=1);
 
-class TypeId extends AbstractModel
+namespace M2E\Kaufland\Model\Magento\Product\Rule\Custom\Magento;
+
+class TypeId extends \M2E\Kaufland\Model\Magento\Product\Rule\Custom\AbstractCustomFilter
 {
+    public const NICK = 'magento_type_id';
+
     private \Magento\Catalog\Model\Product\Type $type;
     private \M2E\Kaufland\Helper\Magento\Product $magentoProductHelper;
 
@@ -13,14 +17,6 @@ class TypeId extends AbstractModel
     ) {
         $this->type = $type;
         $this->magentoProductHelper = $magentoProductHelper;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAttributeCode(): string
-    {
-        return 'type_id';
     }
 
     /**
@@ -41,7 +37,7 @@ class TypeId extends AbstractModel
      */
     public function getInputType(): string
     {
-        return 'select';
+        return \M2E\Kaufland\Model\Magento\Product\Rule\Condition\AbstractModel::VALUE_ELEMENT_TYPE_SELECT;
     }
 
     /**
@@ -49,7 +45,7 @@ class TypeId extends AbstractModel
      */
     public function getValueElementType(): string
     {
-        return 'select';
+        return \M2E\Kaufland\Model\Magento\Product\Rule\Condition\AbstractModel::VALUE_ELEMENT_TYPE_SELECT;
     }
 
     /**

@@ -24,14 +24,17 @@ class AutoMap extends \M2E\Kaufland\Controller\Adminhtml\AbstractListing
 
     public function execute()
     {
+        $accountId = (int)$this->getRequest()->getParam('account_id');
+
         $products = $this->listingOtherRepository->findForAutoMappingByMassActionSelectedProducts(
-            $this->massActionFilter
+            $this->massActionFilter,
+            $accountId
         );
 
         if (empty($products)) {
             $this->getMessageManager()->addErrorMessage('You should select one or more Products');
 
-            return $this->_redirect('*/product_grid/unmanaged/');
+            return $this->_redirect('*/product_grid/unmanaged/', ['account' => $accountId]);
         }
 
         if (!$this->mappingService->autoMapOtherListingsProducts($products)) {
@@ -39,9 +42,9 @@ class AutoMap extends \M2E\Kaufland\Controller\Adminhtml\AbstractListing
                 'Some Items were not linked. Please edit Product Linking Settings under Configuration > Account > Unmanaged Listings or try to link manually.'
             );
 
-            return $this->_redirect('*/product_grid/unmanaged/');
+            return $this->_redirect('*/product_grid/unmanaged/', ['account' => $accountId]);
         }
 
-        return $this->_redirect('*/product_grid/unmanaged/');
+        return $this->_redirect('*/product_grid/unmanaged/', ['account' => $accountId]);
     }
 }

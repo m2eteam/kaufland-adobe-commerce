@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace M2E\Kaufland\Block\Adminhtml\Magento\Product;
 
 use M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractForm;
@@ -11,8 +13,6 @@ class Rule extends AbstractForm
 {
     protected $conditions;
     protected $rendererFieldset;
-
-    //########################################
 
     public function __construct(
         \Magento\Rule\Block\Conditions $conditions,
@@ -26,8 +26,6 @@ class Rule extends AbstractForm
         $this->rendererFieldset = $rendererFieldset;
         parent::__construct($context, $registry, $formFactory, $data);
     }
-
-    //########################################
 
     protected function _prepareForm()
     {
@@ -65,6 +63,4 @@ class Rule extends AbstractForm
 
         return parent::_prepareForm();
     }
-
-    //########################################
 }

@@ -24,12 +24,10 @@ class ShippingGroup extends \M2E\Kaufland\Model\ResourceModel\ActiveRecord\Abstr
 
     public function __construct(
         \M2E\Kaufland\Model\ResourceModel\ShippingGroup\CollectionFactory $shippingGroupCollectionFactory,
-        \M2E\Kaufland\Model\ActiveRecord\Factory $activeRecordFactory,
         \Magento\Framework\Model\ResourceModel\Db\Context $context,
         $connectionName = null
     ) {
         parent::__construct(
-            $activeRecordFactory,
             $context,
             $connectionName
         );

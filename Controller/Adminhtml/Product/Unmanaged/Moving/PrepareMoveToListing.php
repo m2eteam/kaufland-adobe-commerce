@@ -19,17 +19,17 @@ class PrepareMoveToListing extends \M2E\Kaufland\Controller\Adminhtml\AbstractLi
 
     public function execute()
     {
+        $accountId = (int)$this->getRequest()->getParam('account_id');
         $selectedProductsIds = (array)$this->getRequest()->getParam('other_product_ids');
 
         $sessionKey = \M2E\Kaufland\Helper\View::MOVING_LISTING_OTHER_SELECTED_SESSION_KEY;
         $this->sessionHelper->setValue($sessionKey, $selectedProductsIds);
 
-        $row = $this->otherRepository->findPrepareMoveToListingByIds($selectedProductsIds);
+        $row = $this->otherRepository->findStorefrontIdByUnmanagedIdsAndAccount($selectedProductsIds, $accountId);
 
         if ($row !== false) {
             $response = [
                 'result' => true,
-                'accountId' => (int)$row['account_id'],
                 'storefrontId' => (int)$row['storefront_id']
             ];
         } else {

@@ -20,7 +20,8 @@ require([
         const urlPrepareMove = el.data('url_move');
         const urlGrid = el.data('url_grid');
         const urlListingCreate = el.data('url_new_listing');
+        let accountId = $('#account_switcher').val();
 
-        Move.startMoveForProduct(otherProductId, urlPrepareMove, urlGrid, urlListingCreate);
+        Move.startMoveForProduct(otherProductId, urlPrepareMove, urlGrid, urlListingCreate, accountId);
     }.bind(this));
 });

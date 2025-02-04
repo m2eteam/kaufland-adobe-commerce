@@ -14,6 +14,11 @@ class Repository
         $this->resource = $resource;
     }
 
+    public function save(\M2E\Kaufland\Model\Order\Log $orderLog)
+    {
+        $this->resource->save($orderLog);
+    }
+
     public function removeByAccountId(int $accountId): void
     {
         $this->resource

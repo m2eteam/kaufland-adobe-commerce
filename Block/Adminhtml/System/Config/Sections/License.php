@@ -88,7 +88,7 @@ License Key.</p><br>
                         'This email address is associated with your License.
                         You can also use it to access
                         <a href="%url" target="_blank" class="external-link">M2E Accounts</a>.',
-                        ['url' => \M2E\Kaufland\Helper\Module\Support::ACCOUNTS_URL],
+                        ['url' => \M2E\Core\Helper\Module\Support::ACCOUNTS_URL],
                     ),
                 ]
             );
@@ -101,7 +101,7 @@ License Key.</p><br>
                 [
                     'label' => '',
                     'value' => __('Manage License'),
-                    'href' => \M2E\Kaufland\Helper\Module\Support::ACCOUNTS_URL,
+                    'href' => \M2E\Core\Helper\Module\Support::ACCOUNTS_URL,
                     'class' => 'external-link',
                     'target' => '_blank',
                 ]

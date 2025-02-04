@@ -202,11 +202,12 @@ class Repository
 
     /**
      * @param \Magento\Ui\Component\MassAction\Filter $filter
+     * @param int $accountId
      *
      * @return \M2E\Kaufland\Model\Listing\Other[]
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function findForMovingByMassActionSelectedProducts(MassActionFilter $filter): array
+    public function findForMovingByMassActionSelectedProducts(MassActionFilter $filter, int $accountId): array
     {
         $collection = $this->collectionFactory->create();
         $filter->getCollection($collection);
@@ -216,16 +217,22 @@ class Repository
             ['notnull' => true]
         );
 
+        $collection->addFieldToFilter(
+            ListingOtherResource::COLUMN_ACCOUNT_ID,
+            $accountId
+        );
+
         return array_values($collection->getItems());
     }
 
     /**
      * @param \Magento\Ui\Component\MassAction\Filter $filter
+     * @param int $accountId
      *
      * @return \M2E\Kaufland\Model\Listing\Other[]
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function findForAutoMappingByMassActionSelectedProducts(MassActionFilter $filter): array
+    public function findForAutoMappingByMassActionSelectedProducts(MassActionFilter $filter, int $accountId): array
     {
         $collection = $this->collectionFactory->create();
         $filter->getCollection($collection);
@@ -235,16 +242,22 @@ class Repository
             ['null' => true]
         );
 
+        $collection->addFieldToFilter(
+            ListingOtherResource::COLUMN_ACCOUNT_ID,
+            $accountId
+        );
+
         return array_values($collection->getItems());
     }
 
     /**
      * @param \Magento\Ui\Component\MassAction\Filter $filter
+     * @param int $accountId
      *
      * @return \M2E\Kaufland\Model\Listing\Other[]
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function findForUnmappingByMassActionSelectedProducts(MassActionFilter $filter): array
+    public function findForUnmappingByMassActionSelectedProducts(MassActionFilter $filter, int $accountId): array
     {
         $collection = $this->collectionFactory->create();
         $filter->getCollection($collection);
@@ -254,16 +267,22 @@ class Repository
             ['notnull' => true]
         );
 
+        $collection->addFieldToFilter(
+            ListingOtherResource::COLUMN_ACCOUNT_ID,
+            $accountId
+        );
+
         return array_values($collection->getItems());
     }
 
     /**
      * @param array $ids
+     * @param int $accountId
      *
      * @return array|bool
      * @throws \Zend_Db_Statement_Exception
      */
-    public function findPrepareMoveToListingByIds(array $ids)
+    public function findStorefrontIdByUnmanagedIdsAndAccount(array $ids, int $accountId)
     {
         $listingOtherCollection = $this->collectionFactory->create();
         $listingOtherCollection->addFieldToFilter('id', ['in' => $ids]);
@@ -277,11 +296,16 @@ class Repository
             'magento_product_id = cpe.entity_id'
         );
 
+        $listingOtherCollection->addFieldToFilter(
+            ListingOtherResource::COLUMN_ACCOUNT_ID,
+            $accountId
+        );
+
         return $listingOtherCollection
             ->getSelect()
             ->reset(\Magento\Framework\DB\Select::COLUMNS)
-            ->group(['account_id', 'storefront_id'])
-            ->columns(['account_id', 'storefront_id'])
+            ->group(['storefront_id'])
+            ->columns(['storefront_id'])
             ->query()
             ->fetch();
     }

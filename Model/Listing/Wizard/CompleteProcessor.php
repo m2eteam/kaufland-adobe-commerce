@@ -11,6 +11,7 @@ class CompleteProcessor
     /** @var \M2E\Kaufland\Model\Listing\Wizard\Repository */
     private Repository $wizardRepository;
     private \M2E\Kaufland\Model\Listing\Other\Repository $listingOtherRepository;
+    private \M2E\Kaufland\Model\Magento\Product\CacheFactory $magentoProductFactory;
 
     /**@var array<string, \M2E\Kaufland\Model\Category\Dictionary> */
     private array $categoryTemplateCache = [];
@@ -19,8 +20,10 @@ class CompleteProcessor
         Repository $wizardRepository,
         \M2E\Kaufland\Model\Listing\AddProductsService $addProductsService,
         \M2E\Kaufland\Model\Category\Dictionary\Repository $categoryDictionary,
-        \M2E\Kaufland\Model\Listing\Other\Repository $listingOtherRepository
+        \M2E\Kaufland\Model\Listing\Other\Repository $listingOtherRepository,
+        \M2E\Kaufland\Model\Magento\Product\CacheFactory $magentoProductFactory
     ) {
+        $this->magentoProductFactory = $magentoProductFactory;
         $this->addProductsService = $addProductsService;
         $this->categoryDictionary = $categoryDictionary;
         $this->wizardRepository = $wizardRepository;
@@ -42,6 +45,11 @@ class CompleteProcessor
 
             $processedWizardProductIds[] = $wizardProduct->getId();
 
+            $magentoProduct = $this->magentoProductFactory->create()->setProductId($wizardProduct->getMagentoProductId());
+            if (!$magentoProduct->exists()) {
+                continue;
+            }
+
             $categoryTemplate = null;
             if ($wizardProduct->getCategoryDictionaryId() !== null) {
                 $categoryTemplate = $this->findCategoryTemplate($wizardProduct->getCategoryDictionaryId());
@@ -56,7 +64,7 @@ class CompleteProcessor
                 $listingProduct = $this->addProductsService
                     ->addProduct(
                         $listing,
-                        $wizardProduct->getMagentoProductId(),
+                        $magentoProduct,
                         $categoryTemplate,
                         $kauflandProductId,
                         \M2E\Core\Helper\Data::INITIATOR_USER,

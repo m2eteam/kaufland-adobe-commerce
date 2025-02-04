@@ -56,7 +56,7 @@ Your listings on the channel will <b>not</b> be affected.</p>
 <p>Please confirm if you would like to delete the account.</p>
 <p>Note: once the account is no longer connected to your M2E Kaufland, please remember to delete it from
 <a href="%href">M2E Accounts</a></p>',
-                            ['href' => \M2E\Kaufland\Helper\Module\Support::ACCOUNTS_URL]
+                            ['href' => \M2E\Core\Helper\Module\Support::ACCOUNTS_URL]
                         )
                     ]
                 ];

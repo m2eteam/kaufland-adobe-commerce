@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-namespace M2E\Kaufland\Model\Magento\Product\Rule\Custom;
+namespace M2E\Kaufland\Model\Order;
 
-use M2E\Kaufland\Model\Magento\Product\Rule\Custom\Stock;
-
-class StockFactory
+class NoteFactory
 {
     private \Magento\Framework\ObjectManagerInterface $objectManager;
 
@@ -15,8 +13,8 @@ class StockFactory
         $this->objectManager = $objectManager;
     }
 
-    public function create(): Stock
+    public function create(): Note
     {
-        return $this->objectManager->create(Stock::class);
+        return $this->objectManager->create(Note::class);
     }
 }

@@ -6,8 +6,9 @@ define([
     'use strict';
 
     return {
-        getSelectedProductIds: function (massActionData, urlGetSelectedProducts, callback) {
+        getSelectedProductIds: function (massActionData, urlGetSelectedProducts, accountId, callback) {
             const params = this.createFilterParams(massActionData);
+            params.account_id = accountId;
 
             $.ajax(
                     {

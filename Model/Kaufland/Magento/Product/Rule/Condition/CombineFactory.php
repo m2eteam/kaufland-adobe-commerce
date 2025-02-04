@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace M2E\Kaufland\Model\Magento\Product\Rule\Custom;
+namespace M2E\Kaufland\Model\Kaufland\Magento\Product\Rule\Condition;
 
-class TypeIdFactory
+class CombineFactory
 {
     private \Magento\Framework\ObjectManagerInterface $objectManager;
 
@@ -13,8 +13,8 @@ class TypeIdFactory
         $this->objectManager = $objectManager;
     }
 
-    public function create(): TypeId
+    public function create(): Combine
     {
-        return $this->objectManager->create(TypeId::class);
+        return $this->objectManager->create(Combine::class);
     }
 }

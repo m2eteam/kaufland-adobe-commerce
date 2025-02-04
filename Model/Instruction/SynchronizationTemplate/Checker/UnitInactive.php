@@ -25,7 +25,7 @@ class UnitInactive extends \M2E\Kaufland\Model\Instruction\SynchronizationTempla
         \M2E\Kaufland\PublicServices\Product\SqlChange::INSTRUCTION_TYPE_PRODUCT_CHANGED,
         \M2E\Kaufland\PublicServices\Product\SqlChange::INSTRUCTION_TYPE_STATUS_CHANGED,
         \M2E\Kaufland\PublicServices\Product\SqlChange::INSTRUCTION_TYPE_QTY_CHANGED,
-        \M2E\Kaufland\Model\Cron\Task\Product\InspectDirectChanges::INSTRUCTION_TYPE,
+        \M2E\Kaufland\Model\Product\InspectDirectChanges::INSTRUCTION_TYPE,
     ];
 
     private \M2E\Kaufland\Model\ScheduledAction\CreateService $scheduledActionCreate;

@@ -92,21 +92,21 @@
         </filters>
 
         <massaction name="listing_massaction" component="M2E_Kaufland/js/Product/Unmanaged/Magento/Ui/Grid/massactions">
-            <action name="link">
+            <action name="link" class="M2E\Kaufland\Ui\Product\Component\Unmanaged\MassAction\UpdateUrl">
                 <argument name="data" xsi:type="array">
                     <item name="config" xsi:type="array">
                         <item name="type" xsi:type="string">link</item>
                         <item name="label" xsi:type="string" translate="true">Link Item(s) Automatically</item>
-                        <item name="url" xsi:type="url" path="m2e_kaufland/product_unmanaged_mapping/autoMap"/>
+                        <item name="url" xsi:type="string">m2e_kaufland/product_unmanaged_mapping/autoMap</item>
                     </item>
                 </argument>
             </action>
-            <action name="unlink">
+            <action name="unlink" class="M2E\Kaufland\Ui\Product\Component\Unmanaged\MassAction\UpdateUrl">
                 <argument name="data" xsi:type="array">
                     <item name="config" xsi:type="array">
                         <item name="type" xsi:type="string">unlink</item>
                         <item name="label" xsi:type="string" translate="true">Unlink Item(s)</item>
-                        <item name="url" xsi:type="url" path="m2e_kaufland/product_unmanaged_mapping/unmapping"/>
+                        <item name="url" xsi:type="string">m2e_kaufland/product_unmanaged_mapping/unmapping</item>
                         <item name="confirm" xsi:type="array">
                             <item name="title" xsi:type="string" translate="true">Confirmation</item>
                             <item name="message" xsi:type="string" translate="true">Are you sure?</item>

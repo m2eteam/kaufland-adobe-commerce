@@ -134,7 +134,7 @@ abstract class AbstractBase extends Action
         try {
             $result = parent::dispatch($request);
         } catch (\Throwable $exception) {
-            if ($request->getControllerName() === \M2E\Kaufland\Helper\Module\Support::SUPPORT_CONTROLLER_NAME) {
+            if ($request->getControllerName() === 'support') {
                 $this->getRawResult()->setContents($exception->getMessage());
 
                 return $this->getRawResult();
@@ -162,11 +162,7 @@ abstract class AbstractBase extends Action
                 'error' => 'true',
             ];
 
-            if ($this->getViewHelper()->getCurrentView() !== null) {
-                $params['referrer'] = $this->getViewHelper()->getCurrentView();
-            }
-
-            return $this->_redirect(\M2E\Kaufland\Helper\Module\Support::SUPPORT_PAGE_ROUTE, $params);
+            return $this->_redirect('*/support/index', $params);
         }
 
         $this->postDispatch($request);

@@ -611,4 +611,14 @@ class Repository
 
         return $collection;
     }
+
+    public function getIds(int $fromId, int $limit): array
+    {
+        $collection = $this->listingProductCollectionFactory->create();
+        $collection->addFieldToFilter('id', ['gt' => $fromId]);
+        $collection->getSelect()->order(['id ASC']);
+        $collection->getSelect()->limit($limit);
+
+        return array_map('intval', $collection->getColumnValues('id'));
+    }
 }

@@ -4,106 +4,34 @@ namespace M2E\Kaufland\Model\Order;
 
 class Note extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
 {
-    private ?\M2E\Kaufland\Model\Order $order = null;
-
-    private \M2E\Kaufland\Model\ResourceModel\Order $orderResource;
-    private \M2E\Kaufland\Model\OrderFactory $orderFactory;
-    private \M2E\Kaufland\Model\Magento\Order\Updater $orderUpdater;
-
-    public function __construct(
-        \M2E\Kaufland\Model\Magento\Order\Updater $orderUpdater,
-        \M2E\Kaufland\Model\ResourceModel\Order $orderResource,
-        \M2E\Kaufland\Model\OrderFactory $orderFactory,
-        \M2E\Kaufland\Model\Factory $modelFactory,
-        \M2E\Kaufland\Model\ActiveRecord\Factory $activeRecordFactory,
-        \Magento\Framework\Model\Context $context,
-        \Magento\Framework\Registry $registry,
-        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
-        \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
-        array $data = []
-    ) {
-        parent::__construct(
-            $modelFactory,
-            $activeRecordFactory,
-            $context,
-            $registry,
-            $resource,
-            $resourceCollection,
-            $data
-        );
-        $this->orderResource = $orderResource;
-        $this->orderFactory = $orderFactory;
-        $this->orderUpdater = $orderUpdater;
-    }
-
-    public function _construct()
+    public function _construct(): void
     {
         parent::_construct();
         $this->_init(\M2E\Kaufland\Model\ResourceModel\Order\Note::class);
     }
 
-    public function getNote()
+    public function init(int $orderId, string $note): self
     {
-        return $this->getData('note');
+        $this->setData(\M2E\Kaufland\Model\ResourceModel\Order\Note::COLUMN_ORDER_ID, $orderId)
+             ->setNote($note);
+
+        return $this;
     }
 
-    public function getOrderId()
+    public function getOrderId(): int
     {
-        return $this->getData('order_id');
+        return (int)$this->getData(\M2E\Kaufland\Model\ResourceModel\Order\Note::COLUMN_ORDER_ID);
     }
 
-    public function afterDelete(): self
+    public function setNote(string $note): self
     {
-        $comment = __('Custom Note for the corresponding Kaufland order was deleted.');
-        $this->updateMagentoOrderComments($comment);
+        $this->setData(\M2E\Kaufland\Model\ResourceModel\Order\Note::COLUMN_NOTE, trim($note));
 
-        return parent::afterDelete();
+        return $this;
     }
 
-    public function afterSave(): self
+    public function getNote(): string
     {
-        $comment = __(
-            'Custom Note was added to the corresponding Kaufland order: %note.',
-            ['note' => $this->getNote()]
-        );
-
-        if ($this->getOrigData('id') !== null) {
-            $comment = __(
-                'Custom Note for the corresponding Kaufland order was updated: %note.',
-                ['note' => $this->getNote()]
-            );
-        }
-
-        $this->updateMagentoOrderComments($comment);
-
-        return parent::afterSave();
+        return (string)$this->getData(\M2E\Kaufland\Model\ResourceModel\Order\Note::COLUMN_NOTE);
     }
-
-    protected function updateMagentoOrderComments(string $comment): void
-    {
-        $magentoOrderModel = $this->findOrder()->getMagentoOrder();
-
-        if ($magentoOrderModel === null) {
-            return;
-        }
-
-        $orderUpdater = $this->orderUpdater;
-        $orderUpdater->setMagentoOrder($magentoOrderModel);
-        $orderUpdater->updateComments($comment);
-        $orderUpdater->finishUpdate();
-    }
-
-    public function findOrder(): ?\M2E\Kaufland\Model\Order
-    {
-        if ($this->order === null) {
-            $order = $this->orderFactory->create();
-            $this->orderResource->load($order, $this->getOrderId());
-
-            $this->order = $order;
-        }
-
-        return $this->order;
-    }
-
-    //########################################
 }

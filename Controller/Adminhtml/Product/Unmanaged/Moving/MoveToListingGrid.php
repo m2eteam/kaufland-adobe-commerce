@@ -14,7 +14,7 @@ class MoveToListingGrid extends \M2E\Kaufland\Controller\Adminhtml\AbstractListi
                 'storefrontId' => (int)$this->getRequest()->getParam('storefront_id'),
                 'data' => [
                     'grid_url' => $this->getUrl(
-                        '*/listing_other_moving/moveToListingGrid',
+                        '*/product_unmanaged_moving/moveToListingGrid',
                         ['_current' => true]
                     ),
                 ],

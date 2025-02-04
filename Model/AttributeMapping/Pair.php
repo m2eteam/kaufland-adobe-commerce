@@ -28,11 +28,6 @@ class Pair extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         return $this;
     }
 
-    public function getId(): int
-    {
-        return (int)parent::getId();
-    }
-
     public function getType(): string
     {
         return (string)$this->getData(PairResource::COLUMN_TYPE);

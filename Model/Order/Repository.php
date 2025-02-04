@@ -145,7 +145,7 @@ class Repository
         $orderNoteCollection->getConnection()->delete(
             $orderNoteCollection->getMainTable(),
             [
-                \M2E\Kaufland\Model\ResourceModel\Order\Note::ORDER_ID_FIELD . ' IN (?)'
+                \M2E\Kaufland\Model\ResourceModel\Order\Note::COLUMN_ORDER_ID . ' IN (?)'
                 => $orderCollection->getSelect(),
             ]
         );

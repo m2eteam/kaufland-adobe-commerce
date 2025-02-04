@@ -239,7 +239,7 @@ class Active extends \M2E\Kaufland\Model\Instruction\SynchronizationTemplate\Che
             \M2E\Kaufland\PublicServices\Product\SqlChange::INSTRUCTION_TYPE_PRODUCT_CHANGED,
             \M2E\Kaufland\PublicServices\Product\SqlChange::INSTRUCTION_TYPE_STATUS_CHANGED,
             \M2E\Kaufland\PublicServices\Product\SqlChange::INSTRUCTION_TYPE_QTY_CHANGED,
-            \M2E\Kaufland\Model\Cron\Task\Product\InspectDirectChanges::INSTRUCTION_TYPE,
+            \M2E\Kaufland\Model\Product\InspectDirectChanges::INSTRUCTION_TYPE,
         ];
     }
 
@@ -264,7 +264,7 @@ class Active extends \M2E\Kaufland\Model\Instruction\SynchronizationTemplate\Che
             \M2E\Kaufland\Model\Listing::INSTRUCTION_TYPE_CHANGE_LISTING_STORE_VIEW,
             \M2E\Kaufland\PublicServices\Product\SqlChange::INSTRUCTION_TYPE_PRODUCT_CHANGED,
             \M2E\Kaufland\PublicServices\Product\SqlChange::INSTRUCTION_TYPE_PRICE_CHANGED,
-            \M2E\Kaufland\Model\Cron\Task\Product\InspectDirectChanges::INSTRUCTION_TYPE,
+            \M2E\Kaufland\Model\Product\InspectDirectChanges::INSTRUCTION_TYPE,
         ];
     }
 
@@ -290,7 +290,7 @@ class Active extends \M2E\Kaufland\Model\Instruction\SynchronizationTemplate\Che
             \M2E\Kaufland\PublicServices\Product\SqlChange::INSTRUCTION_TYPE_PRODUCT_CHANGED,
             \M2E\Kaufland\PublicServices\Product\SqlChange::INSTRUCTION_TYPE_STATUS_CHANGED,
             \M2E\Kaufland\PublicServices\Product\SqlChange::INSTRUCTION_TYPE_QTY_CHANGED,
-            \M2E\Kaufland\Model\Cron\Task\Product\InspectDirectChanges::INSTRUCTION_TYPE,
+            \M2E\Kaufland\Model\Product\InspectDirectChanges::INSTRUCTION_TYPE,
         ];
     }
 
@@ -320,7 +320,7 @@ class Active extends \M2E\Kaufland\Model\Instruction\SynchronizationTemplate\Che
             \M2E\Kaufland\Model\Listing::INSTRUCTION_TYPE_PRODUCT_MOVED_FROM_OTHER,
             \M2E\Kaufland\Model\Listing::INSTRUCTION_TYPE_CHANGE_LISTING_STORE_VIEW,
             \M2E\Kaufland\PublicServices\Product\SqlChange::INSTRUCTION_TYPE_PRODUCT_CHANGED,
-            \M2E\Kaufland\Model\Cron\Task\Product\InspectDirectChanges::INSTRUCTION_TYPE,
+            \M2E\Kaufland\Model\Product\InspectDirectChanges::INSTRUCTION_TYPE,
         ];
     }
 
@@ -336,7 +336,7 @@ class Active extends \M2E\Kaufland\Model\Instruction\SynchronizationTemplate\Che
             \M2E\Kaufland\Model\Listing::INSTRUCTION_TYPE_PRODUCT_MOVED_FROM_OTHER,
             \M2E\Kaufland\Model\Listing::INSTRUCTION_TYPE_CHANGE_LISTING_STORE_VIEW,
             \M2E\Kaufland\PublicServices\Product\SqlChange::INSTRUCTION_TYPE_PRODUCT_CHANGED,
-            \M2E\Kaufland\Model\Cron\Task\Product\InspectDirectChanges::INSTRUCTION_TYPE,
+            \M2E\Kaufland\Model\Product\InspectDirectChanges::INSTRUCTION_TYPE,
             DescriptionPolicy::INSTRUCTION_TYPE_MAGENTO_STATIC_BLOCK_IN_DESCRIPTION_CHANGED,
         ];
     }
@@ -353,7 +353,7 @@ class Active extends \M2E\Kaufland\Model\Instruction\SynchronizationTemplate\Che
             \M2E\Kaufland\Model\Listing::INSTRUCTION_TYPE_PRODUCT_MOVED_FROM_OTHER,
             \M2E\Kaufland\Model\Listing::INSTRUCTION_TYPE_CHANGE_LISTING_STORE_VIEW,
             \M2E\Kaufland\PublicServices\Product\SqlChange::INSTRUCTION_TYPE_PRODUCT_CHANGED,
-            \M2E\Kaufland\Model\Cron\Task\Product\InspectDirectChanges::INSTRUCTION_TYPE,
+            \M2E\Kaufland\Model\Product\InspectDirectChanges::INSTRUCTION_TYPE,
         ];
     }
 
@@ -369,7 +369,7 @@ class Active extends \M2E\Kaufland\Model\Instruction\SynchronizationTemplate\Che
             \M2E\Kaufland\Model\Listing::INSTRUCTION_TYPE_PRODUCT_MOVED_FROM_OTHER,
             \M2E\Kaufland\Model\Listing::INSTRUCTION_TYPE_CHANGE_LISTING_STORE_VIEW,
             \M2E\Kaufland\PublicServices\Product\SqlChange::INSTRUCTION_TYPE_PRODUCT_CHANGED,
-            \M2E\Kaufland\Model\Cron\Task\Product\InspectDirectChanges::INSTRUCTION_TYPE,
+            \M2E\Kaufland\Model\Product\InspectDirectChanges::INSTRUCTION_TYPE,
         ];
     }
 }

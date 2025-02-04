@@ -8,8 +8,7 @@ class Combine extends AbstractModel
     protected $_useCustomOptions = true;
 
     protected static $_conditionModels = [];
-    /** @var \M2E\Kaufland\Model\Magento\Product\Rule\Condition\ProductFactory */
-    private ProductFactory $ruleConditionProductFactory;
+    private \M2E\Kaufland\Model\Magento\Product\Rule\Condition\ProductFactory $ruleConditionProductFactory;
     private \Magento\Framework\ObjectManagerInterface $objectManager;
 
     public function __construct(
@@ -21,7 +20,7 @@ class Combine extends AbstractModel
         parent::__construct($context, $data);
         $this->_logger = $context->getLogger();
 
-        $this->setType('Magento\Product\Rule\Condition\Combine')
+        $this->setType(self::class)
              ->setAggregator('all')
              ->setValue(true)
              ->setConditions([])
@@ -51,7 +50,7 @@ class Combine extends AbstractModel
     /**
      * @return array
      */
-    public function getNewChildSelectOptions()
+    public function getNewChildSelectOptions(): array
     {
         $conditions = [
             [
@@ -104,9 +103,14 @@ class Combine extends AbstractModel
     {
         $attributes = $this->ruleConditionProductFactory->create()->getAttributeOption();
 
-        return !empty($attributes) ?
-            $this->getOptions('Magento\Product\Rule\Condition\Product', $attributes)
-            : [];
+        if (empty($attributes)) {
+            return [];
+        }
+
+        return $this->getOptions(
+            \M2E\Kaufland\Model\Magento\Product\Rule\Condition\Product::class,
+            $attributes
+        );
     }
 
     // ---------------------------------------
@@ -134,7 +138,7 @@ class Combine extends AbstractModel
         return $this;
     }
 
-    //########################################
+    // ---------------------------------------
 
     public function loadAggregatorOptions()
     {
@@ -180,7 +184,7 @@ class Combine extends AbstractModel
         );
     }
 
-    //########################################
+    // ---------------------------------------
 
     public function loadValueOptions()
     {
@@ -210,12 +214,12 @@ class Combine extends AbstractModel
         return $this;
     }
 
-    public function getValueElementType()
+    public function getValueElementType(): string
     {
-        return 'select';
+        return \M2E\Kaufland\Model\Magento\Product\Rule\Condition\AbstractModel::VALUE_ELEMENT_TYPE_SELECT;
     }
 
-    //########################################
+    // ---------------------------------------
 
     protected function beforeLoadValidate($condition)
     {
@@ -262,7 +266,7 @@ class Combine extends AbstractModel
                         $cond->loadArray($condArr, $key);
                     }
                 } catch (\Exception $e) {
-                    $this->_logger->critical($e);
+                    $this->_logger->critical($e->getMessage());
                 }
             }
         }
@@ -284,7 +288,7 @@ class Combine extends AbstractModel
         return $this;
     }
 
-    //########################################
+    // ---------------------------------------
 
     public function asXml($containerKey = 'conditions', $itemKey = 'condition')
     {
@@ -360,7 +364,7 @@ class Combine extends AbstractModel
         return $str;
     }
 
-    //########################################
+    // ---------------------------------------
 
     public function getNewChildElement()
     {
@@ -438,7 +442,7 @@ class Combine extends AbstractModel
         return self::$_conditionModels;
     }
 
-    //########################################
+    // ---------------------------------------
 
     protected function _getRecursiveChildSelectOption()
     {
@@ -452,7 +456,7 @@ class Combine extends AbstractModel
         }
 
         if (!array_key_exists($modelClass, self::$_conditionModels)) {
-            $model = $this->objectManager->create('\M2E\Kaufland\Model\\' . str_replace('_', '\\', $modelClass));
+            $model = $this->objectManager->create($modelClass);
             self::$_conditionModels[$modelClass] = $model;
         } else {
             $model = self::$_conditionModels[$modelClass];

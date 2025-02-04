@@ -1,9 +1,13 @@
 <?php
 
-namespace M2E\Kaufland\Model\Magento\Product\Rule\Custom;
+declare(strict_types=1);
 
-class Qty extends AbstractModel
+namespace M2E\Kaufland\Model\Magento\Product\Rule\Custom\Magento;
+
+class Qty extends \M2E\Kaufland\Model\Magento\Product\Rule\Custom\AbstractCustomFilter
 {
+    public const NICK = 'magento_qty';
+
     private \M2E\Kaufland\Model\Magento\ProductFactory $magentoProductFactory;
     private \M2E\Core\Helper\Magento $magentoHelper;
 
@@ -18,15 +22,7 @@ class Qty extends AbstractModel
     /**
      * @return string
      */
-    public function getAttributeCode()
-    {
-        return 'qty';
-    }
-
-    /**
-     * @return string
-     */
-    public function getLabel()
+    public function getLabel(): string
     {
         return (string)__('QTY');
     }

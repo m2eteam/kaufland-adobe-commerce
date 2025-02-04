@@ -12,7 +12,6 @@ class AddProductsService
     private \M2E\Kaufland\Model\InstructionService $instructionService;
     private \M2E\Kaufland\Model\ProductFactory $listingProductFactory;
     private \M2E\Kaufland\Model\Listing\LogService $listingLogService;
-    private \M2E\Kaufland\Model\Magento\Product\CacheFactory $magentoProductFactory;
     /**
      * @var \M2E\Kaufland\Model\Listing\Other\DeleteService
      */
@@ -23,34 +22,44 @@ class AddProductsService
         \M2E\Kaufland\Model\InstructionService $instructionService,
         \M2E\Kaufland\Model\ProductFactory $listingProductFactory,
         \M2E\Kaufland\Model\Listing\LogService $listingLogService,
-        \M2E\Kaufland\Model\Magento\Product\CacheFactory $magentoProductFactory,
         \M2E\Kaufland\Model\Listing\Other\DeleteService $unmanagedProductDeleteService
     ) {
         $this->listingProductRepository = $listingProductRepository;
         $this->instructionService = $instructionService;
         $this->listingProductFactory = $listingProductFactory;
         $this->listingLogService = $listingLogService;
-        $this->magentoProductFactory = $magentoProductFactory;
         $this->unmanagedProductDeleteService = $unmanagedProductDeleteService;
     }
 
     public function addProduct(
         \M2E\Kaufland\Model\Listing $listing,
-        int $magentoProductId,
+        \M2E\Kaufland\Model\Magento\Product $ourMagentoProduct,
         ?\M2E\Kaufland\Model\Category\Dictionary $categoryTemplate,
         ?string $kauflandProductId,
         int $initiator = \M2E\Core\Helper\Data::INITIATOR_UNKNOWN,
         ?\M2E\Kaufland\Model\Listing\Other $unmanagedProduct = null
     ): ?Product {
-        $this->checkSupportedMagentoType($magentoProductId);
+        if (!$ourMagentoProduct->exists()) {
+            throw new \M2E\Kaufland\Model\Listing\Exception\MagentoProductNotFoundException(
+                'Magento product not found.',
+                ['magento_product_id' => $ourMagentoProduct->getProductId()]
+            );
+        }
 
-        $listingProduct = $this->findExistProduct($listing, $magentoProductId);
+        $this->checkSupportedMagentoType($ourMagentoProduct);
+
+        $listingProduct = $this->findExistProduct($listing, $ourMagentoProduct->getProductId());
         if ($listingProduct) {
             return null;
         }
 
         $listingProduct = $this->listingProductFactory->create();
-        $listingProduct->init($listing->getId(), $magentoProductId, $kauflandProductId, $kauflandProductId === null);
+        $listingProduct->init(
+            $listing->getId(),
+            $ourMagentoProduct->getProductId(),
+            $kauflandProductId,
+            $kauflandProductId === null
+        );
 
         if ($unmanagedProduct !== null) {
             $listingProduct->fillFromUnmanagedProduct($unmanagedProduct);
@@ -110,11 +119,11 @@ class AddProductsService
             return null;
         }
 
-        $magentoProductId = $unmanagedProduct->getMagentoProductId();
+        $magentoProduct = $unmanagedProduct->getMagentoProduct();
 
         $listingProduct = $this->addProduct(
             $listing,
-            $magentoProductId,
+            $magentoProduct,
             $categoryTemplate,
             $unmanagedProduct->getKauflandProductId(),
             $initiator,
@@ -218,14 +227,13 @@ class AddProductsService
         return $this->listingProductRepository->findByListingAndMagentoProductId($listing, $magentoProductId);
     }
 
-    private function isSupportedMagentoProductType(\M2E\Kaufland\Model\Magento\Product\Cache $ourMagentoProduct): bool
+    private function isSupportedMagentoProductType(\M2E\Kaufland\Model\Magento\Product $ourMagentoProduct): bool
     {
         return $ourMagentoProduct->isSimpleType();
     }
 
-    private function checkSupportedMagentoType(int $magentoProductId): void
+    private function checkSupportedMagentoType(\M2E\Kaufland\Model\Magento\Product $ourMagentoProduct): void
     {
-        $ourMagentoProduct = $this->magentoProductFactory->create()->setProductId($magentoProductId);
         if (!$this->isSupportedMagentoProductType($ourMagentoProduct)) {
             throw new \M2E\Kaufland\Model\Exception\Logic(
                 (string)__(

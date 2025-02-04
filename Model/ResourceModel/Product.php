@@ -49,13 +49,11 @@ class Product extends \M2E\Kaufland\Model\ResourceModel\ActiveRecord\AbstractMod
 
     public function __construct(
         \M2E\Kaufland\Helper\Module\Database\Structure $dbStructureHelper,
-        \M2E\Kaufland\Model\ActiveRecord\Factory $activeRecordFactory,
         \Magento\Framework\Model\ResourceModel\Db\Context $context,
         \Magento\Framework\EntityManager\MetadataPool $metadataPool,
         $connectionName = null
     ) {
         parent::__construct(
-            $activeRecordFactory,
             $context,
             $connectionName
         );

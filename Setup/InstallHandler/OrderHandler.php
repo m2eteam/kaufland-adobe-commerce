@@ -8,6 +8,7 @@ use M2E\Core\Model\ResourceModel\Setup;
 use M2E\Kaufland\Helper\Module\Database\Tables as TablesHelper;
 use Magento\Framework\DB\Ddl\Table;
 use M2E\Kaufland\Model\ResourceModel\Order as OrderResource;
+use M2E\Kaufland\Model\ResourceModel\Order\Note as OrderNoteResource;
 
 class OrderHandler implements \M2E\Core\Model\Setup\InstallHandlerInterface
 {
@@ -361,7 +362,7 @@ class OrderHandler implements \M2E\Core\Model\Setup\InstallHandlerInterface
 
         $orderNoteTable
             ->addColumn(
-                'id',
+                OrderNoteResource::COLUMN_ID,
                 Table::TYPE_INTEGER,
                 null,
                 [
@@ -372,7 +373,7 @@ class OrderHandler implements \M2E\Core\Model\Setup\InstallHandlerInterface
                 ]
             )
             ->addColumn(
-                'order_id',
+                OrderNoteResource::COLUMN_ORDER_ID,
                 Table::TYPE_INTEGER,
                 null,
                 [
@@ -381,18 +382,18 @@ class OrderHandler implements \M2E\Core\Model\Setup\InstallHandlerInterface
                 ]
             )
             ->addColumn(
-                'note',
+                OrderNoteResource::COLUMN_NOTE,
                 Table::TYPE_TEXT,
             )
             ->addColumn(
-                'update_date',
+                OrderNoteResource::COLUMN_UPDATE_DATE,
                 Table::TYPE_DATETIME
             )
             ->addColumn(
-                'create_date',
+                OrderNoteResource::COLUMN_CREATE_DATE,
                 Table::TYPE_DATETIME,
             )
-            ->addIndex('order_id', 'order_id')
+            ->addIndex('order_id', OrderNoteResource::COLUMN_ORDER_ID)
             ->setOption('type', 'INNODB')
             ->setOption('charset', 'utf8')
             ->setOption('collate', 'utf8_general_ci')

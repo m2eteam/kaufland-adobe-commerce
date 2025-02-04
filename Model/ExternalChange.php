@@ -27,11 +27,6 @@ class ExternalChange extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         return $this;
     }
 
-    public function getId(): int
-    {
-        return (int)parent::getId();
-    }
-
     public function getAccountId(): int
     {
         return (int)$this->getData(ExternalChangeResource::COLUMN_ACCOUNT_ID);

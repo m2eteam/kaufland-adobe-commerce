@@ -53,6 +53,7 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Listing\View\AbstractGrid
         $this->synchronizationRepository = $synchronizationRepository;
         $this->descriptionRepository = $descriptionRepository;
         $this->categoryDictionaryResource = $categoryDictionaryResource;
+
         parent::__construct(
             $context,
             $backendHelper,
@@ -95,11 +96,12 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Listing\View\AbstractGrid
             [
                 'id' => ListingProductResource::COLUMN_ID,
                 'status' => ListingProductResource::COLUMN_STATUS,
+                'kaufland_product_id' => ListingProductResource::COLUMN_KAUFLAND_PRODUCT_ID,
                 'is_kaufland_product_creator' => ListingProductResource::COLUMN_IS_KAUFLAND_PRODUCT_CREATOR,
                 'additional_data' => ListingProductResource::COLUMN_ADDITIONAL_DATA,
                 'available_qty' => ListingProductResource::COLUMN_ONLINE_QTY,
-                'online_category_id' => ListingProductResource::COLUMN_ONLINE_CATEGORY_ID,
                 'online_current_price' => ListingProductResource::COLUMN_ONLINE_PRICE,
+                'online_title' => ListingProductResource::COLUMN_ONLINE_TITLE,
                 'template_selling_format_mode' => ListingProductResource::COLUMN_TEMPLATE_SELLING_FORMAT_MODE,
                 'template_synchronization_mode' => ListingProductResource::COLUMN_TEMPLATE_SYNCHRONIZATION_MODE,
                 'template_selling_format_id' => ListingProductResource::COLUMN_TEMPLATE_SELLING_FORMAT_ID,
@@ -133,7 +135,10 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Listing\View\AbstractGrid
             )->joinTable(
                 ['cd' => $categoryDictionaryTableName],
                 sprintf('%s = template_category_id', CategoryDictionaryResource::COLUMN_ID),
-                ['categories_data' => CategoryDictionaryResource::COLUMN_PATH],
+                [
+                    'categories_data' => CategoryDictionaryResource::COLUMN_PATH,
+                    'online_category_id' => CategoryDictionaryResource::COLUMN_CATEGORY_ID,
+                ],
                 null,
                 'left'
             );

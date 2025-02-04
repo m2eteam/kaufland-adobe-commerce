@@ -66,7 +66,17 @@ define([
             const step = 1;
             const creationMode = 1;
             const urlListingCreateNew = `${urlListingCreate}step/${step}/account_id/${accountId}/storefront_id/${storefrontId}/creation_mode/${creationMode}/`;
-            const win = window.open(urlListingCreateNew);
+            let win = window.open(urlListingCreateNew);
+
+            let intervalId = setInterval(function () {
+                if (!win.closed) {
+                    return;
+                }
+
+                clearInterval(intervalId);
+
+                listingMovingGridJsObject.reload();
+            }, 1000);
         }
     };
 });

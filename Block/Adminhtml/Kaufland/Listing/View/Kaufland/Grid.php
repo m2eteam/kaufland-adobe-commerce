@@ -3,7 +3,7 @@
 namespace M2E\Kaufland\Block\Adminhtml\Kaufland\Listing\View\Kaufland;
 
 use M2E\Kaufland\Model\ResourceModel\Product as ListingProductResource;
-use M2E\Kaufland\Model\Currency;
+use M2E\Kaufland\Model\ResourceModel\Category\Dictionary as CategoryDictionaryResource;
 use M2E\Kaufland\Model\Product;
 
 class Grid extends \M2E\Kaufland\Block\Adminhtml\Listing\View\AbstractGrid
@@ -12,12 +12,13 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Listing\View\AbstractGrid
 
     private \M2E\Kaufland\Model\ResourceModel\Magento\Product\CollectionFactory $magentoProductCollectionFactory;
     private \M2E\Kaufland\Helper\Data\Session $sessionDataHelper;
-    private \M2E\Kaufland\Model\Currency $currency;
+    private CategoryDictionaryResource $categoryDictionaryResource;
     private ListingProductResource $listingProductResource;
     private \M2E\Core\Helper\Url $urlHelper;
 
     public function __construct(
         ListingProductResource $listingProductResource,
+        CategoryDictionaryResource $categoryDictionaryResource,
         \M2E\Kaufland\Model\ResourceModel\Magento\Product\CollectionFactory $magentoProductCollectionFactory,
         \M2E\Kaufland\Helper\Data\Session $sessionDataHelper,
         \M2E\Kaufland\Block\Adminhtml\Magento\Context\Template $context,
@@ -30,9 +31,10 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Listing\View\AbstractGrid
     ) {
         $this->magentoProductCollectionFactory = $magentoProductCollectionFactory;
         $this->sessionDataHelper = $sessionDataHelper;
-        $this->currency = $currency;
         $this->listingProductResource = $listingProductResource;
         $this->urlHelper = $urlHelper;
+        $this->categoryDictionaryResource = $categoryDictionaryResource;
+
         parent::__construct(
             $context,
             $backendHelper,
@@ -83,18 +85,34 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Listing\View\AbstractGrid
             [
                 'id' => ListingProductResource::COLUMN_ID,
                 'status' => ListingProductResource::COLUMN_STATUS,
-                'product_id' => ListingProductResource::COLUMN_KAUFLAND_PRODUCT_ID,
+                'kaufland_product_id' => ListingProductResource::COLUMN_KAUFLAND_PRODUCT_ID,
                 'offer_id' => ListingProductResource::COLUMN_OFFER_ID,
                 'additional_data' => ListingProductResource::COLUMN_ADDITIONAL_DATA,
                 'online_qty' => ListingProductResource::COLUMN_ONLINE_QTY,
                 'online_price' => ListingProductResource::COLUMN_ONLINE_PRICE,
+                'online_title' => ListingProductResource::COLUMN_ONLINE_TITLE,
                 'unit_id' => ListingProductResource::COLUMN_UNIT_ID,
                 'is_kaufland_product_creator' => ListingProductResource::COLUMN_IS_KAUFLAND_PRODUCT_CREATOR,
                 'channel_product_empty_attributes' => ListingProductResource::COLUMN_CHANNEL_PRODUCT_EMPTY_ATTRIBUTES,
                 'is_incomplete' => ListingProductResource::COLUMN_IS_INCOMPLETE,
+                'template_category_id' => ListingProductResource::COLUMN_TEMPLATE_CATEGORY_ID,
             ],
             '{{table}}.listing_id=' . (int)$listingData['id']
         );
+
+        $categoryDictionaryTableName = $this->categoryDictionaryResource->getMainTable();
+        $collection
+            ->joinTable(
+                ['cd' => $categoryDictionaryTableName],
+                sprintf('%s = template_category_id', CategoryDictionaryResource::COLUMN_ID),
+                [
+                    'categories_data' => CategoryDictionaryResource::COLUMN_PATH,
+                    'online_category_id' => CategoryDictionaryResource::COLUMN_CATEGORY_ID,
+                    'online_category_path' => CategoryDictionaryResource::COLUMN_PATH,
+                ],
+                null,
+                'left'
+            );
 
         $this->setCollection($collection);
 
@@ -131,7 +149,7 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Listing\View\AbstractGrid
             'align' => 'left',
             'width' => '100px',
             'type' => 'text',
-            'index' => 'product_id',
+            'index' => 'kaufland_product_id',
             'account_id' => $this->listing->getAccountId(),
             'storefront_id' => $this->listing->getStorefront(),
             'filter' => \M2E\Kaufland\Block\Adminhtml\Grid\Column\Filter\ListingProductId::class,
@@ -196,7 +214,7 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Listing\View\AbstractGrid
     {
         $inputValue = $column->getFilter()->getValue('input');
         if ($inputValue !== null) {
-            $collection->addFieldToFilter('product_id', ['like' => '%' . $inputValue . '%']);
+            $collection->addFieldToFilter('kaufland_product_id', ['like' => '%' . $inputValue . '%']);
         }
 
         $selectValue = $column->getFilter()->getValue('select');
@@ -312,7 +330,7 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Listing\View\AbstractGrid
         }
 
         if ($categoryId = $row->getData(\M2E\Kaufland\Model\ResourceModel\Product::COLUMN_ONLINE_CATEGORY_ID)) {
-            $categoryPath = $row->getData('category_path');
+            $categoryPath = $row->getData('online_category_path');
             $categoryInfo = sprintf('%s (%s)', $categoryPath, $categoryId);
             $valueHtml .= '<br/><br/>' .
                 '<strong>' . __('Category') . ':</strong>&nbsp;' .
