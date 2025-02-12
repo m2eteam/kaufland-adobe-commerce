@@ -6,8 +6,7 @@ namespace M2E\Kaufland\Controller\Adminhtml\ControlPanel;
 
 abstract class AbstractCommand extends \M2E\Kaufland\Controller\Adminhtml\AbstractBase
 {
-    /** @var \M2E\Kaufland\Helper\View\ControlPanel */
-    protected $controlPanelHelper;
+    protected \M2E\Kaufland\Helper\View\ControlPanel $controlPanelHelper;
 
     public function __construct(
         \M2E\Kaufland\Helper\View\ControlPanel $controlPanelHelper,

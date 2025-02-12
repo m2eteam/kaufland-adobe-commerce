@@ -9,10 +9,9 @@ class Run extends \M2E\Kaufland\Controller\Adminhtml\ControlPanel\AbstractMain
     private \M2E\Kaufland\Model\Cron\Runner\Developer $cronRunner;
 
     public function __construct(
-        \M2E\Kaufland\Model\Cron\Runner\Developer $cronRunner,
-        \M2E\Kaufland\Model\Module $module
+        \M2E\Kaufland\Model\Cron\Runner\Developer $cronRunner
     ) {
-        parent::__construct($module);
+        parent::__construct();
         $this->cronRunner = $cronRunner;
     }
 

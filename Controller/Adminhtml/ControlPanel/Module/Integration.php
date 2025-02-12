@@ -4,35 +4,18 @@ declare(strict_types=1);
 
 namespace M2E\Kaufland\Controller\Adminhtml\ControlPanel\Module;
 
-use M2E\Kaufland\Controller\Adminhtml\Context;
-use M2E\Kaufland\Controller\Adminhtml\ControlPanel\AbstractCommand;
 use M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Type;
 
-class Integration extends AbstractCommand
+class Integration extends \M2E\Kaufland\Controller\Adminhtml\ControlPanel\AbstractCommand
 {
     private \Magento\Framework\Data\Form\FormKey $formKey;
-
-    /** @var \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Type\Relist\RequestFactory */
     private Type\Relist\RequestFactory $relistRequestFactory;
     private \M2E\Kaufland\Model\Product\Repository $productRepository;
     private \M2E\Kaufland\Model\Product\ActionCalculator $actionCalculator;
-    /** @var \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Type\Stop\RequestFactory */
     private Type\Stop\RequestFactory $stopRequestFactory;
-    /**
-     * @var \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Type\ListUnit\RequestFactory
-     */
     private Type\ListUnit\RequestFactory $listUnitRequestFactory;
-    /**
-     * @var \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Type\ReviseUnit\RequestFactory
-     */
     private Type\ReviseUnit\RequestFactory $reviseUnitRequestFactory;
-    /**
-     * @var \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Type\ListProduct\RequestFactory
-     */
     private Type\ListProduct\RequestFactory $listProductRequestFactory;
-    /**
-     * @var \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Type\ReviseProduct\RequestFactory
-     */
     private Type\ReviseProduct\RequestFactory $reviseProductRequestFactory;
     private \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\LogBufferFactory $logBufferFactory;
 
@@ -48,7 +31,7 @@ class Integration extends AbstractCommand
         \M2E\Kaufland\Model\Product\Repository $productRepository,
         \M2E\Kaufland\Model\Product\ActionCalculator $actionCalculator,
         \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\LogBufferFactory $logBufferFactory,
-        Context $context
+        \M2E\Kaufland\Controller\Adminhtml\Context $context
     ) {
         parent::__construct($controlPanelHelper, $context);
         $this->formKey = $formKey;

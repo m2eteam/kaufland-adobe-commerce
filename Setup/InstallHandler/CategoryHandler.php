@@ -6,10 +6,10 @@ namespace M2E\Kaufland\Setup\InstallHandler;
 
 use M2E\Core\Model\ResourceModel\Setup;
 use M2E\Kaufland\Helper\Module\Database\Tables as TablesHelper;
+use M2E\Kaufland\Model\ResourceModel\AttributeMapping\Pair as PairResource;
 use M2E\Kaufland\Model\ResourceModel\Category\Attribute as CategoryAttributeResource;
 use M2E\Kaufland\Model\ResourceModel\Category\Dictionary as CategoryDictionaryResource;
 use M2E\Kaufland\Model\ResourceModel\Category\Tree as CategoryTreeResource;
-use M2E\Kaufland\Model\ResourceModel\Pair as PairResource;
 use Magento\Framework\DB\Adapter\AdapterInterface;
 use Magento\Framework\DB\Ddl\Table;
 

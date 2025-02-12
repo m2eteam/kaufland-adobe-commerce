@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace M2E\Kaufland\Model\AttributeMapping;
 
-use M2E\Kaufland\Model\ResourceModel\Pair as PairResource;
+use M2E\Kaufland\Model\ResourceModel\AttributeMapping\Pair as PairResource;
 
 class Pair extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
 {

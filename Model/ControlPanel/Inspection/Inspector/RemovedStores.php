@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace M2E\Kaufland\Model\ControlPanel\Inspection\Inspector;
 
 use M2E\Kaufland\Helper\Module\Database\Structure as DatabaseStructureHelper;
-use M2E\Kaufland\Model\ControlPanel\Inspection\FixerInterface;
-use M2E\Kaufland\Model\ControlPanel\Inspection\InspectorInterface;
+use M2E\Core\Model\ControlPanel\Inspection\FixerInterface;
+use M2E\Core\Model\ControlPanel\Inspection\InspectorInterface;
 use Magento\Backend\Model\UrlInterface;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Store\Model\StoreManager;
-use M2E\Kaufland\Model\ControlPanel\Inspection\Issue\Factory as IssueFactory;
 
 class RemovedStores implements InspectorInterface, FixerInterface
 {
@@ -26,8 +25,7 @@ class RemovedStores implements InspectorInterface, FixerInterface
     /** @var ResourceConnection */
     private $resourceConnection;
 
-    /** @var IssueFactory */
-    private $issueFactory;
+    private \M2E\Core\Model\ControlPanel\Inspection\IssueFactory $issueFactory;
 
     /** @var DatabaseStructureHelper */
     private DatabaseStructureHelper $databaseStructureHelper;
@@ -36,7 +34,7 @@ class RemovedStores implements InspectorInterface, FixerInterface
         UrlInterface $urlBuilder,
         ResourceConnection $resourceConnection,
         StoreManager $storeManager,
-        IssueFactory $issueFactory,
+        \M2E\Core\Model\ControlPanel\Inspection\IssueFactory $issueFactory,
         DatabaseStructureHelper $databaseStructureHelper
     ) {
         $this->urlBuilder = $urlBuilder;
@@ -83,7 +81,7 @@ class RemovedStores implements InspectorInterface, FixerInterface
         $this->removedStoresId = array_diff($usedStoresIds, $existsStoreIds);
     }
 
-    public function process()
+    public function process(): array
     {
         $issues = [];
         $this->getRemovedStores();
@@ -116,7 +114,7 @@ HTML;
         return $html;
     }
 
-    public function fix($data)
+    public function fix(array $data): void
     {
         foreach ($data as $replaceIdFrom => $replaceIdTo) {
             $this->replaceId($replaceIdFrom, $replaceIdTo);

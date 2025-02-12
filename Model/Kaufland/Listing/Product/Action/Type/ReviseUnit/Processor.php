@@ -180,7 +180,7 @@ class Processor extends \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Abst
             return;
         }
 
-        $storefront = $this->getListingProduct()->getStoreFront();
+        $storefront = $this->getListingProduct()->getListing()->getStorefront();
 
         $currencyCode = $storefront->getCurrencyCode();
         $currency = $this->localeCurrency->getCurrency($currencyCode);

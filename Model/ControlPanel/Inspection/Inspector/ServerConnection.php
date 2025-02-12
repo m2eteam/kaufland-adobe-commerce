@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace M2E\Kaufland\Model\ControlPanel\Inspection\Inspector;
 
-use M2E\Kaufland\Model\ControlPanel\Inspection\InspectorInterface;
 use M2E\Kaufland\Model\Exception\Connection;
-use M2E\Kaufland\Model\ControlPanel\Inspection\Issue\Factory as IssueFactory;
 
-class ServerConnection implements InspectorInterface
+class ServerConnection implements \M2E\Core\Model\ControlPanel\Inspection\InspectorInterface
 {
-    private IssueFactory $issueFactory;
+    private \M2E\Core\Model\ControlPanel\Inspection\IssueFactory $issueFactory;
     private \M2E\Kaufland\Model\Connector\Client\Single $serverClient;
 
     public function __construct(
-        IssueFactory $issueFactory,
+        \M2E\Core\Model\ControlPanel\Inspection\IssueFactory $issueFactory,
         \M2E\Kaufland\Model\Connector\Client\Single $serverClient
     ) {
         $this->issueFactory = $issueFactory;
@@ -26,7 +24,7 @@ class ServerConnection implements InspectorInterface
         $issues = [];
 
         try {
-            $this->serverClient->process(new \M2E\Kaufland\Model\Connector\Command\Server\CheckStateCommand());
+            $this->serverClient->process(new \M2E\Core\Model\Server\Connector\CheckStateCommand());
         } catch (Connection $exception) {
             $issues[] = $this->issueFactory->create(
                 $exception->getMessage(),

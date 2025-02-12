@@ -61,4 +61,61 @@
                 type="M2E\Kaufland\Plugin\Order\Magento\View"/>
     </type>
 
+    <!-- ControlPanel -->
+
+    <type name="M2E\Core\Model\ControlPanel\ExtensionCollection">
+        <arguments>
+            <argument name="extensions" xsi:type="array">
+                <item name="m2e_kaufland" xsi:type="object">M2E\Kaufland\Model\ControlPanel\Extension</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="M2E\Core\Model\ControlPanel\TabCollection">
+        <arguments>
+            <argument name="providers" xsi:type="array">
+                <item name="m2e_kaufland" xsi:type="object">M2E\Kaufland\Model\ControlPanel\TabProvider</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="M2E\Core\Model\ControlPanel\OverviewWidgetCollection">
+        <arguments>
+            <argument name="widgetProviders" xsi:type="array">
+                <item name="m2e_kaufland" xsi:type="object">M2E\Kaufland\Model\ControlPanel\OverviewWidgetProvider</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="M2E\Core\Model\ControlPanel\InspectionTaskCollection">
+        <arguments>
+            <argument name="taskProviders" xsi:type="array">
+                <item name="m2e_kaufland" xsi:type="object">M2E\Kaufland\Model\ControlPanel\InspectionTaskProvider</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="M2E\Core\Model\ControlPanel\ModuleToolsTabCollection">
+        <arguments>
+            <argument name="tabsProviders" xsi:type="array">
+                <item name="m2e_kaufland" xsi:type="object">M2E\Kaufland\Model\ControlPanel\ModuleToolsTabProvider</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="M2E\Core\Model\ControlPanel\CronTaskCollection">
+        <arguments>
+            <argument name="taskProviders" xsi:type="array">
+                <item name="m2e_kaufland" xsi:type="object">M2E\Kaufland\Model\ControlPanel\CronTaskProvider</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="M2E\Core\Model\ControlPanel\DatabaseRegistryCollection">
+        <arguments>
+            <argument name="registry" xsi:type="array">
+                <item name="m2e_kaufland" xsi:type="object">M2E\Kaufland\Model\ControlPanel\DatabaseRegistry</item>
+            </argument>
+        </arguments>
+    </type>
 </config>

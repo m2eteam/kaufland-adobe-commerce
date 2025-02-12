@@ -4,24 +4,18 @@ declare(strict_types=1);
 
 namespace M2E\Kaufland\Controller\Adminhtml\ControlPanel\Inspection;
 
-use M2E\Kaufland\Controller\Adminhtml\ControlPanel\AbstractMain;
-
-class SetMagentoCoreSetupValue extends AbstractMain
+class SetMagentoCoreSetupValue extends \M2E\Kaufland\Controller\Adminhtml\ControlPanel\AbstractMain
 {
-    /** @var \Magento\Framework\Module\ModuleResource $moduleResource */
-    private $moduleResource;
-
-    /** @var \M2E\Kaufland\Helper\View\ControlPanel */
-    private $controlPanelHelper;
+    private \Magento\Framework\Module\ModuleResource $moduleResource;
+    private \M2E\Kaufland\Helper\View\ControlPanel $controlPanelHelper;
     private \M2E\Kaufland\Setup\UpgradeCollection $updateCollection;
 
     public function __construct(
         \Magento\Framework\Model\ResourceModel\Db\Context $dbContext,
         \M2E\Kaufland\Helper\View\ControlPanel $controlPanelHelper,
-        \M2E\Kaufland\Setup\UpgradeCollection $updateCollection,
-        \M2E\Kaufland\Model\Module $module
+        \M2E\Kaufland\Setup\UpgradeCollection $updateCollection
     ) {
-        parent::__construct($module);
+        parent::__construct();
         $this->moduleResource = new \Magento\Framework\Module\ModuleResource($dbContext);
         $this->controlPanelHelper = $controlPanelHelper;
         $this->updateCollection = $updateCollection;

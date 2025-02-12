@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace M2E\Kaufland\Model\HealthStatus\Task\Database\MysqlInfo;
 
+use M2E\Core\Model\Server\Connector\System\TablesGetDiffCommand;
 use M2E\Kaufland\Model\HealthStatus\Task\IssueType;
 use M2E\Kaufland\Model\HealthStatus\Task\Result as TaskResult;
-use M2E\Kaufland\Model\Kaufland\Connector\System\Tables\GetDiffCommand;
 
 class TablesStructure extends IssueType
 {
@@ -27,9 +27,7 @@ class TablesStructure extends IssueType
 
     public function process(): TaskResult
     {
-        $tablesInfo = \M2E\Core\Helper\Json::encode($this->databaseHelper->getModuleTablesInfo());
-
-        $command = new GetDiffCommand($tablesInfo);
+        $command = new TablesGetDiffCommand($this->databaseHelper->getModuleTablesInfo());
         /** @var \M2E\Core\Model\Connector\Response $response */
         $response = $this->serverClient->process($command);
         $responseData = $response->getResponseData();
@@ -54,7 +52,7 @@ class TablesStructure extends IssueType
     {
         if (
             $taskResult->getTaskResult() < TaskResult::STATE_CRITICAL
-            && $diffResult['severity'] == GetDiffCommand::SEVERITY_CRITICAL
+            && $diffResult['severity'] == TablesGetDiffCommand::SEVERITY_CRITICAL
         ) {
             $taskResult->setTaskResult(TaskResult::STATE_CRITICAL);
             $taskResult->setTaskMessage(
@@ -70,7 +68,7 @@ class TablesStructure extends IssueType
 
         if (
             $taskResult->getTaskResult() < TaskResult::STATE_WARNING
-            && $diffResult['severity'] == GetDiffCommand::SEVERITY_WARNING
+            && $diffResult['severity'] == TablesGetDiffCommand::SEVERITY_WARNING
         ) {
             $taskResult->setTaskResult(TaskResult::STATE_WARNING);
             $taskResult->setTaskMessage(

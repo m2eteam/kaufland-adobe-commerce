@@ -8,14 +8,12 @@ class DatabaseTableGrid extends AbstractTable
 {
     public function execute()
     {
-        /** @var \M2E\Kaufland\Block\Adminhtml\ControlPanel\Tabs\Database\Table\Grid $grid */
+        /** @var \M2E\Core\Block\Adminhtml\ControlPanel\Tab\Database\Table\Grid $grid */
         $grid = $this->getLayout()
                      ->createBlock(
-                         \M2E\Kaufland\Block\Adminhtml\ControlPanel\Tabs\Database\Table\Grid::class,
+                         \M2E\Core\Block\Adminhtml\ControlPanel\Tab\Database\Table\Grid::class,
                          '',
-                         [
-                             'tableName' => $this->getRequest()->getParam('table'),
-                         ],
+                         ['tableName' => $this->getRequest()->getParam('table')],
                      );
         $this->setAjaxContent($grid->toHtml());
 

@@ -89,7 +89,7 @@ class Dispatcher
             $requestData[$taskModel->getServerTaskName()] = $taskModel->getRequestData();
         }
 
-        $command = new \M2E\Kaufland\Model\Connector\Command\ServicingCommand($requestData);
+        $command = new \M2E\Core\Model\Server\Connector\ServicingCommand($requestData);
         /** @var \M2E\Core\Model\Connector\Response $response */
         $response = $this->serverConnector->process($command);
 

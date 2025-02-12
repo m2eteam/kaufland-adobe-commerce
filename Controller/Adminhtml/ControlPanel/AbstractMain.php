@@ -6,15 +6,6 @@ namespace M2E\Kaufland\Controller\Adminhtml\ControlPanel;
 
 abstract class AbstractMain extends \M2E\Kaufland\Controller\Adminhtml\AbstractBase
 {
-    private \M2E\Kaufland\Model\Module $module;
-
-    public function __construct(
-        \M2E\Kaufland\Model\Module $module
-    ) {
-        parent::__construct();
-        $this->module = $module;
-    }
-
     public function _isAllowed(): bool
     {
         return true;
@@ -23,16 +14,6 @@ abstract class AbstractMain extends \M2E\Kaufland\Controller\Adminhtml\AbstractB
     protected function _validateSecretKey(): bool
     {
         return true;
-    }
-
-    protected function init(): void
-    {
-        $this->addCss('control_panel.css');
-
-        $title = __('Control Panel')
-            . ' (M2E Kaufland ' . $this->module->getPublicVersion() . ')';
-
-        $this->getResultPage()->getConfig()->getTitle()->prepend($title);
     }
 
     /**

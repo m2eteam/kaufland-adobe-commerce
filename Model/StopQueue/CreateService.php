@@ -33,7 +33,7 @@ class CreateService
             $stopQueue = $this->stopQueueFactory->create();
             $stopQueue->create(
                 $listingProduct->getAccount()->getServerHash(),
-                $listingProduct->getStoreFront()->getStorefrontCode(),
+                $listingProduct->getListing()->getStorefront()->getStorefrontCode(),
                 $listingProduct->getUnitId(),
             );
             $this->repository->create($stopQueue);

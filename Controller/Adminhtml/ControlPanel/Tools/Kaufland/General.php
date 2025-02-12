@@ -4,23 +4,26 @@ declare(strict_types=1);
 
 namespace M2E\Kaufland\Controller\Adminhtml\ControlPanel\Tools\Kaufland;
 
-use M2E\Kaufland\Controller\Adminhtml\Context;
-use M2E\Kaufland\Controller\Adminhtml\ControlPanel\AbstractCommand;
+use M2E\Core\Model\ControlPanel\Inspection\FixerInterface;
+use M2E\Core\Model\ControlPanel\Inspection\InspectorInterface;
 
-class General extends AbstractCommand
+class General extends \M2E\Kaufland\Controller\Adminhtml\ControlPanel\AbstractCommand
 {
-    private \M2E\Kaufland\Model\ControlPanel\Inspection\Repository $repository;
-    private \M2E\Kaufland\Model\ControlPanel\Inspection\HandlerFactory $handlerFactory;
+    private \M2E\Core\Model\ControlPanel\Inspection\HandlerFactory $handlerFactory;
+    private \M2E\Core\Model\ControlPanel\InspectionTaskCollection $taskCollection;
+    private \M2E\Core\Model\ControlPanel\CurrentExtensionResolver $currentExtensionResolver;
 
     public function __construct(
         \M2E\Kaufland\Helper\View\ControlPanel $controlPanelHelper,
-        Context $context,
-        \M2E\Kaufland\Model\ControlPanel\Inspection\Repository $repository,
-        \M2E\Kaufland\Model\ControlPanel\Inspection\HandlerFactory $handlerFactory
+        \M2E\Kaufland\Controller\Adminhtml\Context $context,
+        \M2E\Core\Model\ControlPanel\InspectionTaskCollection $taskCollection,
+        \M2E\Core\Model\ControlPanel\Inspection\HandlerFactory $handlerFactory,
+        \M2E\Core\Model\ControlPanel\CurrentExtensionResolver $currentExtensionResolver
     ) {
         parent::__construct($controlPanelHelper, $context);
-        $this->repository = $repository;
         $this->handlerFactory = $handlerFactory;
+        $this->taskCollection = $taskCollection;
+        $this->currentExtensionResolver = $currentExtensionResolver;
     }
 
     /**
@@ -34,12 +37,22 @@ class General extends AbstractCommand
 
         if (!$replaceIdFrom || !$replaceIdTo) {
             $this->messageManager->addError('Required params are not presented.');
-            $this->_redirect($this->redirect->getRefererUrl());
+
+            return $this->_redirect($this->redirect->getRefererUrl());
         }
 
-        $definition = $this->repository->getDefinition('RemovedStores');
+        $currentExtension = $this->currentExtensionResolver->get();
+        $definition = $this->taskCollection->findTaskForExtension(
+            $currentExtension->getModuleName(),
+            'RemovedStores'
+        );
+        if ($definition === null) {
+            $this->messageManager->addError('Inspection task for removed stores not found');
 
-        /** @var \M2E\Kaufland\Model\ControlPanel\Inspection\Inspector\RemovedStores $inspector */
+            return $this->_redirect($this->redirect->getRefererUrl());
+        }
+
+        /** @var FixerInterface&InspectorInterface $inspector */
         $inspector = $this->handlerFactory->create($definition);
 
         $inspector->fix([$replaceIdFrom => $replaceIdTo]);

@@ -32,7 +32,7 @@ class MigrateLicenseAndRegistrationUserToCore extends \M2E\Core\Model\Setup\Upgr
 
     private function migrateLicenseToCore(): void
     {
-        $coreConfig = $this->getConfigModifier(\M2E\Kaufland\Helper\Module::IDENTIFIER);
+        $coreConfig = $this->getConfigModifier(\M2E\Core\Helper\Module::IDENTIFIER);
 
         $connection = $this->getConnection();
         $oldConfigTable = $this->getFullTableName('m2e_kaufland_config');

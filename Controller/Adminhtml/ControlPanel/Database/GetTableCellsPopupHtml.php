@@ -10,7 +10,7 @@ class GetTableCellsPopupHtml extends AbstractTable
     {
         $block = $this->getLayout()
                       ->createBlock(
-                          \M2E\Kaufland\Block\Adminhtml\ControlPanel\Tabs\Database\Table\TableCellsPopup::class
+                          \M2E\Core\Block\Adminhtml\ControlPanel\Tab\Database\Table\TableCellsPopup::class
                       );
         $this->setAjaxContent($block->toHtml());
 

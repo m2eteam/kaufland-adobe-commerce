@@ -17,6 +17,7 @@ class UpdateTableCells extends AbstractTable
         }
 
         $modelInstance->updateEntries($ids, $cellsValues);
+
         $this->afterTableAction($modelInstance->getTableName());
     }
 }

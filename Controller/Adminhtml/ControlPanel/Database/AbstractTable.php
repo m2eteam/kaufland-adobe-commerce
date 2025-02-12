@@ -4,28 +4,23 @@ declare(strict_types=1);
 
 namespace M2E\Kaufland\Controller\Adminhtml\ControlPanel\Database;
 
-use M2E\Kaufland\Controller\Adminhtml\ControlPanel\AbstractMain;
-
-abstract class AbstractTable extends AbstractMain
+abstract class AbstractTable extends \M2E\Kaufland\Controller\Adminhtml\ControlPanel\AbstractMain
 {
-    private \M2E\Kaufland\Model\ControlPanel\Database\TableModelFactory $databaseTableFactory;
     private \M2E\Kaufland\Helper\Module $moduleHelper;
+    private \M2E\Core\Model\ControlPanel\Database\TableModelFactory $tableModelFactory;
 
     public function __construct(
         \M2E\Kaufland\Helper\Module $moduleHelper,
-        \M2E\Kaufland\Model\ControlPanel\Database\TableModelFactory $databaseTableFactory,
-        \M2E\Kaufland\Model\Module $module
+        \M2E\Core\Model\ControlPanel\Database\TableModelFactory $tableModelFactory
     ) {
-        parent::__construct($module);
-        $this->databaseTableFactory = $databaseTableFactory;
+        parent::__construct();
         $this->moduleHelper = $moduleHelper;
+        $this->tableModelFactory = $tableModelFactory;
     }
 
-    protected function getTableModel(): \M2E\Kaufland\Model\ControlPanel\Database\TableModel
+    protected function getTableModel(): \M2E\Core\Model\ControlPanel\Database\TableModel
     {
-        $tableName = $this->getRequest()->getParam('table');
-
-        return $this->databaseTableFactory->create($tableName);
+        return $this->tableModelFactory->createFromRequest();
     }
 
     protected function prepareCellsValuesArray(): array

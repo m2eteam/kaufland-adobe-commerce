@@ -119,4 +119,149 @@ class Tables
 
         return false;
     }
+
+    // ----------------------------------------
+
+    /**
+     * @return string[]
+     */
+    public static function getAllTables(): array
+    {
+        return array_keys(self::getTablesResourcesModels());
+    }
+
+    public static function getTableResourceModel(string $tableName): string
+    {
+        $tablesModels = self::getTablesResourcesModels();
+
+        return $tablesModels[$tableName];
+    }
+
+    private static function getTablesResourcesModels(): array
+    {
+        return [
+            self::TABLE_NAME_ACCOUNT => \M2E\Kaufland\Model\ResourceModel\Account::class,
+            self::TABLE_NAME_STOREFRONT => \M2E\Kaufland\Model\ResourceModel\Storefront::class,
+            self::TABLE_NAME_WAREHOUSE => \M2E\Kaufland\Model\ResourceModel\Warehouse::class,
+            self::TABLE_NAME_SHIPPING_GROUP => \M2E\Kaufland\Model\ResourceModel\ShippingGroup::class,
+
+            self::TABLE_NAME_LISTING => \M2E\Kaufland\Model\ResourceModel\Listing::class,
+            self::TABLE_NAME_LISTING_LOG => \M2E\Kaufland\Model\ResourceModel\Listing\Log::class,
+            self::TABLE_NAME_LISTING_WIZARD => \M2E\Kaufland\Model\ResourceModel\Listing\Wizard::class,
+            self::TABLE_NAME_LISTING_WIZARD_STEP => \M2E\Kaufland\Model\ResourceModel\Listing\Wizard\Step::class,
+            self::TABLE_NAME_LISTING_WIZARD_PRODUCT => \M2E\Kaufland\Model\ResourceModel\Listing\Wizard\Product::class,
+            self::TABLE_NAME_PRODUCT => \M2E\Kaufland\Model\ResourceModel\Product::class,
+            self::TABLE_NAME_PRODUCT_INSTRUCTION => \M2E\Kaufland\Model\ResourceModel\Instruction::class,
+            self::TABLE_NAME_PRODUCT_SCHEDULED_ACTION => \M2E\Kaufland\Model\ResourceModel\ScheduledAction::class,
+            self::TABLE_NAME_PRODUCT_LOCK => \M2E\Kaufland\Model\ResourceModel\Product\Lock::class,
+
+            self::TABLE_NAME_LOCK_ITEM => \M2E\Kaufland\Model\ResourceModel\Lock\Item::class,
+            self::TABLE_NAME_LOCK_TRANSACTIONAL => \M2E\Kaufland\Model\ResourceModel\Lock\Transactional::class,
+
+            self::TABLE_NAME_PROCESSING => \M2E\Kaufland\Model\ResourceModel\Processing::class,
+            self::TABLE_NAME_PROCESSING_LOCK => \M2E\Kaufland\Model\ResourceModel\Processing\Lock::class,
+            self::TABLE_NAME_PROCESSING_PARTIAL_DATA => \M2E\Kaufland\Model\ResourceModel\Processing\PartialData::class,
+            self::TABLE_NAME_STOP_QUEUE => \M2E\Kaufland\Model\ResourceModel\StopQueue::class,
+
+            self::TABLE_NAME_SYNCHRONIZATION_LOG => \M2E\Kaufland\Model\ResourceModel\Synchronization\Log::class,
+            self::TABLE_NAME_SYSTEM_LOG => \M2E\Kaufland\Model\ResourceModel\Log\System::class,
+            self::TABLE_NAME_OPERATION_HISTORY => \M2E\Kaufland\Model\ResourceModel\OperationHistory::class,
+
+            self::TABLE_NAME_TEMPLATE_SELLING_FORMAT => \M2E\Kaufland\Model\ResourceModel\Template\SellingFormat::class,
+            self::TABLE_NAME_TEMPLATE_SYNCHRONIZATION => \M2E\Kaufland\Model\ResourceModel\Template\Synchronization::class,
+            self::TABLE_NAME_TEMPLATE_SHIPPING => \M2E\Kaufland\Model\ResourceModel\Template\Shipping::class,
+            self::TABLE_NAME_TEMPLATE_DESCRIPTION => \M2E\Kaufland\Model\ResourceModel\Template\Description::class,
+
+            self::TABLE_NAME_WIZARD => \M2E\Kaufland\Model\ResourceModel\Wizard::class,
+
+            self::TABLE_NAME_TAG => \M2E\Kaufland\Model\ResourceModel\Tag::class,
+            self::TABLE_NAME_PRODUCT_TAG_RELATION => \M2E\Kaufland\Model\ResourceModel\Tag\ListingProduct\Relation::class,
+
+            self::TABLE_NAME_ORDER => \M2E\Kaufland\Model\ResourceModel\Order::class,
+            self::TABLE_NAME_ORDER_ITEM => \M2E\Kaufland\Model\ResourceModel\Order\Item::class,
+            self::TABLE_NAME_ORDER_LOG => \M2E\Kaufland\Model\ResourceModel\Order\Log::class,
+            self::TABLE_NAME_ORDER_NOTE => \M2E\Kaufland\Model\ResourceModel\Order\Note::class,
+            self::TABLE_NAME_ORDER_CHANGE => \M2E\Kaufland\Model\ResourceModel\Order\Change::class,
+            self::TABLE_NAME_LISTING_OTHER => \M2E\Kaufland\Model\ResourceModel\Listing\Other::class,
+
+            self::TABLE_NAME_EXTERNAL_CHANGE => \M2E\Kaufland\Model\ResourceModel\ExternalChange::class,
+
+            self::TABLE_NAME_CATEGORY_TREE => \M2E\Kaufland\Model\ResourceModel\Category\Tree::class,
+            self::TABLE_NAME_CATEGORY_DICTIONARY => \M2E\Kaufland\Model\ResourceModel\Category\Dictionary::class,
+            self::TABLE_NAME_CATEGORY_ATTRIBUTES => \M2E\Kaufland\Model\ResourceModel\Category\Attribute::class,
+
+            self::TABLE_NAME_ATTRIBUTE_MAPPING => \M2E\Kaufland\Model\ResourceModel\AttributeMapping\Pair::class,
+        ];
+    }
+
+    public static function getTableModel(string $tableName): string
+    {
+        $tablesModels = self::getTablesModels();
+
+        return $tablesModels[$tableName];
+    }
+
+    public static function getTablesModels(): array
+    {
+        return [
+            self::TABLE_NAME_ACCOUNT => \M2E\Kaufland\Model\Account::class,
+            self::TABLE_NAME_STOREFRONT => \M2E\Kaufland\Model\Storefront::class,
+            self::TABLE_NAME_WAREHOUSE => \M2E\Kaufland\Model\Warehouse::class,
+            self::TABLE_NAME_SHIPPING_GROUP => \M2E\Kaufland\Model\ShippingGroup::class,
+
+            self::TABLE_NAME_LISTING => \M2E\Kaufland\Model\Listing::class,
+            self::TABLE_NAME_LISTING_LOG => \M2E\Kaufland\Model\Listing\Log::class,
+            self::TABLE_NAME_LISTING_WIZARD => \M2E\Kaufland\Model\Listing\Wizard::class,
+            self::TABLE_NAME_LISTING_WIZARD_STEP => \M2E\Kaufland\Model\Listing\Wizard\Step::class,
+            self::TABLE_NAME_LISTING_WIZARD_PRODUCT => \M2E\Kaufland\Model\Listing\Wizard\Product::class,
+            self::TABLE_NAME_PRODUCT => \M2E\Kaufland\Model\Product::class,
+            self::TABLE_NAME_PRODUCT_INSTRUCTION => \M2E\Kaufland\Model\Instruction::class,
+            self::TABLE_NAME_PRODUCT_SCHEDULED_ACTION => \M2E\Kaufland\Model\ScheduledAction::class,
+            self::TABLE_NAME_PRODUCT_LOCK => \M2E\Kaufland\Model\Product\Lock::class,
+
+            self::TABLE_NAME_LOCK_ITEM => \M2E\Kaufland\Model\Lock\Item::class,
+            self::TABLE_NAME_LOCK_TRANSACTIONAL => \M2E\Kaufland\Model\Lock\Transactional::class,
+
+            self::TABLE_NAME_PROCESSING => \M2E\Kaufland\Model\Processing::class,
+            self::TABLE_NAME_PROCESSING_LOCK => \M2E\Kaufland\Model\Processing\Lock::class,
+            self::TABLE_NAME_PROCESSING_PARTIAL_DATA => \M2E\Kaufland\Model\Processing\PartialData::class,
+            self::TABLE_NAME_STOP_QUEUE => \M2E\Kaufland\Model\StopQueue::class,
+
+            self::TABLE_NAME_SYNCHRONIZATION_LOG => \M2E\Kaufland\Model\Synchronization\Log::class,
+            self::TABLE_NAME_SYSTEM_LOG => \M2E\Kaufland\Model\Log\System::class,
+            self::TABLE_NAME_OPERATION_HISTORY => \M2E\Kaufland\Model\OperationHistory::class,
+
+            self::TABLE_NAME_TEMPLATE_SELLING_FORMAT => \M2E\Kaufland\Model\Template\SellingFormat::class,
+            self::TABLE_NAME_TEMPLATE_SYNCHRONIZATION => \M2E\Kaufland\Model\Template\Synchronization::class,
+            self::TABLE_NAME_TEMPLATE_SHIPPING => \M2E\Kaufland\Model\Template\Shipping::class,
+            self::TABLE_NAME_TEMPLATE_DESCRIPTION => \M2E\Kaufland\Model\Template\Description::class,
+
+            self::TABLE_NAME_WIZARD => \M2E\Kaufland\Model\Wizard::class,
+
+            self::TABLE_NAME_TAG => \M2E\Kaufland\Model\Tag\Entity::class,
+            self::TABLE_NAME_PRODUCT_TAG_RELATION => \M2E\Kaufland\Model\Tag\ListingProduct\Relation::class,
+
+            self::TABLE_NAME_ORDER => \M2E\Kaufland\Model\Order::class,
+            self::TABLE_NAME_ORDER_ITEM => \M2E\Kaufland\Model\Order\Item::class,
+            self::TABLE_NAME_ORDER_LOG => \M2E\Kaufland\Model\Order\Log::class,
+            self::TABLE_NAME_ORDER_NOTE => \M2E\Kaufland\Model\Order\Note::class,
+            self::TABLE_NAME_ORDER_CHANGE => \M2E\Kaufland\Model\Order\Change::class,
+            self::TABLE_NAME_LISTING_OTHER => \M2E\Kaufland\Model\Listing\Other::class,
+
+            self::TABLE_NAME_EXTERNAL_CHANGE => \M2E\Kaufland\Model\ExternalChange::class,
+
+            self::TABLE_NAME_CATEGORY_TREE => \M2E\Kaufland\Model\Category\Tree::class,
+            self::TABLE_NAME_CATEGORY_DICTIONARY => \M2E\Kaufland\Model\Category\Dictionary::class,
+            self::TABLE_NAME_CATEGORY_ATTRIBUTES => \M2E\Kaufland\Model\Category\Attribute::class,
+
+            self::TABLE_NAME_ATTRIBUTE_MAPPING => \M2E\Kaufland\Model\AttributeMapping\Pair::class,
+        ];
+    }
+
+    // ----------------------------------------
+
+    public static function isModuleTable(string $tableName): bool
+    {
+        return strpos($tableName, self::PREFIX) !== false;
+    }
 }

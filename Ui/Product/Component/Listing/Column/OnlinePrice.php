@@ -46,7 +46,7 @@ class OnlinePrice extends Column
                 continue;
             }
 
-            $currencyCode = $product->getStoreFront()->getCurrencyCode();
+            $currencyCode = $product->getListing()->getStorefront()->getCurrencyCode();
 
             $onlinePrice = $this->localeCurrency->getCurrency($currencyCode)
                                                 ->toCurrency($product->getOnlineCurrentPrice());

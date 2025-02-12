@@ -8,7 +8,7 @@ class Request extends \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Type\A
     {
         $request = [
             'account' => $this->getListingProduct()->getAccount()->getServerHash(),
-            'storefront' => $this->getListingProduct()->getStoreFront()->getStorefrontCode(),
+            'storefront' => $this->getListing()->getStorefront()->getStorefrontCode(),
             'unit_id' => $this->getListingProduct()->getUnitId(),
         ];
 

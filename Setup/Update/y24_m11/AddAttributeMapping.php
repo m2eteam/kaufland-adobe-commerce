@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace M2E\Kaufland\Setup\Update\y24_m11;
 
-use M2E\Kaufland\Model\ResourceModel\Pair as PairResource;
 use M2E\Kaufland\Helper\Module\Database\Tables;
+use M2E\Kaufland\Model\ResourceModel\AttributeMapping\Pair as PairResource;
 use Magento\Framework\DB\Ddl\Table;
 
 class AddAttributeMapping extends \M2E\Core\Model\Setup\Upgrade\Entity\AbstractFeature

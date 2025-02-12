@@ -53,10 +53,6 @@ class View
             return \M2E\Kaufland\Helper\View\Kaufland::NICK;
         }
 
-        if (stripos($controllerName, \M2E\Kaufland\Helper\View\ControlPanel::NICK) !== false) {
-            return \M2E\Kaufland\Helper\View\ControlPanel::NICK;
-        }
-
         if (stripos($controllerName, 'system_config') !== false) {
             return \M2E\Kaufland\Helper\View\Configuration::NICK;
         }
@@ -67,11 +63,6 @@ class View
     public function isCurrentViewKaufland(): bool
     {
         return $this->getCurrentView() == \M2E\Kaufland\Helper\View\Kaufland::NICK;
-    }
-
-    public function isCurrentViewControlPanel(): bool
-    {
-        return $this->getCurrentView() == \M2E\Kaufland\Helper\View\ControlPanel::NICK;
     }
 
     public function isCurrentViewConfiguration(): bool

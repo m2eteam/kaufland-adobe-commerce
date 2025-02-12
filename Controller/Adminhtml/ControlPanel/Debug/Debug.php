@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace M2E\Kaufland\Controller\Adminhtml\ControlPanel\Debug;
 
-use M2E\Kaufland\Controller\Adminhtml\ControlPanel\AbstractCommand;
-
-class Debug extends AbstractCommand
+class Debug extends \M2E\Kaufland\Controller\Adminhtml\ControlPanel\AbstractCommand
 {
     /**
      * @title "First Test"

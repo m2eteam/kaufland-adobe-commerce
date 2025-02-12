@@ -6,11 +6,11 @@ namespace M2E\Kaufland\Model\AttributeMapping;
 
 class Repository
 {
-    private \M2E\Kaufland\Model\ResourceModel\Pair $resource;
+    private \M2E\Kaufland\Model\ResourceModel\AttributeMapping\Pair $resource;
     private \M2E\Kaufland\Model\ResourceModel\AttributeMapping\Pair\CollectionFactory $collectionFactory;
 
     public function __construct(
-        \M2E\Kaufland\Model\ResourceModel\Pair $resource,
+        \M2E\Kaufland\Model\ResourceModel\AttributeMapping\Pair $resource,
         \M2E\Kaufland\Model\ResourceModel\AttributeMapping\Pair\CollectionFactory $collectionFactory
     ) {
         $this->resource = $resource;
@@ -40,7 +40,7 @@ class Repository
     public function findByType(string $type): array
     {
         $collection = $this->collectionFactory->create();
-        $collection->addFieldToFilter(\M2E\Kaufland\Model\ResourceModel\Pair::COLUMN_TYPE, ['eq' => $type]);
+        $collection->addFieldToFilter(\M2E\Kaufland\Model\ResourceModel\AttributeMapping\Pair::COLUMN_TYPE, ['eq' => $type]);
 
         return array_values($collection->getItems());
     }

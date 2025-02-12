@@ -5,21 +5,28 @@ declare(strict_types=1);
 namespace M2E\Kaufland\Model\Listing;
 
 use M2E\Kaufland\Model\ResourceModel\Listing as ListingResource;
+use M2E\Kaufland\Model\ResourceModel\Product as ListingProductResource;
 
 class Repository
 {
     private \M2E\Kaufland\Model\ResourceModel\Listing\CollectionFactory $listingCollectionFactory;
     private ListingResource $listingResource;
     private \M2E\Kaufland\Model\ListingFactory $listingFactory;
+    private \M2E\Kaufland\Model\ResourceModel\Product\Lock $productLockResource;
+    private ListingProductResource $productResource;
 
     public function __construct(
         \M2E\Kaufland\Model\ResourceModel\Listing\CollectionFactory $listingCollectionFactory,
         ListingResource $listingResource,
-        \M2E\Kaufland\Model\ListingFactory $listingFactory
+        \M2E\Kaufland\Model\ListingFactory $listingFactory,
+        \M2E\Kaufland\Model\ResourceModel\Product\Lock $productLockResource,
+        ListingProductResource $productResource
     ) {
         $this->listingCollectionFactory = $listingCollectionFactory;
         $this->listingResource = $listingResource;
         $this->listingFactory = $listingFactory;
+        $this->productLockResource = $productLockResource;
+        $this->productResource = $productResource;
     }
 
     public function getListingsCount(): int
@@ -100,5 +107,32 @@ class Repository
         $listingCollection->addFieldToFilter($columnName, ['eq' => $policyId]);
 
         return $listingCollection->getSize() !== 0;
+    }
+
+    public function hasProductsInSomeAction(\M2E\Kaufland\Model\Listing $listing): bool
+    {
+        $connection = $this->productResource->getConnection();
+
+        $productTable = $this->productResource->getMainTable();
+        $lockTable = $this->productLockResource->getMainTable();
+
+        $select = $connection->select()
+                             ->from(['p' => $productTable])
+                             ->join(
+                                 ['pl' => $lockTable],
+                                 sprintf(
+                                     'p.%s = pl.%s',
+                                     \M2E\Kaufland\Model\ResourceModel\Product::COLUMN_ID,
+                                     \M2E\Kaufland\Model\ResourceModel\Product\Lock::COLUMN_PRODUCT_ID,
+                                 ),
+                                 []
+                             )
+                             ->where(
+                                 sprintf('p.%s = ?', \M2E\Kaufland\Model\ResourceModel\Product::COLUMN_LISTING_ID),
+                                 $listing->getId()
+                             )
+                             ->limit(1);
+
+        return (bool) $connection->fetchOne($select);
     }
 }

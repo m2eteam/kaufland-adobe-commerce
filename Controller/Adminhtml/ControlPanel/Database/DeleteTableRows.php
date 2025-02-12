@@ -12,11 +12,12 @@ class DeleteTableRows extends AbstractTable
         $modelInstance = $this->getTableModel();
 
         if (empty($ids)) {
-            $this->getMessageManager()->addError("Failed to get model or any of Table Rows are not selected.");
+            $this->getMessageManager()->addError('Failed to get model or any of Table Rows are not selected.');
             $this->redirectToTablePage($modelInstance->getTableName());
         }
 
         $modelInstance->deleteEntries($ids);
+
         $this->afterTableAction($modelInstance->getTableName());
     }
 }

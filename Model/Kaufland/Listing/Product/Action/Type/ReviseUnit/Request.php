@@ -14,7 +14,7 @@ class Request extends \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Type\A
         $kauflandWarehouseId = $shippingData->getKauflandWarehouseId();
 
         return [
-            'storefront' => $this->getListingProduct()->getStoreFront()->getStorefrontCode(),
+            'storefront' => $this->getListing()->getStorefront()->getStorefrontCode(),
             'units' => [
                 [
                     'unit_id' => $this->getListingProduct()->getUnitId(),

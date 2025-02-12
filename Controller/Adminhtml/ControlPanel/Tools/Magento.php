@@ -4,23 +4,18 @@ declare(strict_types=1);
 
 namespace M2E\Kaufland\Controller\Adminhtml\ControlPanel\Tools;
 
-use M2E\Kaufland\Controller\Adminhtml\Context;
-use M2E\Kaufland\Controller\Adminhtml\ControlPanel\AbstractCommand;
-
-class Magento extends AbstractCommand
+class Magento extends \M2E\Kaufland\Controller\Adminhtml\ControlPanel\AbstractCommand
 {
     private \Magento\Framework\Module\FullModuleList $fullModuleList;
     private \Magento\Framework\Module\ModuleList $moduleList;
     private \Magento\Framework\Module\PackageInfo $packageInfo;
     private \M2E\Core\Helper\Magento\Plugin $magentoPluginHelper;
     private \M2E\Core\Helper\Magento $coreMagentoHelper;
-    private \M2E\Kaufland\Helper\Magento $magentoHelper;
 
     public function __construct(
         \M2E\Kaufland\Helper\View\ControlPanel $controlPanelHelper,
         \M2E\Core\Helper\Magento $coreMagentoHelper,
-        \M2E\Kaufland\Helper\Magento $magentoHelper,
-        Context $context,
+        \M2E\Kaufland\Controller\Adminhtml\Context $context,
         \Magento\Framework\Module\FullModuleList $fullModuleList,
         \Magento\Framework\Module\ModuleList $moduleList,
         \Magento\Framework\Module\PackageInfo $packageInfo,
@@ -32,7 +27,6 @@ class Magento extends AbstractCommand
         $this->packageInfo = $packageInfo;
         $this->magentoPluginHelper = $magentoPluginHelper;
         $this->coreMagentoHelper = $coreMagentoHelper;
-        $this->magentoHelper = $magentoHelper;
     }
 
     /**
@@ -41,7 +35,7 @@ class Magento extends AbstractCommand
      */
     public function showEventObserversAction()
     {
-        $eventObservers = $this->magentoHelper->getAllEventObservers();
+        $eventObservers = $this->coreMagentoHelper->getAllEventObservers();
 
         $html = $this->getStyleHtml();
 

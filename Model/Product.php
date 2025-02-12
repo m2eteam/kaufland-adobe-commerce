@@ -645,13 +645,6 @@ class Product extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         return $calculator->getProductValue();
     }
 
-    public function getStoreFront(): \M2E\Kaufland\Model\Storefront
-    {
-        $storefrontId = (int)$this->getData('storefront_id');
-
-        return $this->storefrontRepository->get($storefrontId);
-    }
-
     //########################################
 
     public function changeListing(\M2E\Kaufland\Model\Listing $listing): self

@@ -50,7 +50,7 @@ class KauflandProductId extends Column
                 continue;
             }
             try {
-                $storefrontCode =  $product->getStorefront()->getStorefrontCode();
+                $storefrontCode =  $product->getListing()->getStorefront()->getStorefrontCode();
             } catch (\M2E\Kaufland\Model\Exception\Logic $e) {
                 continue;
             }

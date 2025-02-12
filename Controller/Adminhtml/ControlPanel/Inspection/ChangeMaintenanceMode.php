@@ -4,19 +4,16 @@ declare(strict_types=1);
 
 namespace M2E\Kaufland\Controller\Adminhtml\ControlPanel\Inspection;
 
-use M2E\Kaufland\Controller\Adminhtml\ControlPanel\AbstractMain;
-
-class ChangeMaintenanceMode extends AbstractMain
+class ChangeMaintenanceMode extends \M2E\Kaufland\Controller\Adminhtml\ControlPanel\AbstractMain
 {
     private \M2E\Kaufland\Helper\View\ControlPanel $controlPanelHelper;
     private \M2E\Kaufland\Helper\Module\Maintenance $maintenanceHelper;
 
     public function __construct(
-        \M2E\Kaufland\Model\Module $module,
         \M2E\Kaufland\Helper\View\ControlPanel $controlPanelHelper,
         \M2E\Kaufland\Helper\Module\Maintenance $maintenanceHelper
     ) {
-        parent::__construct($module);
+        parent::__construct();
         $this->controlPanelHelper = $controlPanelHelper;
         $this->maintenanceHelper = $maintenanceHelper;
     }

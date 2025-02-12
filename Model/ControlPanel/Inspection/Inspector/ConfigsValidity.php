@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace M2E\Kaufland\Model\ControlPanel\Inspection\Inspector;
 
-use M2E\Kaufland\Helper\Module\Database\Structure as DatabaseStructure;
-use M2E\Kaufland\Model\ControlPanel\Inspection\InspectorInterface;
-use M2E\Kaufland\Model\ControlPanel\Inspection\Issue\Factory as IssueFactory;
+use M2E\Core\Model\ControlPanel\Inspection\IssueFactory;
 use Magento\Backend\Model\UrlInterface;
 
-class ConfigsValidity implements InspectorInterface
+class ConfigsValidity implements \M2E\Core\Model\ControlPanel\Inspection\InspectorInterface
 {
     private UrlInterface $urlBuilder;
     private IssueFactory $issueFactory;
@@ -60,7 +58,7 @@ class ConfigsValidity implements InspectorInterface
 
     private function getDiff(): array
     {
-        $command = new \M2E\Kaufland\Model\Kaufland\Connector\System\Config\GetInfoCommand();
+        $command = new \M2E\Core\Model\Server\Connector\System\ConfigsGetInfoCommand();
         /** @var \M2E\Core\Model\Connector\Response $response */
         $response = $this->serverClient->process($command);
 

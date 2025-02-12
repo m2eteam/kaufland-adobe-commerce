@@ -16,6 +16,7 @@ class AddTableRow extends AbstractTable
         }
 
         $modelInstance->createEntry($cellsValues);
+
         $this->afterTableAction($modelInstance->getTableName());
     }
 }
