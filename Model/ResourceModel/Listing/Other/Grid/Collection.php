@@ -28,8 +28,26 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
             $field = 'account_id';
         }
 
+        if ($field === 'linked') {
+            $this->buildFilterByLinked($condition);
+
+            return $this;
+        }
+
         parent::addFieldToFilter($field, $condition);
 
         return $this;
+    }
+
+    private function buildFilterByLinked($condition): void
+    {
+        $conditionValue = (int)$condition['eq'];
+        $column = \M2E\Kaufland\Model\ResourceModel\Listing\Other::COLUMN_MAGENTO_PRODUCT_ID;
+
+        if ($conditionValue === \M2E\Kaufland\Ui\Select\YesNoAnyOption::OPTION_YES) {
+            $this->getSelect()->where(sprintf('%s IS NOT NULL', $column));
+        } elseif ($conditionValue === \M2E\Kaufland\Ui\Select\YesNoAnyOption::OPTION_NO) {
+            $this->getSelect()->where(sprintf('%s IS NULL', $column));
+        }
     }
 }

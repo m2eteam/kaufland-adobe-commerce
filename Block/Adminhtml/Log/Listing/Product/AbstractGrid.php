@@ -66,7 +66,7 @@ abstract class AbstractGrid extends \M2E\Kaufland\Block\Adminhtml\Log\Listing\Ab
         }
         // ---------------------------------------
 
-        if ($accountId = $this->getRequest()->getParam('Account')) {
+        if ($accountId = $this->getRequest()->getParam('account')) {
             $collection->addFieldToFilter('main_table.account_id', $accountId);
         } else {
             $collection->getSelect()->joinLeft(

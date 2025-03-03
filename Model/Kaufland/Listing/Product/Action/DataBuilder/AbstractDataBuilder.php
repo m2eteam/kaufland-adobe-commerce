@@ -135,9 +135,7 @@ abstract class AbstractDataBuilder
             return;
         }
 
-        foreach ($attributeRetriever->getErrorMessages() as $message) {
-            $this->addWarningMessage($message);
-        }
+        $this->addWarningMessage($attributeRetriever->getErrorMessage());
     }
 
     protected function addWarningMessage($message): AbstractDataBuilder

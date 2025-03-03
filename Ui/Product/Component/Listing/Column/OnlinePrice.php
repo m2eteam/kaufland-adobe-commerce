@@ -52,7 +52,7 @@ class OnlinePrice extends Column
                                                 ->toCurrency($product->getOnlineCurrentPrice());
             if ($product->isStatusInactive()) {
                 $row['product_online_price'] =  sprintf(
-                    '<span style="color: gray; text-decoration: line-through;">%s</span>',
+                    '<span style="color: gray;">%s</span>',
                     $onlinePrice
                 );
             } else {

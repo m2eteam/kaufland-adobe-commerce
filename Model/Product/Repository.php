@@ -408,7 +408,11 @@ class Repository
                 ['in' => $kauflandOfferIds],
             )
             ->addFieldToFilter(sprintf('l.%s', ListingResource::COLUMN_ACCOUNT_ID), $accountId)
-            ->addFieldToFilter(sprintf('l.%s', ListingResource::COLUMN_STOREFRONT_ID), $storefrontId);
+            ->addFieldToFilter(sprintf('l.%s', ListingResource::COLUMN_STOREFRONT_ID), $storefrontId)
+            ->addFieldToFilter(
+                sprintf('main_table.%s', ProductResource::COLUMN_STATUS),
+                ['neq' => \M2E\Kaufland\Model\Product::STATUS_NOT_LISTED]
+            );
 
         if ($listingId !== null) {
             $collection->addFieldToFilter(sprintf('l.%s', ListingResource::COLUMN_ID), $listingId);

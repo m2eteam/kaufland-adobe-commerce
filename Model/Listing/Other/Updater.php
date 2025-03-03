@@ -64,6 +64,10 @@ class Updater
         );
 
         foreach ($existed as $product) {
+            if (!$collection->has($product->getKauflandOfferId())) {
+                continue;
+            }
+
             $existInListingCollection->add($collection->get($product->getKauflandOfferId()));
 
             $collection->remove($product->getKauflandOfferId());

@@ -36,6 +36,7 @@ class OnlineQty extends Column
                 continue;
             }
 
+            $style = $product->getOnlineQty() > 0 ? 'text-decoration: line-through;' : '';
             if ($product->isStatusNotListed() && empty($row['product_online_qty'])) {
                 $row['product_online_qty'] = sprintf(
                     '<span style="color: gray">%s</span>',
@@ -43,7 +44,8 @@ class OnlineQty extends Column
                 );
             } elseif ($product->isStatusInactive()) {
                 $row['product_online_qty'] = sprintf(
-                    '<span style="color: gray; text-decoration: line-through;">%s</span>',
+                    '<span style="color: gray; %s">%s</span>',
+                    $style,
                     $product->getOnlineQty()
                 );
             } else {

@@ -59,6 +59,11 @@ class Attributes extends AbstractDataBuilder
     private function getAttributesData($categoryDictionaryId): array
     {
         $categoryAttributes = $this->categoryAttributeRepository->findByDictionaryId($categoryDictionaryId);
+        $magentoProduct = $this->getListingProduct()->getMagentoProduct();
+        $magentoAttributeRetriever = $this->magentoAttributeRetriever->create(
+            (string)__('Category Attribute'),
+            $magentoProduct
+        );
 
         $attributes = [];
         $value = '';
@@ -80,21 +85,11 @@ class Attributes extends AbstractDataBuilder
                 continue;
             }
 
-            $magentoProduct = $this->getListingProduct()->getMagentoProduct();
-
             if ($attribute->isValueModeCustomAttribute()) {
-                $attributeCode = $attribute->getCustomAttributeValue();
-
-                $magentoAttributeRetriever = $this->magentoAttributeRetriever->create($magentoProduct);
-                $attributeVal = $magentoAttributeRetriever->tryRetrieve(
-                    $attributeCode,
-                    'Category Attribute'
-                );
+                $attributeVal = $magentoAttributeRetriever->tryRetrieve($attribute->getCustomAttributeValue());
                 if ($attributeVal !== null) {
                     $attributes[$attribute->getAttributeNick()] = $attributeVal;
                 }
-
-                $this->addNotFoundAttributesToWarning($magentoAttributeRetriever);
             }
 
             if ($attribute->isValueModeCustomValue()) {
@@ -102,6 +97,7 @@ class Attributes extends AbstractDataBuilder
                 $attributes[$attribute->getAttributeNick()] = $this->descriptionRender->parseWithoutMagentoTemplate($value, $magentoProduct);
             }
         }
+        $this->addNotFoundAttributesToWarning($magentoAttributeRetriever);
 
         return $attributes;
     }
