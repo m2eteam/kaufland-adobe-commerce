@@ -79,6 +79,9 @@ class Config implements \M2E\Core\Model\Setup\Upgrade\Entity\ConfigInterface
             'y25_m01' => [
                 \M2E\Kaufland\Setup\Update\y25_m01\AddTrackDirectDatabaseChanges::class
             ],
+            'y25_m03' => [
+                \M2E\Kaufland\Setup\Update\y25_m03\CheckConfigs::class
+            ],
         ];
     }
 }
