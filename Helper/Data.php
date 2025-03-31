@@ -25,6 +25,7 @@ class Data
     // ----------------------------------------
 
     /**
+     * @deprecated
      * @param string $class
      *
      * @return array

@@ -21,7 +21,7 @@ class Response extends \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Type\
         parent::processSuccess($response, $responseParams);
 
         $this->getListingProduct()
-             ->setStatusListed()
+             ->setStatusListed($this->getStatusChanger())
              ->removeBlockingByError();
 
         $this->repository->save($this->getListingProduct());

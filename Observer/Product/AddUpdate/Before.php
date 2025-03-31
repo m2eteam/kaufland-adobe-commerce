@@ -9,10 +9,8 @@ class Before extends AbstractAddUpdate
     private \M2E\Kaufland\Observer\Product\AddUpdate\Before\ProxyFactory $proxyFactory;
     private ?\M2E\Kaufland\Observer\Product\AddUpdate\Before\Proxy $proxy = null;
     public static array $proxyStorage = [];
-    private \M2E\Kaufland\Helper\Magento\Product $helperMagentoProduct;
 
     public function __construct(
-        \M2E\Kaufland\Helper\Magento\Product $helperMagentoProduct,
         \M2E\Kaufland\Model\Product\Repository $listingProductRepository,
         \M2E\Kaufland\Observer\Product\AddUpdate\Before\ProxyFactory $proxyFactory,
         \Magento\Catalog\Model\ProductFactory $productFactory,
@@ -27,7 +25,6 @@ class Before extends AbstractAddUpdate
         );
 
         $this->proxyFactory = $proxyFactory;
-        $this->helperMagentoProduct = $helperMagentoProduct;
     }
 
     public function beforeProcess(): void
@@ -67,8 +64,6 @@ class Before extends AbstractAddUpdate
         $this->getProxy()->setData('special_price', (float)$this->getProduct()->getSpecialPrice());
         $this->getProxy()->setData('special_price_from_date', $this->getProduct()->getSpecialFromDate());
         $this->getProxy()->setData('special_price_to_date', $this->getProduct()->getSpecialToDate());
-        $this->getProxy()->setData('tier_price', $this->getProduct()->getTierPrice());
-        $this->getProxy()->setData('default_qty', $this->getDefaultQty());
     }
 
     protected function isAddingProductProcess()
@@ -109,19 +104,5 @@ class Before extends AbstractAddUpdate
         }
 
         self::$proxyStorage[$key] = $this->getProxy();
-    }
-
-    protected function getDefaultQty()
-    {
-        if (!$this->helperMagentoProduct->isGroupedType($this->getProduct()->getTypeId())) {
-            return [];
-        }
-
-        $values = [];
-        foreach ($this->getProduct()->getTypeInstance()->getAssociatedProducts($this->getProduct()) as $childProduct) {
-            $values[$childProduct->getSku()] = $childProduct->getQty();
-        }
-
-        return $values;
     }
 }

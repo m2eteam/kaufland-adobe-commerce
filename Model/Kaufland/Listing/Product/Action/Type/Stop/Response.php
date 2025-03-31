@@ -10,11 +10,7 @@ class Response extends \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Type\
 
     public function processSuccess(array $response, array $responseParams = []): void
     {
-        $data = [
-            'status' => \M2E\Kaufland\Model\Product::STATUS_INACTIVE,
-        ];
-
-        $this->getListingProduct()->addData($data);
+        $this->getListingProduct()->setStatusInactive($this->getStatusChanger());
 
         if ($this->getListingProduct()->isIncomplete()) {
             $this->getListingProduct()->makeComplete();

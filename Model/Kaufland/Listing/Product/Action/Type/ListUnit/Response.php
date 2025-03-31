@@ -32,7 +32,7 @@ class Response extends \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Type\
                 ->setStoreFrontId($storefront->getId())
                 ->setKauflandProductId((string)$responseUnits['product_id'])
                 ->setKauflandOfferId($responseUnits['offer_id'])
-                ->setStatus(\M2E\Kaufland\Model\Product::STATUS_LISTED)
+                ->setStatusListed($this->getStatusChanger())
                 ->setOnlineQty($requestMetadata[DataBuilder\Qty::NICK]['qty'])
                 ->setOnlineCondition($responseUnits['condition'])
                 ->setOnlineWarehouse($responseUnits['warehouse_id'])

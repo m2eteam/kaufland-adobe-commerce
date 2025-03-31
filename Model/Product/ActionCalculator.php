@@ -26,7 +26,7 @@ class ActionCalculator
      *
      * @return \M2E\Kaufland\Model\Product\Action[]
      */
-    public function calculate(\M2E\Kaufland\Model\Product $product, bool $force): array
+    public function calculate(\M2E\Kaufland\Model\Product $product, bool $force, int $change): array
     {
         if ($product->isStatusNotListed()) {
             return [$this->calculateToList($product)];
@@ -50,7 +50,7 @@ class ActionCalculator
         }
 
         if ($product->isStatusInactive()) {
-            return [$this->calculateToRelist($product)];
+            return [$this->calculateToRelist($product, $change)];
         }
 
         return [Action::createNothing($product)];
@@ -363,13 +363,13 @@ class ActionCalculator
 
     // ----------------------------------------
 
-    public function calculateToRelist(\M2E\Kaufland\Model\Product $product): Action
+    public function calculateToRelist(\M2E\Kaufland\Model\Product $product, int $changer): Action
     {
         if (!$product->isRelistable()) {
             return Action::createNothing($product);
         }
 
-        if (!$this->isNeedRelistProduct($product)) {
+        if (!$this->isNeedRelistProduct($product, $changer)) {
             return Action::createNothing($product);
         }
 
@@ -379,7 +379,7 @@ class ActionCalculator
         return Action::createRelist($product, $configurator);
     }
 
-    private function isNeedRelistProduct(\M2E\Kaufland\Model\Product $product): bool
+    private function isNeedRelistProduct(\M2E\Kaufland\Model\Product $product, int $changer): bool
     {
         $syncPolicy = $product->getSynchronizationTemplate();
 
@@ -391,6 +391,7 @@ class ActionCalculator
             $product->isStatusInactive()
             && $syncPolicy->isRelistFilterUserLock()
             && $product->isStatusChangerUser()
+            && $changer !== \M2E\Kaufland\Model\Product::STATUS_CHANGER_USER
         ) {
             return false;
         }

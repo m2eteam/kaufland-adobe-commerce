@@ -6,20 +6,18 @@ namespace M2E\Kaufland\Block\Adminhtml\System\Config\Sections;
 
 class ModuleAndChannels extends \M2E\Kaufland\Block\Adminhtml\System\Config\Sections
 {
-    /** @var \M2E\Kaufland\Helper\Module\Cron */
-    private $cronHelper;
-    /** @var \M2E\Kaufland\Helper\Module */
-    private $moduleHelper;
+    private \M2E\Kaufland\Helper\Module $moduleHelper;
+    private \M2E\Kaufland\Model\Cron\Config $cronConfig;
 
     public function __construct(
         \M2E\Kaufland\Block\Adminhtml\Magento\Context\Template $context,
         \Magento\Framework\Registry $registry,
         \Magento\Framework\Data\FormFactory $formFactory,
-        \M2E\Kaufland\Helper\Module\Cron $cronHelper,
         \M2E\Kaufland\Helper\Module $moduleHelper,
+        \M2E\Kaufland\Model\Cron\Config $cronConfig,
         array $data = []
     ) {
-        $this->cronHelper = $cronHelper;
+        $this->cronConfig = $cronConfig;
         $this->moduleHelper = $moduleHelper;
         parent::__construct($context, $registry, $formFactory, $data);
     }
@@ -50,7 +48,7 @@ Read the <a href="%url" target="_blank">article</a> for more details.</p>',
             ]
         );
 
-        $isCronEnabled = (int)$this->cronHelper->isModeEnabled();
+        $isCronEnabled = (int)$this->cronConfig->isEnabled();
         $isModuleEnabled = (int)!$this->moduleHelper->isDisabled();
 
         if ($isModuleEnabled) {

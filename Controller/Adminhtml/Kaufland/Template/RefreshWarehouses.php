@@ -24,13 +24,12 @@ class RefreshWarehouses extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\Abst
 
     public function execute()
     {
-        $accounts = $this->accountRepository->getAll();
+        $accountId = (int)$this->getRequest()->getParam('account_id');
+        $account = $this->accountRepository->get($accountId);
 
-        foreach ($accounts as $account) {
-            $this->warehouseSynchronizeService->updateWarehouses($account);
-        }
+        $this->warehouseSynchronizeService->updateWarehouses($account);
 
-        $warehouses = $this->warehouseRepository->getAll();
+        $warehouses = $this->warehouseRepository->findByAccount($accountId);
 
         $arrayWarehouses = [];
           /** @var \M2E\Kaufland\Model\Warehouse $warehouse */

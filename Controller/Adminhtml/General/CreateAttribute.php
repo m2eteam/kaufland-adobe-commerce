@@ -6,12 +6,12 @@ class CreateAttribute extends \M2E\Kaufland\Controller\Adminhtml\AbstractGeneral
 {
     /** @var \Magento\Eav\Model\Entity\Attribute\SetFactory */
     private $entityAttributeSetFactory;
-    private \M2E\Kaufland\Model\Magento\Attribute\BuilderFactory $builderFactory;
-    private \M2E\Kaufland\Model\Magento\Attribute\RelationFactory $relationFactory;
+    private \M2E\Core\Model\Magento\Attribute\BuilderFactory $builderFactory;
+    private \M2E\Core\Model\Magento\Attribute\RelationFactory $relationFactory;
 
     public function __construct(
-        \M2E\Kaufland\Model\Magento\Attribute\BuilderFactory $builderFactory,
-        \M2E\Kaufland\Model\Magento\Attribute\RelationFactory $relationFactory,
+        \M2E\Core\Model\Magento\Attribute\BuilderFactory $builderFactory,
+        \M2E\Core\Model\Magento\Attribute\RelationFactory $relationFactory,
         \Magento\Eav\Model\Entity\Attribute\SetFactory $entityAttributeSetFactory
     ) {
         parent::__construct();

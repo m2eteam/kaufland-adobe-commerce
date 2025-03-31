@@ -14,6 +14,7 @@ class Stub extends \M2E\Kaufland\Model\ScheduledAction
     public function init(
         \M2E\Kaufland\Model\Product $listingProduct,
         int $action,
+        int $statusChanger,
         array $data,
         bool $isForce = false,
         array $tags = [],

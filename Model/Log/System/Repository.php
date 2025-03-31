@@ -46,7 +46,7 @@ class Repository
     public function getCountExceptionAfterDate(\DateTime $date): int
     {
         $collection = $this->collectionFactory->create();
-        $collection->addFieldToFilter('type', ['neq' => '\\' . \M2E\Kaufland\Model\Exception\Connection::class]);
+        $collection->addFieldToFilter('type', ['neq' => '\\' . \M2E\Core\Model\Exception\Connection::class]);
         $collection->addFieldToFilter('type', ['nlike' => '%Logging%']);
         $collection->addFieldToFilter('create_date', ['gt' => $date->format('Y-m-d H:i:s')]);
 

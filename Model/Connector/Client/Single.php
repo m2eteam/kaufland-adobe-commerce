@@ -31,8 +31,8 @@ class Single
      * @param \M2E\Core\Model\Connector\CommandInterface $command
      *
      * @return object
-     * @throws \M2E\Core\Model\Exception
      * @throws \M2E\Core\Model\Exception\Connection
+     * @throws \M2E\Core\Model\Exception\Connection\SystemError
      */
     public function process(\M2E\Core\Model\Connector\CommandInterface $command): object
     {

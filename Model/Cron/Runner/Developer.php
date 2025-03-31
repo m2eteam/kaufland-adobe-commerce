@@ -9,47 +9,27 @@ use M2E\Kaufland\Model\Cron\AbstractRunner;
 class Developer extends AbstractRunner
 {
     private array $allowedTasks;
-    private \M2E\Kaufland\Model\Cron\TaskRepository $taskRepository;
 
-    public function __construct(
-        \M2E\Kaufland\Model\Cron\TaskRepository $taskRepository,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \M2E\Kaufland\Model\Lock\Transactional\ManagerFactory $lockTransactionManagerFactory,
-        \M2E\Kaufland\Helper\Module\Exception $exceptionHelper,
-        \M2E\Core\Helper\Magento $magentoHelper,
-        \M2E\Kaufland\Model\Config\Manager $config,
-        \M2E\Kaufland\Helper\Module $moduleHelper,
-        \M2E\Kaufland\Helper\Module\Maintenance $maintenanceHelper,
-        \M2E\Kaufland\Helper\Module\Cron $cronHelper,
-        \M2E\Kaufland\Model\Cron\OperationHistoryFactory $operationHistoryFactory,
-        \M2E\Core\Helper\Client\MemoryLimit $memoryLimit,
-        \M2E\Kaufland\Model\Cron\Strategy $strategy
-    ) {
-        parent::__construct(
-            $storeManager,
-            $lockTransactionManagerFactory,
-            $exceptionHelper,
-            $magentoHelper,
-            $config,
-            $moduleHelper,
-            $maintenanceHelper,
-            $cronHelper,
-            $operationHistoryFactory,
-            $memoryLimit,
-            $strategy,
-        );
-
-        $this->taskRepository = $taskRepository;
-    }
-
-    public function getNick(): ?string
+    public function getNick(): string
     {
-        return null;
+        return 'developer';
     }
 
     public function getInitiator(): int
     {
         return \M2E\Core\Helper\Data::INITIATOR_DEVELOPER;
+    }
+
+    /**
+     * @param string[] $tasks
+     *
+     * @return $this
+     */
+    public function setAllowedTasks(array $tasks): self
+    {
+        $this->allowedTasks = $tasks;
+
+        return $this;
     }
 
     public function process(): void
@@ -63,25 +43,13 @@ class Developer extends AbstractRunner
     {
         /** @psalm-suppress RedundantPropertyInitializationCheck */
         if (!isset($this->allowedTasks)) {
-            $this->allowedTasks = $this->taskRepository->getRegisteredTasks();
+            throw new \LogicException('Developer strategy has not been set.');
         }
 
         $strategy = parent::getStrategy();
         $strategy->setAllowedTasks($this->allowedTasks);
 
         return $strategy;
-    }
-
-    /**
-     * @param array $tasks
-     *
-     * @return $this
-     */
-    public function setAllowedTasks(array $tasks): self
-    {
-        $this->allowedTasks = $tasks;
-
-        return $this;
     }
 
     protected function isPossibleToRun(): bool

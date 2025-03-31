@@ -2,7 +2,7 @@
     "name" : "m2e/kaufland-adobe-commerce",
     "description" : "M2E Kaufland Connect is a Magento trusted (TM) extension that enables merchants of all sizes to fully integrate their Magento-based systems with the Kaufland Marketplace",
     "type" : "magento2-module",
-    "version" : "2.2.5",
+    "version" : "2.3.0",
     "license" : "proprietary",
     "keywords" : [
         "magento",
@@ -13,7 +13,7 @@
     "homepage" : "https://m2epro.com/magento-kaufland-marketplace-ecommerce-integration-by-m2e",
     "require" : {
         "php" : ">=7.4",
-        "m2e/core": "^1.3.0"
+        "m2e/core": "^1.4.0"
     },
     "autoload" : {
         "files" : [

@@ -17,8 +17,7 @@ class RemoveHandler
     public function process(\M2E\Kaufland\Model\Product $listingProduct): void
     {
         if (!$listingProduct->isStatusNotListed()) {
-            $listingProduct->setData('status', \M2E\Kaufland\Model\Product::STATUS_NOT_LISTED);
-            $listingProduct->save();
+            $listingProduct->setStatusNotListed(\M2E\Kaufland\Model\Product::STATUS_CHANGER_USER);
         }
 
         $this->productDeleteService->process($listingProduct);

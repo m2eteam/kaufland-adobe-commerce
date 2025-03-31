@@ -607,6 +607,11 @@ class Item extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         return $this->getStatus() === \M2E\Kaufland\Model\Order::STATUS_RETURNED;
     }
 
+    public function isStatusCancelled(): bool
+    {
+        return $this->getStatus() === \M2E\Kaufland\Model\Order::STATUS_CANCELED;
+    }
+
     public function getStatus(): int
     {
         return (int)$this->getData(\M2E\Kaufland\Model\ResourceModel\Order\Item::COLUMN_STATUS);

@@ -36,24 +36,27 @@ class Repository
         return $entity;
     }
 
-    public function findExclusiveLockIdByNick(string $nick): ?int
+    public function retrieveLock(string $nick): ?int
     {
-        $connection = $this->resource->getConnection();
+        $lockId = (int)$this->resource->getConnection()
+                                      ->select()
+                                      ->from($this->getTableName(), ['id'])
+                                      ->where('nick = ?', $nick)
+                                      ->forUpdate()
+                                      ->query()
+                                      ->fetchColumn();
 
-        $result = (int)$connection->select()
-                                  ->from($this->resource->getMainTable(), [TransactionalResource::COLUMN_ID])
-                                  ->where('nick = ?', $nick)
-                                  ->forUpdate()
-                                  ->query()
-                                  ->fetchColumn();
+        if (empty($lockId)) {
+            return null;
+        }
 
-        return $result === 0 ? null : $result;
+        return $lockId;
     }
 
     public function lockTable(): void
     {
         $connection = $this->resource->getConnection();
-        $connection->query("LOCK TABLES `{$this->resource->getMainTable()}` WRITE");
+        $connection->query("LOCK TABLES `{$this->getTableName()}` WRITE");
     }
 
     public function unlockTable(): void
@@ -72,5 +75,12 @@ class Repository
     {
         $connection = $this->resource->getConnection();
         $connection->commit();
+    }
+
+    // ----------------------------------------
+
+    private function getTableName(): string
+    {
+        return $this->resource->getMainTable();
     }
 }

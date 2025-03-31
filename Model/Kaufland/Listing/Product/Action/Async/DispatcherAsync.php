@@ -42,7 +42,7 @@ class DispatcherAsync
     public function processList(\M2E\Kaufland\Model\Product $product, array $params, int $statusChanger): int
     {
         $logsActionId = $this->getLogActionId($params);
-        $params += ['status_changer' => $statusChanger, 'logs_action_id' => $logsActionId];
+        $params += ['logs_action_id' => $logsActionId];
 
         $this->removeTags($product);
 
@@ -88,7 +88,7 @@ class DispatcherAsync
     public function processRevise(\M2E\Kaufland\Model\Product $product, array $params, int $statusChanger): int
     {
         $logsActionId = $this->getLogActionId($params);
-        $params += ['status_changer' => $statusChanger, 'logs_action_id' => $logsActionId];
+        $params += ['logs_action_id' => $logsActionId];
 
         $this->removeTags($product);
 

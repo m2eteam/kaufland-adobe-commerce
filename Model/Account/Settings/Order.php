@@ -46,6 +46,9 @@ class Order
     public const TAX_MODE_MAGENTO = 2;
     public const TAX_MODE_MIXED = 3;
 
+    public const CREATE_CREDIT_MEMO_IF_ORDER_CANCELLED_NO = 0;
+    public const CREATE_CREDIT_MEMO_IF_ORDER_CANCELLED_YES = 1;
+
     private array $listing = [
         'mode' => true,
         'store_mode' => self::LISTINGS_STORE_MODE_DEFAULT,
@@ -78,6 +81,10 @@ class Order
     private array $orderCancelRefundOnChannel = [
         'mode' => self::CANCEL_ON_CHANNEL_YES,
         'cancel_reason' => self::CANCEL_ON_CHANNEL_REASON_SHIPPING_ADDRESS_UNDELIVERABLE,
+    ];
+
+    private array $createCreditMemoIfOrderCancelled = [
+        'mode' => self::CREATE_CREDIT_MEMO_IF_ORDER_CANCELLED_NO,
     ];
 
     private array $tax = [
@@ -200,6 +207,16 @@ class Order
     public function getOrderCancelOnChannelReason(): string
     {
         return $this->orderCancelRefundOnChannel['cancel_reason'];
+    }
+
+    public function getCreateCreditMemoIfOrderCancelledMode(): int
+    {
+        return (int)$this->createCreditMemoIfOrderCancelled['mode'];
+    }
+
+    public function isCreateCreditMemoIfOrderCancelledEnabled(): bool
+    {
+        return $this->getCreateCreditMemoIfOrderCancelledMode() === self::CREATE_CREDIT_MEMO_IF_ORDER_CANCELLED_YES;
     }
 
     public function getTaxMode(): int
@@ -351,6 +368,15 @@ class Order
             );
         }
 
+        if (isset($data['create_creditmemo_if_order_cancelled'])) {
+            $new->createCreditMemoIfOrderCancelled = array_merge(
+                $new->createCreditMemoIfOrderCancelled,
+                $this->prepareCreateCreditMemoIfOrderCancelledData(
+                    $data['create_creditmemo_if_order_cancelled']
+                ),
+            );
+        }
+
         if (isset($data['shipping_information'])) {
             $new->shippingInformation = array_merge(
                 $new->shippingInformation,
@@ -375,6 +401,7 @@ class Order
             'listing_other' => $this->listingOther,
             'number' => $this->number,
             'customer' => $this->customer,
+            'create_creditmemo_if_order_cancelled' => $this->createCreditMemoIfOrderCancelled,
             'tax' => $this->tax,
             'qty_reservation' => $this->qtyReservation,
             'order_cancel_on_channel' => $this->orderCancelRefundOnChannel,
@@ -446,6 +473,15 @@ class Order
         }
 
         return $orderCancelOnChannel;
+    }
+
+    private function prepareCreateCreditMemoIfOrderCancelledData(array $createCreditMemoForMagentoOrder): array
+    {
+        if (isset($createCreditMemoForMagentoOrder['mode'])) {
+            $createCreditMemoForMagentoOrder['mode'] = (int)$createCreditMemoForMagentoOrder['mode'];
+        }
+
+        return $createCreditMemoForMagentoOrder;
     }
 
     private function prepareTaxData(array $tax): array

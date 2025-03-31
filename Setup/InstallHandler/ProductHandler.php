@@ -356,6 +356,12 @@ class ProductHandler implements \M2E\Core\Model\Setup\InstallHandlerInterface
                 ['nullable' => false]
             )
             ->addColumn(
+                ScheduledActionResource::COLUMN_STATUS_CHANGER,
+                Table::TYPE_SMALLINT,
+                null,
+                ['nullable' => false, 'default' => 0, 'unsigned' => true]
+            )
+            ->addColumn(
                 ScheduledActionResource::COLUMN_IS_FORCE,
                 Table::TYPE_SMALLINT,
                 null,

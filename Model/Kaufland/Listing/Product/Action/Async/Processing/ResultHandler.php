@@ -22,6 +22,7 @@ class ResultHandler implements \M2E\Kaufland\Model\Processing\SingleResultHandle
     private array $requestData;
     private array $configuratorData;
     private array $warningMessages;
+    private int $statusChanger;
 
     public function __construct(
         \M2E\Kaufland\Model\Product\Repository $listingProductRepository,
@@ -47,6 +48,7 @@ class ResultHandler implements \M2E\Kaufland\Model\Processing\SingleResultHandle
         $this->requestData = $processingParams->getRequestData();
         $this->configuratorData = $processingParams->getConfiguratorData();
         $this->warningMessages = $processingParams->getWarningMessages();
+        $this->statusChanger = $processingParams->getStatusChanger();
     }
 
     public function processSuccess(array $resultData, array $messages): void
@@ -69,7 +71,8 @@ class ResultHandler implements \M2E\Kaufland\Model\Processing\SingleResultHandle
             $this->actionStartParams,
             $this->requestMetadata,
             $this->requestData,
-            $this->warningMessages
+            $this->warningMessages,
+            $this->statusChanger
         );
 
         $endProcessor->process($resultData, $messages);

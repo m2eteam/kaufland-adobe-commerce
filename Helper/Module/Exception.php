@@ -28,7 +28,7 @@ class Exception
         $info = $this->getExceptionDetailedInfo($throwable, $context);
 
         $type = \M2E\Kaufland\Model\Log\System::TYPE_EXCEPTION;
-        if ($throwable instanceof \M2E\Kaufland\Model\Exception\Connection) {
+        if ($throwable instanceof \M2E\Core\Model\Exception\Connection) {
             $type = \M2E\Kaufland\Model\Log\System::TYPE_EXCEPTION_CONNECTOR;
         }
 

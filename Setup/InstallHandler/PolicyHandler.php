@@ -515,6 +515,12 @@ class PolicyHandler implements \M2E\Core\Model\Setup\InstallHandlerInterface
                 ],
             )
             ->addColumn(
+                ShippingResource::COLUMN_ACCOUNT_ID,
+                Table::TYPE_INTEGER,
+                null,
+                ['default' => null]
+            )
+            ->addColumn(
                 ShippingResource::COLUMN_TITLE,
                 Table::TYPE_TEXT,
                 255,

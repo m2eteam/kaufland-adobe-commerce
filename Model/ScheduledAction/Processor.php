@@ -68,6 +68,7 @@ class Processor
             try {
                 $listingProduct = $scheduledAction->getListingProduct();
                 $additionalData = $scheduledAction->getAdditionalData();
+                $statusChanger = $scheduledAction->getStatusChanger();
             } catch (\M2E\Kaufland\Model\Exception\Logic $e) {
                 $this->exceptionHelper->process($e);
 
@@ -77,9 +78,6 @@ class Processor
             }
 
             $params = $additionalData['params'] ?? [];
-
-            /** @var int $statusChanger */
-            $statusChanger = $params['status_changer'];
 
             $packageCollection = new \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\PackageCollection();
             $packageCollection->add($listingProduct, $scheduledAction->getConfigurator());

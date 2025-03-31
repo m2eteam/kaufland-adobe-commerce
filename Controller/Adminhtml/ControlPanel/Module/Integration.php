@@ -9,41 +9,18 @@ use M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Type;
 class Integration extends \M2E\Kaufland\Controller\Adminhtml\ControlPanel\AbstractCommand
 {
     private \Magento\Framework\Data\Form\FormKey $formKey;
-    private Type\Relist\RequestFactory $relistRequestFactory;
-    private \M2E\Kaufland\Model\Product\Repository $productRepository;
-    private \M2E\Kaufland\Model\Product\ActionCalculator $actionCalculator;
-    private Type\Stop\RequestFactory $stopRequestFactory;
-    private Type\ListUnit\RequestFactory $listUnitRequestFactory;
-    private Type\ReviseUnit\RequestFactory $reviseUnitRequestFactory;
-    private Type\ListProduct\RequestFactory $listProductRequestFactory;
-    private Type\ReviseProduct\RequestFactory $reviseProductRequestFactory;
-    private \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\LogBufferFactory $logBufferFactory;
+    private \M2E\Kaufland\Model\ControlPanel\Module\Integration\RequestData $requestData;
 
     public function __construct(
         \Magento\Framework\Data\Form\FormKey $formKey,
+        \M2E\Kaufland\Model\ControlPanel\Module\Integration\RequestData $requestData,
         \M2E\Kaufland\Helper\View\ControlPanel $controlPanelHelper,
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Type\ListUnit\RequestFactory $listUnitRequestFactory,
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Type\ReviseUnit\RequestFactory $reviseUnitRequestFactory,
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Type\ListProduct\RequestFactory $listProductRequestFactory,
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Type\ReviseProduct\RequestFactory $reviseProductRequestFactory,
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Type\Relist\RequestFactory $relistRequestFactory,
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Type\Stop\RequestFactory $stopRequestFactory,
-        \M2E\Kaufland\Model\Product\Repository $productRepository,
-        \M2E\Kaufland\Model\Product\ActionCalculator $actionCalculator,
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\LogBufferFactory $logBufferFactory,
         \M2E\Kaufland\Controller\Adminhtml\Context $context
     ) {
         parent::__construct($controlPanelHelper, $context);
+
         $this->formKey = $formKey;
-        $this->relistRequestFactory = $relistRequestFactory;
-        $this->productRepository = $productRepository;
-        $this->actionCalculator = $actionCalculator;
-        $this->stopRequestFactory = $stopRequestFactory;
-        $this->listUnitRequestFactory = $listUnitRequestFactory;
-        $this->reviseUnitRequestFactory = $reviseUnitRequestFactory;
-        $this->listProductRequestFactory = $listProductRequestFactory;
-        $this->reviseProductRequestFactory = $reviseProductRequestFactory;
-        $this->logBufferFactory = $logBufferFactory;
+        $this->requestData = $requestData;
     }
 
     /**
@@ -52,206 +29,7 @@ class Integration extends \M2E\Kaufland\Controller\Adminhtml\ControlPanel\Abstra
      */
     public function getRequestDataAction()
     {
-        $httpRequest = $this->getRequest();
-
-        $listingProductId = $httpRequest->getParam('listing_product_id', null);
-        if ($listingProductId !== null) {
-            $listingProductId = (int)$listingProductId;
-        }
-
-        $form = $this->printFormForCalculateAction($listingProductId);
-        $html = "<div style='padding: 20px;background:#d3d3d3;position:sticky;top:0;width:100vw'>$form</div>";
-
-        if ($httpRequest->getParam('print')) {
-            try {
-                $listingProduct = $this->productRepository->get((int)$listingProductId);
-                $actions = $this->actionCalculator->calculate(
-                    $listingProduct,
-                    true,
-                );
-
-                $currentStatusTitle = \M2E\Kaufland\Model\Product::getStatusTitle($listingProduct->getStatus());
-
-                $productSku = $listingProduct->getMagentoProduct()->getSku();
-
-                $listingTitle = $listingProduct->getListing()->getTitle();
-
-                <<<HTML
-<style>
-    table {
-      border-collapse: collapse;
-      width: 100%;
-    }
-
-    td, th {
-      border: 1px solid #dddddd;
-      text-align: left;
-      padding: 8px;
-    }
-
-    tr:nth-child(even) {
-      background-color: #f2f2f2;
-    }
-
-</style>
-<table>
-    <tr>
-        <td>Listing</td>
-        <td>$listingTitle</td>
-    </tr>
-    <tr>
-        <td>Product (SKU)</td>
-        <td>$productSku</td>
-    </tr>
-    <tr>
-        <td>Current Product Status</td>
-        <td>$currentStatusTitle</td>
-    </tr>
-</table>
-HTML;
-                foreach ($actions as $action) {
-                    $html .= '<div>' . $this->printProductInfo($listingProduct, $action) . '</div>';
-                }
-            } catch (\Throwable $exception) {
-                $html .= sprintf(
-                    '<div style="margin: 20px 0">%s</div>',
-                    $exception->getMessage()
-                );
-            }
-        }
-
-        return $html;
-    }
-
-    private function printFormForCalculateAction(?int $listingProductId): string
-    {
-        $formKey = $this->formKey->getFormKey();
-        $actionUrl = $this->getUrl('*/*/*', ['action' => 'getRequestData']);
-
-        return <<<HTML
-<form style="margin: 0; font-size: 16px" method="get" enctype="multipart/form-data" action="$actionUrl">
-    <input name="form_key" value="$formKey" type="hidden" />
-    <input name="print" value="1" type="hidden" />
-
-    <label style="display: inline-block;">
-        Listing Product ID:
-        <input name="listing_product_id" style="width: 200px;" required value="$listingProductId">
-    </label>
-    <div style="margin: 10px 0 0 0;">
-        <button type="submit">Calculate Allowed Action</button>
-    </div>
-</form>
-HTML;
-    }
-
-    private function printProductInfo(
-        \M2E\Kaufland\Model\Product $listingProduct,
-        \M2E\Kaufland\Model\Product\Action $action
-    ): ?string {
-        $calculateAction = 'Nothing';
-        if ($action->isActionList()) {
-            if ($listingProduct->isListableAsProduct()) {
-                $calculateAction = 'List_Product';
-                $request = $this->listProductRequestFactory->create(
-                    $listingProduct,
-                    $action->getConfigurator(),
-                    $this->logBufferFactory->create()
-                );
-                $printResult = $this->printRequestData($request);
-            } else {
-                $calculateAction = 'List_Unit';
-                $request = $this->listUnitRequestFactory->create(
-                    $listingProduct,
-                    $action->getConfigurator(),
-                    $this->logBufferFactory->create()
-                );
-                $printResult = $this->printRequestData($request);
-            }
-        } elseif ($action->isActionRevise()) {
-            $calculateAction = sprintf(
-                'Revise Unit (Reason (%s))',
-                implode(' | ', $action->getConfigurator()->getAllowedDataTypes()),
-            );
-            $request = $this->reviseUnitRequestFactory->create(
-                $listingProduct,
-                $action->getConfigurator(),
-                $this->logBufferFactory->create()
-            );
-            $printResult = $this->printRequestData($request);
-        } elseif ($action->isActionReviseProduct()) {
-            $calculateAction = sprintf(
-                'Revise Product (Reason (%s))',
-                implode(' | ', $action->getConfigurator()->getAllowedDataTypes()),
-            );
-            $request = $this->reviseProductRequestFactory->create(
-                $listingProduct,
-                $action->getConfigurator(),
-                $this->logBufferFactory->create()
-            );
-            $printResult = $this->printRequestData($request);
-        } elseif ($action->isActionStop()) {
-            $calculateAction = 'Stop';
-            $request = $this->stopRequestFactory->create(
-                $listingProduct,
-                $action->getConfigurator(),
-                $this->logBufferFactory->create()
-            );
-            $printResult = $this->printRequestData($request);
-        } elseif ($action->isActionRelist()) {
-            $calculateAction = 'Relist';
-            $request = $this->relistRequestFactory->create(
-                $listingProduct,
-                $action->getConfigurator(),
-                $this->logBufferFactory->create()
-            );
-            $printResult = $this->printRequestData($request);
-        } else {
-            $printResult = 'Nothing action allowed.';
-        }
-
-        return <<<HTML
-<style>
-    table {
-      border-collapse: collapse;
-      width: 100%;
-    }
-
-    td, th {
-      border: 1px solid #dddddd;
-      text-align: left;
-      padding: 8px;
-    }
-
-    tr:nth-child(even) {
-      background-color: #f2f2f2;
-    }
-
-</style>
-<table>
-    <tr>
-        <td>Calculate Action</td>
-        <td>$calculateAction</td>
-    <tr>
-        <td>Request Data</td>
-        <td>$printResult</td>
-    </tr>
-</table>
-HTML;
-    }
-
-    private function printRequestData(
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\AbstractRequest $request
-    ): string {
-        return sprintf(
-            '<pre>%s</pre>',
-            htmlspecialchars(
-                json_encode(
-                    $request->getRequestData(),
-                    JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR,
-                ),
-                ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401,
-            ),
-        );
+        return $this->requestData->execute($this->getRequest());
     }
 
     /**

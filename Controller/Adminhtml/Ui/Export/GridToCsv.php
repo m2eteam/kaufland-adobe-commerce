@@ -6,13 +6,11 @@ namespace M2E\Kaufland\Controller\Adminhtml\Ui\Export;
 
 class GridToCsv extends \M2E\Kaufland\Controller\Adminhtml\AbstractMain
 {
-    private const EXPORT_FILE_NAME = 'export.csv';
-
-    private \M2E\Kaufland\Model\Ui\Export\ConvertToCsv $converter;
+    private \M2E\Core\Model\Ui\Export\ConvertToCsv $converter;
     private \Magento\Framework\App\Response\Http\FileFactory $fileFactory;
 
     public function __construct(
-        \M2E\Kaufland\Model\Ui\Export\ConvertToCsv $converter,
+        \M2E\Core\Model\Ui\Export\ConvertToCsv $converter,
         \Magento\Framework\App\Response\Http\FileFactory $fileFactory
     ) {
         parent::__construct();
@@ -24,7 +22,7 @@ class GridToCsv extends \M2E\Kaufland\Controller\Adminhtml\AbstractMain
     public function execute()
     {
         return $this->fileFactory->create(
-            self::EXPORT_FILE_NAME,
+            $this->generateExportFileName(),
             $this->converter->getCsvFile(),
             \Magento\Framework\App\Filesystem\DirectoryList::VAR_DIR
         );
@@ -33,5 +31,13 @@ class GridToCsv extends \M2E\Kaufland\Controller\Adminhtml\AbstractMain
     protected function _isAllowed()
     {
         return $this->_authorization->isAllowed('M2E_Kaufland::listings');
+    }
+
+    private function generateExportFileName(): string
+    {
+        $date = \M2E\Core\Helper\Date::createCurrentGmt();
+        $dateString = $date->format('Ymd_His');
+
+        return 'All_' . $dateString . '.csv';
     }
 }

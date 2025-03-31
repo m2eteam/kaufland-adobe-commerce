@@ -385,7 +385,7 @@ class Listing extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
                 $this->stopQueueCreateService->create($listingProduct);
             }
 
-            $listingProduct->setStatusInactive();
+            $listingProduct->setStatusInactive(\M2E\Kaufland\Model\Product::STATUS_CHANGER_USER);
             $this->listingProductRepository->save($listingProduct);
 
             $this->productDeleteService->process($listingProduct);

@@ -25,7 +25,7 @@ class RelistAction extends AbstractSchedule
         \M2E\Kaufland\Model\Product\ActionCalculator $calculator,
         \M2E\Kaufland\Model\Product\LockCollection $lockCollection
     ): array {
-        return [$calculator->calculateToRelist($product)];
+        return [$calculator->calculateToRelist($product, \M2E\Kaufland\Model\Product::STATUS_CHANGER_USER)];
     }
 
     protected function logAboutSkipAction(

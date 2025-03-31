@@ -4,7 +4,7 @@ namespace M2E\Kaufland\Model\Cron\Task\Order;
 
 use M2E\Kaufland\Model\Order\Change;
 
-class Update extends \M2E\Kaufland\Model\Cron\AbstractTask
+class UpdateTask implements \M2E\Core\Model\Cron\TaskHandlerInterface
 {
     public const NICK = 'order/update';
 
@@ -22,49 +22,23 @@ class Update extends \M2E\Kaufland\Model\Cron\AbstractTask
         \M2E\Kaufland\Model\Kaufland\Connector\Order\Units\Ship\Processor $orderShipProcessor,
         \M2E\Kaufland\Model\Account\Repository $accountRepository,
         \M2E\Kaufland\Model\Order\Repository $orderRepository,
-        \M2E\Kaufland\Model\Order\Change\Repository $changeRepository,
-        \M2E\Kaufland\Model\Cron\Manager $cronManager,
-        \M2E\Kaufland\Model\Synchronization\LogService $syncLogger,
-        \M2E\Core\Helper\Data $helperData,
-        \Magento\Framework\Event\Manager $eventManager,
-        \M2E\Kaufland\Model\Factory $modelFactory,
-        \M2E\Kaufland\Model\ActiveRecord\Factory $activeRecordFactory,
-        \M2E\Kaufland\Model\Cron\TaskRepository $taskRepo,
-        \Magento\Framework\App\ResourceConnection $resource
+        \M2E\Kaufland\Model\Order\Change\Repository $changeRepository
     ) {
-        parent::__construct(
-            $cronManager,
-            $syncLogger,
-            $helperData,
-            $eventManager,
-            $modelFactory,
-            $activeRecordFactory,
-            $taskRepo,
-            $resource,
-        );
         $this->accountRepository = $accountRepository;
         $this->orderShipProcessor = $orderShipProcessor;
         $this->changeRepository = $changeRepository;
         $this->orderRepository = $orderRepository;
     }
 
-    protected function getNick(): string
+    /**
+     * @param \M2E\Kaufland\Model\Cron\TaskContext $context
+     *
+     * @return void
+     */
+    public function process($context): void
     {
-        return self::NICK;
-    }
+        $context->getSynchronizationLog()->setTask(\M2E\Kaufland\Model\Synchronization\Log::TASK_ORDERS);
 
-    protected function getSynchronizationLog(): \M2E\Kaufland\Model\Synchronization\LogService
-    {
-        $synchronizationLog = parent::getSynchronizationLog();
-        $synchronizationLog->setTask(\M2E\Kaufland\Model\Synchronization\Log::TASK_ORDERS);
-
-        return $synchronizationLog;
-    }
-
-    //########################################
-
-    protected function performActions()
-    {
         $this->deleteNotActualChanges();
 
         $permittedAccounts = $this->getPermittedAccounts();
@@ -74,7 +48,7 @@ class Update extends \M2E\Kaufland\Model\Cron\AbstractTask
         }
 
         foreach ($permittedAccounts as $account) {
-            $this->getOperationHistory()->addText('Starting Account "' . $account->getTitle() . '"');
+            $context->getOperationHistory()->addText('Starting Account "' . $account->getTitle() . '"');
 
             try {
                 $this->processAccount($account);
@@ -84,8 +58,8 @@ class Update extends \M2E\Kaufland\Model\Cron\AbstractTask
                     $account->getTitle(),
                 );
 
-                $this->processTaskAccountException($message, __FILE__, __LINE__);
-                $this->processTaskException($exception);
+                $context->getExceptionHandler()->processTaskAccountException($message, __FILE__, __LINE__);
+                $context->getExceptionHandler()->processTaskException($exception);
             }
         }
     }
@@ -118,7 +92,7 @@ class Update extends \M2E\Kaufland\Model\Cron\AbstractTask
      * @param \M2E\Kaufland\Model\Order\Change[] $changes
      *
      * @throws \M2E\Kaufland\Model\Exception
-     * @throws \M2E\Kaufland\Model\Exception\Connection
+     * @throws \M2E\Core\Model\Exception\Connection
      * @throws \Magento\Framework\Exception\AlreadyExistsException
      */
     protected function processChanges(

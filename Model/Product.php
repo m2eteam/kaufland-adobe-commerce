@@ -142,7 +142,7 @@ class Product extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
     {
         $this->setListingId($listingId)
              ->setMagentoProductId($magentoProductId)
-             ->setStatus(self::STATUS_NOT_LISTED)
+             ->setStatusNotListed(self::STATUS_CHANGER_USER)
              ->setKauflandProductCreator($isCreator);
 
         if ($kauflandProductId !== null) {
@@ -152,9 +152,9 @@ class Product extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         return $this;
     }
 
-    public function setStatusNotListed(): self
+    public function setStatusNotListed(int $changer): self
     {
-        $this->setStatus(self::STATUS_NOT_LISTED)
+        $this->setStatus(self::STATUS_NOT_LISTED, $changer)
              ->setData(ProductResource::COLUMN_OFFER_ID, null)
              ->setData(ProductResource::COLUMN_ONLINE_CATEGORIES_DATA, null)
              ->setData(ProductResource::COLUMN_ONLINE_QTY, null)
@@ -166,7 +166,7 @@ class Product extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
     public function fillFromUnmanagedProduct(\M2E\Kaufland\Model\Listing\Other $unmanagedProduct): self
     {
         $this->setKauflandProductId($unmanagedProduct->getKauflandProductId())
-             ->setStatus($unmanagedProduct->getStatus())
+             ->setStatus($unmanagedProduct->getStatus(), self::STATUS_CHANGER_COMPONENT)
              ->setUnitId($unmanagedProduct->getUnitId())
              ->setKauflandOfferId($unmanagedProduct->getOfferId())
              ->setStoreFrontId($unmanagedProduct->getStorefrontId())
@@ -313,23 +313,24 @@ class Product extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         return $this->getStatus() === self::STATUS_INACTIVE;
     }
 
-    public function setStatusListed(): self
+    public function setStatusListed(int $changer): self
     {
-        $this->setStatus(self::STATUS_LISTED);
+        $this->setStatus(self::STATUS_LISTED, $changer);
 
         return $this;
     }
 
-    public function setStatusInactive(): self
+    public function setStatusInactive(int $changer): self
     {
-        $this->setStatus(self::STATUS_INACTIVE);
+        $this->setStatus(self::STATUS_INACTIVE, $changer);
 
         return $this;
     }
 
-    public function setStatus(int $status): self
+    public function setStatus(int $status, int $changer): self
     {
         $this->setData(ProductResource::COLUMN_STATUS, $status);
+        $this->setStatusChanger($changer);
         $this->setStatusChangeDate(\M2E\Core\Helper\Date::createCurrentGmt());
 
         return $this;
@@ -835,8 +836,10 @@ class Product extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         $this->setData(ProductResource::COLUMN_ONLINE_IMAGE, $image);
     }
 
-    public function setStatusChanger(int $statusChanger): void
+    private function setStatusChanger(int $statusChanger): void
     {
+        $this->validateStatusChanger($statusChanger);
+
         $this->setData(ProductResource::COLUMN_STATUS_CHANGER, $statusChanger);
     }
 
@@ -923,5 +926,19 @@ class Product extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         $this->setData(ProductResource::COLUMN_LAST_BLOCKING_ERROR_DATE, null);
 
         return $this;
+    }
+
+    private function validateStatusChanger(int $changer): void
+    {
+        $allowed = [
+            self::STATUS_CHANGER_SYNCH,
+            self::STATUS_CHANGER_USER,
+            self::STATUS_CHANGER_COMPONENT,
+            self::STATUS_CHANGER_OBSERVER
+        ];
+
+        if (!in_array($changer, $allowed)) {
+            throw new \M2E\Kaufland\Model\Exception\Logic(sprintf('Status changer %s not valid.', $changer));
+        }
     }
 }

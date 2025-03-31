@@ -411,6 +411,8 @@ HTML
         );
         $templateShipping->setForm($form);
 
+        $accountId = (int)$formData['account_id'];
+        $storefrontId = (int)$formData['storefront_id'];
         $style = count($shippingTemplates) === 0 ? '' : 'display: none';
         $fieldset->addField(
             'template_shipping_container',
@@ -442,7 +444,7 @@ HTML
     </span>
     <a id="add_shipping_template_link" href="javascript: void(0);"
         onclick="KauflandListingSettingsObj.addNewTemplate(
-        '{$this->getAddNewUrl($formData['storefront_id'], TemplateManager::TEMPLATE_SHIPPING)}',
+        '{$this->getAddNewUrl($storefrontId, TemplateManager::TEMPLATE_SHIPPING, $accountId)}',
         KauflandListingSettingsObj.newShippingTemplateCallback
     );">$addNewText</a>
 </span>
@@ -731,17 +733,20 @@ JS
         return $collection->getConnection()->fetchAssoc($collection->getSelect());
     }
 
-    protected function getAddNewUrl($storefrontId, $nick)
+    protected function getAddNewUrl(int $storefrontId, string $nick, $accountId = null)
     {
-        return $this->getUrl(
-            '*/kaufland_template/newAction',
-            [
-                'storefront_id' => $storefrontId,
-                'wizard' => $this->getRequest()->getParam('wizard'),
-                'nick' => $nick,
-                'close_on_save' => 1,
-            ]
-        );
+        $params = [
+            'storefront_id' => $storefrontId,
+            'wizard' => $this->getRequest()->getParam('wizard'),
+            'nick' => $nick,
+            'close_on_save' => 1,
+        ];
+
+        if ($accountId !== null) {
+            $params['account_id'] = $accountId;
+        }
+
+        return $this->getUrl('*/kaufland_template/newAction', $params);
     }
 
     protected function getEditUrl($nick)

@@ -15,6 +15,7 @@ abstract class AbstractProcessEnd
     private array $params;
     private array $requestMetadata;
     private \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\RequestData $requestData;
+    private int $statusChanger;
 
     public function initialize(
         \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Logger $actionLogger,
@@ -24,7 +25,8 @@ abstract class AbstractProcessEnd
         \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\RequestData $requestData,
         array $params,
         array $requestMetadata,
-        array $warningMessages
+        array $warningMessages,
+        int $statusChanger
     ): void {
         $this->actionLogger = $actionLogger;
         $this->lockManager = $lockManager;
@@ -33,6 +35,7 @@ abstract class AbstractProcessEnd
         $this->params = $params;
         $this->requestMetadata = $requestMetadata;
         $this->requestData = $requestData;
+        $this->statusChanger = $statusChanger;
 
         foreach ($warningMessages as $warningMessage) {
             $this->getLogBuffer()->addWarning($warningMessage);
@@ -69,6 +72,11 @@ abstract class AbstractProcessEnd
     protected function getRequestData(): \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\RequestData
     {
         return $this->requestData;
+    }
+
+    protected function getStatusChanger(): int
+    {
+        return $this->statusChanger;
     }
 
     abstract protected function getProductLockType(): string;

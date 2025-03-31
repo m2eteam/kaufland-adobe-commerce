@@ -140,7 +140,7 @@ class Updater extends \M2E\Kaufland\Model\AbstractModel
                 return;
             }
 
-            if (strpos($customer->getEmail(), \M2E\Kaufland\Model\Magento\Customer::FAKE_EMAIL_POSTFIX) === false) {
+            if (strpos($customer->getEmail(), \M2E\Core\Model\Magento\Customer::FAKE_EMAIL_POSTFIX) === false) {
                 return;
             }
 

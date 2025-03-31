@@ -32,7 +32,7 @@ class Importer extends \M2E\Kaufland\Model\AbstractModel
     }
 
     /**
-     * @throws \M2E\Kaufland\Model\Exception\Connection
+     * @throws \M2E\Core\Model\Exception\Connection
      * @throws \M2E\Kaufland\Model\Exception
      */
     public function getDataFromChannel(): array

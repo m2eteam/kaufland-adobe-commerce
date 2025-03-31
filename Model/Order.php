@@ -3,6 +3,7 @@
 namespace M2E\Kaufland\Model;
 
 use M2E\Kaufland\Model\Log\AbstractModel as Log;
+use M2E\Kaufland\Model\ResourceModel\Order as OrderResource;
 
 class Order extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
 {
@@ -76,11 +77,14 @@ class Order extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
 
     /** @var \M2E\Kaufland\Model\Order\Repository */
     private Order\Repository $orderRepository;
+    /** @var \M2E\Kaufland\Model\Order\EventDispatcher */
+    private Order\EventDispatcher $orderEventDispatcher;
     /** @var \M2E\Kaufland\Model\Order\Change\Repository */
     private Order\Change\Repository $orderChangeRepository;
 
     public function __construct(
         \M2E\Kaufland\Model\Order\Repository $orderRepository,
+        \M2E\Kaufland\Model\Order\EventDispatcher $orderEventDispatcher,
         \M2E\Kaufland\Model\Order\Change\Repository $orderChangeRepository,
         \M2E\Kaufland\Model\Account\Repository $accountRepository,
         \M2E\Kaufland\Model\Magento\Quote\Manager $quoteManager,
@@ -127,6 +131,8 @@ class Order extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
             $data
         );
 
+        $this->orderRepository = $orderRepository;
+        $this->orderEventDispatcher = $orderEventDispatcher;
         $this->storeManager = $storeManager;
         $this->orderFactory = $orderFactory;
         $this->resourceConnection = $resourceConnection;
@@ -153,7 +159,6 @@ class Order extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         $this->magentoOrderShipmentTrackFactory = $magentoOrderShipmentTrackFactory;
         $this->magentoOrderInvoice = $magentoOrderInvoice;
         $this->accountRepository = $accountRepository;
-        $this->orderRepository = $orderRepository;
         $this->orderChangeRepository = $orderChangeRepository;
     }
 
@@ -346,9 +351,14 @@ class Order extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
 
     //---------------------------------------
 
+    public function hasMagentoOrder(): bool
+    {
+        return $this->getMagentoOrderId() !== null;
+    }
+
     public function getMagentoOrderId()
     {
-        return $this->getData('magento_order_id');
+        return $this->getData(OrderResource::COLUMN_MAGENTO_ORDER_ID);
     }
 
     //---------------------------------------
@@ -785,7 +795,7 @@ class Order extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         $magentoOrderUpdater->finishUpdate();
         // ---------------------------------------
 
-        $this->_eventManager->dispatch('m2e_order_place_success', ['order' => $this]);
+        $this->orderEventDispatcher->dispatchEventsMagentoOrderCreated($this);
 
         $this->addSuccessLog('Magento Order #%order_id% was created.', [
             '!order_id' => $this->getMagentoOrder()->getRealOrderId(),
@@ -950,6 +960,8 @@ class Order extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
                 'Invoice #%invoice_id% was created.',
                 ['!invoice_id' => $invoice->getIncrementId()]
             );
+
+            $this->orderEventDispatcher->dispatchEventInvoiceCreated($this);
         }
 
         return $invoice;

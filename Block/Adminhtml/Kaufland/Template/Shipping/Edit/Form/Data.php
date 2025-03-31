@@ -37,12 +37,6 @@ class Data extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractForm
         $default = $this->getDefault();
         $formData = array_merge($default, $formData);
 
-        if (isset($formData['storefront_id'])) {
-            $storefrontId = (int) $formData['storefront_id'];
-        } else {
-            $storefrontId = (int) $this->getRequest()->getParam('storefront_id');
-        }
-
         $form = $this->_formFactory->create();
 
         $form->addField(
@@ -63,14 +57,16 @@ class Data extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractForm
             ]
         );
 
-        $form->addField(
-            'storefront_id_hidden',
-            'hidden',
-            [
-                'name' => 'shipping[storefront_id]',
-                'value' => $storefrontId,
-            ]
-        );
+        if (isset($formData['storefront_id'])) {
+            $form->addField(
+                'storefront_id_hidden',
+                'hidden',
+                [
+                    'name' => 'shipping[storefront_id]',
+                    'value' => $formData['storefront_id'],
+                ]
+            );
+        }
 
         $fieldset = $form->addFieldset(
             'magento_block_template_shipping_edit_form',
@@ -128,20 +124,19 @@ class Data extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractForm
             [
                 'name' => 'shipping[storefront_id]',
                 'label' => $this->__('Storefront'),
-                'values' => $this->getStorefrontDataOptions(),
-                'value' => $storefrontId,
-                'disabled' => $storefrontId != 0,
+                'disabled' => isset($formData['storefront_id']),
                 'required' => true,
             ]
         );
 
+        $style = empty($formData['account_id']) ? 'margin-left: 70px; display: none;' : '';
         $buttonRefreshWarehouses = $this->getLayout()->createBlock(\M2E\Kaufland\Block\Adminhtml\Magento\Button::class)->addData(
             [
                 'id' => 'refresh_warehouse',
                 'label' => $this->__('Refresh Warehouses'),
                 'onclick' => 'KauflandTemplateShippingObj.refreshWarehouses()',
                 'class' => 'action-primary',
-                'style' => 'margin-left: 70px;',
+                'style' => $style,
             ]
         );
 
@@ -151,20 +146,19 @@ class Data extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractForm
             [
                 'name' => 'shipping[warehouse_id]',
                 'label' => $this->__('Warehouse'),
-                'values' => $this->getWarehouseDataOptions(),
-                'value' => $formData['warehouse_id'] ?? '',
                 'after_element_html' => $buttonRefreshWarehouses->toHtml(),
                 'required' => true,
             ]
         );
 
+        $style = empty($formData['storefront_id']) ? 'margin-left: 70px; display: none;' : '';
         $buttonRefreshShippingGroups = $this->getLayout()->createBlock(\M2E\Kaufland\Block\Adminhtml\Magento\Button::class)->addData(
             [
                 'id' => 'refresh_shipping_group',
                 'label' => $this->__('Refresh Shipping Group'),
                 'onclick' => 'KauflandTemplateShippingObj.refreshShippingGroups()',
                 'class' => 'action-primary',
-                'style' => 'margin-left: 70px;',
+                'style' => $style,
             ]
         );
 
@@ -174,10 +168,6 @@ class Data extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractForm
             [
                 'name' => 'shipping[shipping_group_id]',
                 'label' => $this->__('Shipping Group'),
-                'values' => $storefrontId
-                    ? $this->getShippingGroupDataOptionsByStorefront($storefrontId)
-                    : $this->getShippingGroupDataOptions(),
-                'value' => $formData['shipping_group_id'] ?? '',
                 'required' => true,
                 'after_element_html' => $buttonRefreshShippingGroups->toHtml(),
             ]
@@ -204,7 +194,13 @@ class Data extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractForm
         $template = $this->globalDataHelper->getValue('kaufland_template_shipping');
 
         if ($template === null || $template->getId() === null) {
-            return [];
+            $formData = [];
+            $storefrontId = $this->getRequest()->getParam('storefront_id', false);
+            if ($storefrontId !== false) {
+                $formData['storefront_id'] = $storefrontId;
+            }
+
+            return $formData;
         }
 
         return $template->getData();
@@ -213,64 +209,6 @@ class Data extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractForm
     private function getDefault()
     {
         return $this->modelFactory->getObject('Template_Shipping_Builder')->getDefaultData();
-    }
-
-    public function getStorefrontDataOptions(): array
-    {
-        $storefronts = $this->storefrontRepository->getAll();
-
-        $optionsResult = [];
-        foreach ($storefronts as $storefront) {
-            $optionsResult[] = [
-                'value' => $storefront['id'],
-                'label' => $storefront->getTitle()
-            ];
-        }
-
-        return $optionsResult;
-    }
-
-    public function getWarehouseDataOptions(): array
-    {
-        $optionsResult = [];
-        foreach ($this->warehouseRepository->getAll() as $warehouse) {
-            $optionsResult[] = [
-                'value' => $warehouse['id'],
-                'label' => $warehouse->getName()
-            ];
-        }
-
-        return $optionsResult;
-    }
-
-    public function getShippingGroupDataOptionsByStorefront(int $storefrontId): ?array
-    {
-        $shippingGroups = $this->shippingGroupRepository->findByStorefrontId($storefrontId);
-
-        $optionsResult = [];
-        foreach ($shippingGroups as $shippingGroup) {
-            $optionsResult[] = [
-                'value' => $shippingGroup['id'],
-                'label' => $shippingGroup->getName()
-            ];
-        }
-
-        return $optionsResult;
-    }
-
-    public function getShippingGroupDataOptions(): array
-    {
-        $shippingGroups = $this->shippingGroupRepository->getAll();
-
-        $optionsResult = [];
-        foreach ($shippingGroups as $shippingGroup) {
-            $optionsResult[] = [
-                'value' => $shippingGroup['id'],
-                'label' => $shippingGroup->getName()
-            ];
-        }
-
-        return $optionsResult;
     }
 
     public function getHandlingTimeOptions(): array
@@ -370,6 +308,12 @@ class Data extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractForm
 
     protected function _toHtml()
     {
+        $formData = $this->getFormData();
+        $currentAccountId = $formData['account_id'] ?? null;
+        $currentStorefrontId = $formData['storefront_id'] ?? null;
+        $currentWarehouseId = $formData['warehouse_id'] ?? null;
+        $currentShippingGroupId = $formData['shipping_group_id'] ?? null;
+
         $this->jsUrl->addUrls(
             [
                 'kaufland_template/refreshWarehouses' => $this->getUrl(
@@ -390,6 +334,12 @@ class Data extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractForm
 
                     ]
                 ),
+                'kaufland_account/getStorefrontsForAccount' => $this->getUrl(
+                    '*/kaufland_account/getStorefrontsForAccount',
+                    [
+
+                    ]
+                ),
             ]
         );
 
@@ -405,7 +355,14 @@ class Data extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractForm
     require([
         'Kaufland/Kaufland/Template/Shipping'
         ], function() {
-    window.KauflandTemplateShippingObj = new KauflandTemplateShipping();
+    window.KauflandTemplateShippingObj = new KauflandTemplateShipping(
+        {
+            accountId: '$currentAccountId',
+            storefrontId: '$currentStorefrontId',
+            warehouseId: '$currentWarehouseId',
+            shippingGroupId: '$currentShippingGroupId'
+        }
+    );
     KauflandTemplateShippingObj.initObservers();
     });
 JS

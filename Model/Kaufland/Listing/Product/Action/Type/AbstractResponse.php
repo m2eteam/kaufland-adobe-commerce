@@ -11,8 +11,19 @@ abstract class AbstractResponse
     private array $requestMetaData = [];
     private \M2E\Kaufland\Model\Product $listingProduct;
     private \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Configurator $configurator;
+    private int $statusChanger;
 
     abstract public function processSuccess(array $response, array $responseParams = []): void;
+
+    public function setStatusChanger(int $statusChanger): void
+    {
+        $this->statusChanger = $statusChanger;
+    }
+
+    protected function getStatusChanger(): int
+    {
+        return $this->statusChanger;
+    }
 
     public function setParams(array $params = []): void
     {

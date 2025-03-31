@@ -9,6 +9,7 @@ class ScheduledAction extends \M2E\Kaufland\Model\ResourceModel\ActiveRecord\Abs
     public const COLUMN_ID = 'id';
     public const COLUMN_LISTING_PRODUCT_ID = 'listing_product_id';
     public const COLUMN_ACTION_TYPE = 'action_type';
+    public const COLUMN_STATUS_CHANGER = 'status_changer';
     public const COLUMN_IS_FORCE = 'is_force';
     public const COLUMN_TAG = 'tag';
     public const COLUMN_ADDITIONAL_DATA = 'additional_data';

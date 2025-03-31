@@ -18,6 +18,7 @@ abstract class AbstractProcessStart
     private \M2E\Kaufland\Model\Processing\Runner $processingRunner;
     private Async\Processing\InitiatorFactory $processingInitiatorFactory;
     private array $params;
+    private int $statusChanger;
 
     public function initialize(
         \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Logger $actionLogger,
@@ -27,7 +28,8 @@ abstract class AbstractProcessStart
         \M2E\Kaufland\Model\Processing\Runner $processingRunner,
         Async\Processing\InitiatorFactory $processingInitiatorFactory,
         \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\LogBuffer $logBuffer,
-        array $params
+        array $params,
+        int $statusChanger
     ): void {
         $this->actionLogger = $actionLogger;
         $this->lockManager = $lockManager;
@@ -37,6 +39,7 @@ abstract class AbstractProcessStart
         $this->processingInitiatorFactory = $processingInitiatorFactory;
         $this->logBuffer = $logBuffer;
         $this->params = $params;
+        $this->statusChanger = $statusChanger;
     }
 
     /**
@@ -137,7 +140,8 @@ abstract class AbstractProcessStart
             $this->getRequestMetadata(),
             $this->getRequestData(),
             $this->getActionConfigurator()->getSerializedData(),
-            $this->logBuffer->getWarningMessages()
+            $this->logBuffer->getWarningMessages(),
+            $this->getStatusChanger()
         );
     }
 
@@ -178,5 +182,15 @@ abstract class AbstractProcessStart
     public function getResultStatus(): int
     {
         return $this->actionLogger->getStatus();
+    }
+
+    public function setStatusChanger(int $statusChanger): void
+    {
+        $this->statusChanger = $statusChanger;
+    }
+
+    protected function getStatusChanger(): int
+    {
+        return $this->statusChanger;
     }
 }

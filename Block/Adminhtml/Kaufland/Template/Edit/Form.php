@@ -6,14 +6,17 @@ class Form extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractForm
 {
     /** @var \M2E\Kaufland\Helper\Data\GlobalData */
     private $globalDataHelper;
+    private \M2E\Kaufland\Model\Account\Repository $accountRepository;
 
     public function __construct(
+        \M2E\Kaufland\Model\Account\Repository $accountRepository,
         \M2E\Kaufland\Block\Adminhtml\Magento\Context\Template $context,
         \Magento\Framework\Registry $registry,
         \Magento\Framework\Data\FormFactory $formFactory,
         \M2E\Kaufland\Helper\Data\GlobalData $globalDataHelper,
         array $data = []
     ) {
+        $this->accountRepository = $accountRepository;
         $this->globalDataHelper = $globalDataHelper;
         parent::__construct($context, $registry, $formFactory, $data);
     }
@@ -41,6 +44,8 @@ class Form extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractForm
             ],
         ]);
 
+        $templateNick = $this->getTemplateNick();
+
         $fieldset = $form->addFieldset(
             'general_fieldset',
             ['legend' => __('General'), 'collapsable' => false]
@@ -61,6 +66,33 @@ class Form extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractForm
             ]
         );
 
+        if ($templateNick === \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SHIPPING) {
+            if ($this->getRequest()->getParam('account_id', false) !== false) {
+                $fieldset->addField(
+                    'account_id_hidden',
+                    'hidden',
+                    [
+                        'name' => 'shipping[account_id]',
+                        'value' => $templateData['account_id'],
+                    ]
+                );
+            }
+
+            $fieldset->addField(
+                'account_id',
+                'select',
+                [
+                    'name' => 'shipping[account_id]',
+                    'label' => __('Account'),
+                    'title' => __('Account'),
+                    'values' => $this->getAccountOptions(),
+                    'value' => $templateData['account_id'],
+                    'required' => true,
+                    'disabled' => !empty($templateData['account_id']),
+                ]
+            );
+        }
+
         $form->setUseContainer(true);
         $this->setForm($form);
 
@@ -69,11 +101,14 @@ class Form extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractForm
 
     public function getTemplateData()
     {
+        $accountId = $this->getRequest()->getParam('account_id', false);
+
         $nick = $this->getTemplateNick();
         $templateData = $this->globalDataHelper->getValue("kaufland_template_{$nick}");
 
         return array_merge([
             'title' => '',
+            'account_id' => ($accountId !== false) ? $accountId : ''
         ], $templateData->getData());
     }
 
@@ -89,6 +124,25 @@ class Form extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractForm
         return $template ? $template->getId() : null;
     }
 
+    private function getAccountOptions(): array
+    {
+        return $this->formatAccountOptions($this->accountRepository->getAll());
+    }
+
+    private function formatAccountOptions(array $accounts): array
+    {
+        $optionsResult = [];
+
+        foreach ($accounts as $account) {
+            $optionsResult[] = [
+                'value' => $account->getId(),
+                'label' => $account->getTitle(),
+            ];
+        }
+
+        return $optionsResult;
+    }
+
     protected function _toHtml()
     {
         $nick = $this->getTemplateNick();
@@ -101,7 +155,7 @@ class Form extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractForm
                     'nick' => $nick,
                     'mode' => \M2E\Kaufland\Model\Kaufland\Template\Manager::MODE_TEMPLATE,
                     'data_force' => true,
-                    'storefront_id' => (int)$this->getRequest()->getParam('storefront_id'),
+                    'storefront_id' => $this->getRequest()->getParam('storefront_id'),
                 ]
             ),
             'kaufland_template/isTitleUnique' => $this->getUrl(

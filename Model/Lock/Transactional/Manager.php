@@ -11,17 +11,18 @@ class Manager
     private bool $isTableLocked = false;
     private bool $isTransactionStarted = false;
 
-    private Repository $lockTransactionalRepository;
-    private \M2E\Kaufland\Model\Lock\TransactionalFactory $lockTransactionalFactory;
+    /** @var \M2E\Kaufland\Model\Lock\Transactional\Repository */
+    private Repository $repository;
+    private \M2E\Kaufland\Model\Lock\TransactionalFactory $lockFactory;
 
     public function __construct(
         string $nick,
-        \M2E\Kaufland\Model\Lock\Transactional\Repository $lockTransactionalRepository,
-        \M2E\Kaufland\Model\Lock\TransactionalFactory $lockTransactionalFactory
+        Repository $repository,
+        \M2E\Kaufland\Model\Lock\TransactionalFactory $lockFactory
     ) {
         $this->nick = $nick;
-        $this->lockTransactionalRepository = $lockTransactionalRepository;
-        $this->lockTransactionalFactory = $lockTransactionalFactory;
+        $this->repository = $repository;
+        $this->lockFactory = $lockFactory;
     }
 
     public function __destruct()
@@ -63,7 +64,7 @@ class Manager
     {
         $this->startTransaction();
 
-        $lockId = $this->lockTransactionalRepository->findExclusiveLockIdByNick($this->nick);
+        $lockId = $this->repository->retrieveLock($this->nick);
         if ($lockId !== null) {
             return true;
         }
@@ -73,29 +74,14 @@ class Manager
         return false;
     }
 
-    private function startTransaction(): void
-    {
-        $this->lockTransactionalRepository->startTransaction();
-
-        $this->isTransactionStarted = true;
-    }
-
-    private function commitTransaction(): void
-    {
-        $this->lockTransactionalRepository->commitTransaction();
-
-        $this->isTransactionStarted = false;
-    }
-
     private function createExclusiveLock(): void
     {
         $this->lockTable();
 
-        $lock = $this->lockTransactionalRepository->findByNick($this->nick);
+        $lock = $this->repository->findByNick($this->nick);
         if ($lock === null) {
-            $lock = $this->lockTransactionalFactory->create($this->nick);
-
-            $this->lockTransactionalRepository->create($lock);
+            $lock = $this->lockFactory->create($this->nick);
+            $this->repository->create($lock);
         }
 
         $this->unlockTable();
@@ -103,16 +89,32 @@ class Manager
 
     // ----------------------------------------
 
+    private function startTransaction(): void
+    {
+        $this->repository->startTransaction();
+
+        $this->isTransactionStarted = true;
+    }
+
+    private function commitTransaction(): void
+    {
+        $this->repository->commitTransaction();
+
+        $this->isTransactionStarted = false;
+    }
+
+    // ----------------------------------------
+
     private function lockTable(): void
     {
-        $this->lockTransactionalRepository->lockTable();
+        $this->repository->lockTable();
 
         $this->isTableLocked = true;
     }
 
     private function unlockTable(): void
     {
-        $this->lockTransactionalRepository->unlockTable();
+        $this->repository->unlockTable();
 
         $this->isTableLocked = false;
     }

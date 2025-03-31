@@ -9,17 +9,20 @@ class Creator
     private \M2E\Kaufland\Model\Kaufland\Order\BuilderFactory $orderBuilderFactory;
     private \M2E\Kaufland\Helper\Module\Exception $exceptionHelper;
     private \M2E\Kaufland\Model\Order\Repository $orderRepository;
+    private \M2E\Kaufland\Model\Order\CreditMemoCreate $createCreditMemo;
 
     public function __construct(
         \M2E\Kaufland\Model\Synchronization\LogService $syncLogService,
         \M2E\Kaufland\Model\Kaufland\Order\BuilderFactory $orderBuilderFactory,
         \M2E\Kaufland\Helper\Module\Exception $exceptionHelper,
-        \M2E\Kaufland\Model\Order\Repository $orderRepository
+        \M2E\Kaufland\Model\Order\Repository $orderRepository,
+        \M2E\Kaufland\Model\Order\CreditMemoCreate $createCreditMemo
     ) {
         $this->syncLogService = $syncLogService;
         $this->orderBuilderFactory = $orderBuilderFactory;
         $this->exceptionHelper = $exceptionHelper;
         $this->orderRepository = $orderRepository;
+        $this->createCreditMemo = $createCreditMemo;
     }
 
     public function setValidateAccountCreateDate(bool $mode): void
@@ -28,9 +31,11 @@ class Creator
     }
 
     /**
+     * @param \M2E\Kaufland\Model\Account $account
+     * @param array $ordersData
+     *
      * @return \M2E\Kaufland\Model\Order[]
-     * @throws \M2E\Kaufland\Model\Exception\Logic
-     * @throws \Exception
+     * @throws \DateMalformedStringException
      */
     public function processKauflandOrders(
         \M2E\Kaufland\Model\Account $account,
@@ -130,6 +135,8 @@ class Creator
         if ($order->canCreateTracks()) {
             $order->createTracks();
         }
+
+        $this->createCreditMemo->process($order);
     }
 
     /**

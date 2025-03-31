@@ -55,7 +55,7 @@ class Active extends \M2E\Kaufland\Model\Instruction\SynchronizationTemplate\Che
         return true;
     }
 
-    public function process(array $params = []): void
+    public function process(): void
     {
         $product = $this->getInput()->getListingProduct();
 
@@ -63,21 +63,18 @@ class Active extends \M2E\Kaufland\Model\Instruction\SynchronizationTemplate\Che
             $product->isRevisable()
             || $product->isStoppable()
         ) {
-            $actionResult = $this->processUnit($product, $params);
+            $actionResult = $this->processUnit($product);
             if ($actionResult->isActionStop()) {
                 return;
             }
         }
 
-        if (
-            $product->isKauflandProductCreator()
-            && $product->isRevisableAsProduct()
-        ) {
-            $this->processProduct($product, $params);
+        if ($product->isRevisableAsProduct()) {
+            $this->processProduct($product);
         }
     }
 
-    private function processUnit(\M2E\Kaufland\Model\Product $product, array $params): Product\Action
+    private function processUnit(\M2E\Kaufland\Model\Product $product): Product\Action
     {
         $calculateResult = $this->actionCalculator->calculateToReviseOrStopUnit($product);
 
@@ -91,7 +88,7 @@ class Active extends \M2E\Kaufland\Model\Instruction\SynchronizationTemplate\Che
         }
 
         if ($calculateResult->isActionStop()) {
-            $this->returnWithStopAction($params);
+            $this->returnWithStopAction();
 
             return $calculateResult;
         }
@@ -106,7 +103,6 @@ class Active extends \M2E\Kaufland\Model\Instruction\SynchronizationTemplate\Che
 
         $this->createUnitReviseScheduledAction(
             $product,
-            $params,
             $calculateResult->getConfigurator(),
         );
 
@@ -115,24 +111,24 @@ class Active extends \M2E\Kaufland\Model\Instruction\SynchronizationTemplate\Che
 
     private function createUnitReviseScheduledAction(
         Product $product,
-        array $params,
         Configurator $configurator
     ): void {
         $this->scheduledActionCreate->create(
             $product,
             \M2E\Kaufland\Model\Product::ACTION_REVISE_UNIT,
-            ['params' => $params],
+            \M2E\Kaufland\Model\Product::STATUS_CHANGER_SYNCH,
+            [],
             $configurator->getAllowedDataTypes(),
             false,
             $configurator,
         );
     }
 
-    private function returnWithStopAction(array $params): void
+    private function returnWithStopAction(): void
     {
         $scheduledAction = $this->getInput()->getScheduledAction();
         if ($scheduledAction === null) {
-            $this->createStopScheduledAction($this->getInput()->getListingProduct(), $params);
+            $this->createStopScheduledAction($this->getInput()->getListingProduct());
 
             return;
         }
@@ -143,19 +139,20 @@ class Active extends \M2E\Kaufland\Model\Instruction\SynchronizationTemplate\Che
 
         $this->scheduledActionRepository->remove($scheduledAction);
 
-        $this->createStopScheduledAction($this->getInput()->getListingProduct(), $params);
+        $this->createStopScheduledAction($this->getInput()->getListingProduct());
     }
 
-    private function createStopScheduledAction(Product $product, array $params): void
+    private function createStopScheduledAction(Product $product): void
     {
         $this->scheduledActionCreate->create(
             $product,
             \M2E\Kaufland\Model\Product::ACTION_STOP_UNIT,
-            ['params' => $params],
+            \M2E\Kaufland\Model\Product::STATUS_CHANGER_SYNCH,
+            [],
         );
     }
 
-    private function processProduct(\M2E\Kaufland\Model\Product $product, array $params): void
+    private function processProduct(\M2E\Kaufland\Model\Product $product): void
     {
         $calculateResult = $this->actionCalculator->calculateToReviseProduct(
             $product,
@@ -181,20 +178,19 @@ class Active extends \M2E\Kaufland\Model\Instruction\SynchronizationTemplate\Che
 
         $this->createProductReviseScheduledAction(
             $product,
-            $params,
             $calculateResult->getConfigurator(),
         );
     }
 
     private function createProductReviseScheduledAction(
         Product $product,
-        array $params,
         Configurator $configurator
     ): void {
         $this->scheduledActionCreate->create(
             $product,
             \M2E\Kaufland\Model\Product::ACTION_REVISE_PRODUCT,
-            ['params' => $params],
+            \M2E\Kaufland\Model\Product::STATUS_CHANGER_SYNCH,
+            [],
             $configurator->getAllowedDataTypes(),
             false,
             $configurator

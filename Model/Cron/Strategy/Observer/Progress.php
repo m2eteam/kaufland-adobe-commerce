@@ -11,44 +11,34 @@ class Progress implements \Magento\Framework\Event\ObserverInterface
 
     /** @var \M2E\Kaufland\Model\Lock\Item\Manager */
     private $lockItemManager = null;
-
-    /** @var \M2E\Kaufland\Model\Factory */
-    private $modelFactory;
-
-    //########################################
+    private \M2E\Kaufland\Model\Lock\Item\ProgressFactory $lockItemProgressFactory;
 
     public function __construct(
-        \M2E\Kaufland\Model\Factory $modelFactory
+        \M2E\Kaufland\Model\Lock\Item\ProgressFactory $lockItemProgressFactory
     ) {
-        $this->modelFactory = $modelFactory;
+        $this->lockItemProgressFactory = $lockItemProgressFactory;
     }
 
-    //########################################
-
-    public function enable()
+    public function enable(): self
     {
         $this->isEnabled = true;
 
         return $this;
     }
 
-    public function disable()
+    public function disable(): self
     {
         $this->isEnabled = false;
 
         return $this;
     }
 
-    //########################################
-
-    public function setLockItemManager(\M2E\Kaufland\Model\Lock\Item\Manager $lockItemManager)
+    public function setLockItemManager(\M2E\Kaufland\Model\Lock\Item\Manager $lockItemManager): self
     {
         $this->lockItemManager = $lockItemManager;
 
         return $this;
     }
-
-    //########################################
 
     public function execute(Observer $observer)
     {
@@ -63,28 +53,25 @@ class Progress implements \Magento\Framework\Event\ObserverInterface
         $eventName = $observer->getEvent()->getName();
         $progressNick = $observer->getEvent()->getProgressNick();
 
-        $progress = $this->modelFactory->getObject(
-            'Lock_Item_Progress',
-            [
-                'lockItemManager' => $this->lockItemManager,
-                'progressNick' => $progressNick,
-            ]
+        $progress = $this->lockItemProgressFactory->create(
+            $this->lockItemManager,
+            (string)$progressNick
         );
 
-        if ($eventName == \M2E\Kaufland\Model\Cron\Strategy::PROGRESS_START_EVENT_NAME) {
+        if ($eventName === \M2E\Kaufland\Model\Cron\Strategy::PROGRESS_START_EVENT_NAME) {
             $progress->start();
 
             return;
         }
 
-        if ($eventName == \M2E\Kaufland\Model\Cron\Strategy::PROGRESS_SET_PERCENTAGE_EVENT_NAME) {
+        if ($eventName === \M2E\Kaufland\Model\Cron\Strategy::PROGRESS_SET_PERCENTAGE_EVENT_NAME) {
             $percentage = $observer->getEvent()->getData('percentage');
             $progress->setPercentage($percentage);
 
             return;
         }
 
-        if ($eventName == \M2E\Kaufland\Model\Cron\Strategy::PROGRESS_SET_DETAILS_EVENT_NAME) {
+        if ($eventName === \M2E\Kaufland\Model\Cron\Strategy::PROGRESS_SET_DETAILS_EVENT_NAME) {
             $args = [
                 'percentage' => $observer->getEvent()->getData('percentage'),
                 'total' => $observer->getEvent()->getData('total'),
@@ -94,10 +81,8 @@ class Progress implements \Magento\Framework\Event\ObserverInterface
             return;
         }
 
-        if ($eventName == \M2E\Kaufland\Model\Cron\Strategy::PROGRESS_STOP_EVENT_NAME) {
+        if ($eventName === \M2E\Kaufland\Model\Cron\Strategy::PROGRESS_STOP_EVENT_NAME) {
             $progress->stop();
         }
     }
-
-    //########################################
 }

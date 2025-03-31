@@ -10,14 +10,15 @@ class Dashboard extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractForm
     private $latestPublicVersion;
     /** @var bool */
     private $cronIsNotWorking = false;
-    /** @var \M2E\Kaufland\Helper\Module\Cron */
-    private $cronHelper;
     /** @var \M2E\Kaufland\Model\HealthStatus\Task\Result\Set */
     private $resultSet;
     private \M2E\Kaufland\Model\Module $module;
+    private \M2E\Kaufland\Model\Cron\Manager $cronManager;
+    private \M2E\Kaufland\Model\Cron\Config $cronConfig;
 
     public function __construct(
-        \M2E\Kaufland\Helper\Module\Cron $cronHelper,
+        \M2E\Kaufland\Model\Cron\Config $cronConfig,
+        \M2E\Kaufland\Model\Cron\Manager $cronManager,
         \M2E\Kaufland\Model\HealthStatus\Task\Result\Set $resultSet,
         \M2E\Kaufland\Model\Module $module,
         \M2E\Kaufland\Block\Adminhtml\Magento\Context\Template $context,
@@ -26,8 +27,9 @@ class Dashboard extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractForm
         array $data = []
     ) {
         $this->resultSet = $resultSet;
-        $this->cronHelper = $cronHelper;
         $this->module = $module;
+        $this->cronManager = $cronManager;
+        $this->cronConfig = $cronConfig;
         parent::__construct($context, $registry, $formFactory, $data);
     }
 
@@ -117,14 +119,14 @@ HTML
             'note',
             [
                 'label' => __('Type'),
-                'text' => ucwords(str_replace('_', ' ', $this->cronHelper->getRunner())),
+                'text' => ucwords(str_replace('_', ' ', $this->cronConfig->getActiveRunner())),
             ]
         );
 
-        $cronLastRunTime = $this->cronHelper->getLastRun();
+        $cronLastRunTime = $this->cronManager->getCronLastRun();
         $cronLastRunTimeText = 'N/A';
         if ($cronLastRunTime !== null) {
-            $this->cronIsNotWorking = $this->cronHelper->isLastRunMoreThan(12, true);
+            $this->cronIsNotWorking = $this->cronManager->isCronLastRunMoreThan(12 * 3600);
             $cronLastRunTimeText = $cronLastRunTime->format('Y-m-d H:i:s');
         }
 

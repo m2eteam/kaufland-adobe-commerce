@@ -29,7 +29,7 @@ abstract class AbstractChecker
         return true;
     }
 
-    abstract public function process(array $params = []);
+    abstract public function process();
 
     // ----------------------------------------
 

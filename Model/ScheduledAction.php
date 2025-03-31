@@ -30,12 +30,14 @@ class ScheduledAction extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
     public function init(
         \M2E\Kaufland\Model\Product $listingProduct,
         int $action,
+        int $statusChanger,
         array $data,
         bool $isForce = false,
         array $tags = [],
         ?\M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Configurator $configurator = null
     ): self {
         $this->validateAction($action);
+        $this->validateStatusChanger($statusChanger);
 
         if ($configurator !== null) {
             $data['configurator'] = [
@@ -46,6 +48,7 @@ class ScheduledAction extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         $this
             ->setData(ScheduledActionResource::COLUMN_LISTING_PRODUCT_ID, $listingProduct->getId())
             ->setData(ScheduledActionResource::COLUMN_ACTION_TYPE, $action)
+            ->setData(ScheduledActionResource::COLUMN_STATUS_CHANGER, $statusChanger)
             ->setData(ScheduledActionResource::COLUMN_IS_FORCE, (int)$isForce)
             ->setData(ScheduledActionResource::COLUMN_TAG, empty($tags) ? null : implode('/', $tags))
             ->setData(ScheduledActionResource::COLUMN_ADDITIONAL_DATA, json_encode($data, JSON_THROW_ON_ERROR));
@@ -114,6 +117,11 @@ class ScheduledAction extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         return $this->getActionType() === \M2E\Kaufland\Model\Product::ACTION_DELETE_UNIT;
     }
 
+    public function getStatusChanger(): int
+    {
+        return (int)$this->getData(ScheduledActionResource::COLUMN_STATUS_CHANGER);
+    }
+
     public function isForce(): bool
     {
         return (bool)$this->getData(ScheduledActionResource::COLUMN_IS_FORCE);
@@ -162,6 +170,22 @@ class ScheduledAction extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         if (!in_array($action, $allowedActions, true)) {
             throw new \M2E\Kaufland\Model\Exception\Logic(
                 sprintf('Action %s is not allowed for scheduled.', $action),
+            );
+        }
+    }
+
+    private function validateStatusChanger(int $changer): void
+    {
+        $allowed = [
+            \M2E\Kaufland\Model\Product::STATUS_CHANGER_SYNCH,
+            \M2E\Kaufland\Model\Product::STATUS_CHANGER_USER,
+            \M2E\Kaufland\Model\Product::STATUS_CHANGER_COMPONENT,
+            \M2E\Kaufland\Model\Product::STATUS_CHANGER_OBSERVER,
+        ];
+
+        if (!in_array($changer, $allowed)) {
+            throw new \M2E\Kaufland\Model\Exception\Logic(
+                sprintf('Status changer %s is not allowed for scheduled.', $changer),
             );
         }
     }

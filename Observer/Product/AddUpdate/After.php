@@ -16,10 +16,8 @@ class After extends AbstractAddUpdate
     private \M2E\Kaufland\Model\Listing\Log\Repository $listingLogRepository;
     private array $listingsProductsChangedAttributes = [];
     private array $attributeAffectOnStoreIdCache = [];
-    private \M2E\Kaufland\Helper\Magento\Product $helperMagentoProduct;
 
     public function __construct(
-        \M2E\Kaufland\Helper\Magento\Product $helperMagentoProduct,
         \M2E\Kaufland\Model\Product\Repository $listingProductRepository,
         \M2E\Kaufland\Model\Listing\Log\Repository $listingLogRepository,
         \M2E\Kaufland\Model\Listing\LogService $listingLogService,
@@ -44,7 +42,6 @@ class After extends AbstractAddUpdate
         $this->changeAttributeTrackerFactory = $changeAttributeTrackerFactory;
         $this->listingLogService = $listingLogService;
         $this->listingLogRepository = $listingLogRepository;
-        $this->helperMagentoProduct = $helperMagentoProduct;
     }
 
     public function beforeProcess(): void
@@ -78,8 +75,6 @@ class After extends AbstractAddUpdate
             $this->performSpecialPriceChanges();
             $this->performSpecialPriceFromDateChanges();
             $this->performSpecialPriceToDateChanges();
-            $this->performTierPriceChanges();
-            $this->performDefaultQtyChanges();
 
             $this->addListingProductInstructions();
         }
@@ -168,8 +163,8 @@ class After extends AbstractAddUpdate
             $this->logListingProductMessage(
                 $listingProduct,
                 \M2E\Kaufland\Model\Listing\Log::ACTION_CHANGE_PRODUCT_SPECIAL_PRICE,
-                $oldValue,
-                $newValue
+                (string)$oldValue,
+                (string)$newValue
             );
         }
     }
@@ -219,75 +214,6 @@ class After extends AbstractAddUpdate
                 $oldValue,
                 $newValue
             );
-        }
-    }
-
-    private function performTierPriceChanges()
-    {
-        $oldValue = $this->getProxy()->getData('tier_price');
-        $newValue = $this->getProduct()->getTierPrice();
-
-        if ($oldValue == $newValue) {
-            return;
-        }
-
-        $oldValue = $this->convertTierPriceForLog($oldValue);
-        $newValue = $this->convertTierPriceForLog($newValue);
-
-        foreach ($this->getAffectedListingsProducts() as $listingProduct) {
-            $this->listingsProductsChangedAttributes[$listingProduct->getId()][] = 'tier_price';
-
-            $this->logListingProductMessage(
-                $listingProduct,
-                \M2E\Kaufland\Model\Listing\Log::ACTION_CHANGE_PRODUCT_TIER_PRICE,
-                $oldValue,
-                $newValue
-            );
-        }
-    }
-
-    private function performDefaultQtyChanges()
-    {
-        if (!$this->helperMagentoProduct->isGroupedType($this->getProduct()->getTypeId())) {
-            return;
-        }
-
-        $values = $this->getProxy()->getData('default_qty');
-        foreach ($this->getProduct()->getTypeInstance()->getAssociatedProducts($this->getProduct()) as $childProduct) {
-            $sku = $childProduct->getSku();
-            $newValue = (int)$childProduct->getQty();
-            $oldValue = isset($values[$sku]) ? (int)$values[$sku] : 0;
-
-            unset($values[$sku]);
-            if ($oldValue == $newValue) {
-                continue;
-            }
-
-            foreach ($this->getAffectedListingsProducts() as $listingProduct) {
-                $this->listingsProductsChangedAttributes[$listingProduct->getId()][] = 'qty';
-
-                $this->logListingProductMessage(
-                    $listingProduct,
-                    \M2E\Kaufland\Model\Listing\Log::ACTION_CHANGE_PRODUCT_QTY,
-                    $oldValue,
-                    $newValue,
-                    "SKU {$sku}: Default QTY was changed."
-                );
-            }
-        }
-
-        foreach ($values as $sku => $defaultQty) {
-            foreach ($this->getAffectedListingsProducts() as $listingProduct) {
-                $this->listingsProductsChangedAttributes[$listingProduct->getId()][] = 'qty';
-
-                $this->logListingProductMessage(
-                    $listingProduct,
-                    \M2E\Kaufland\Model\Listing\Log::ACTION_CHANGE_PRODUCT_QTY,
-                    $defaultQty,
-                    0,
-                    "SKU {$sku} was removed from the Product Set."
-                );
-            }
         }
     }
 
@@ -401,29 +327,11 @@ class After extends AbstractAddUpdate
         return $this->attributeAffectOnStoreIdCache[$cacheKey] = in_array($onStoreId, $affectedStoreIds);
     }
 
-    private function convertTierPriceForLog($tierPrice)
-    {
-        if (empty($tierPrice) || !is_array($tierPrice)) {
-            return 'None';
-        }
-
-        $result = [];
-        foreach ($tierPrice as $tierPriceData) {
-            $result[] = sprintf(
-                "[price = %s, qty = %s]",
-                $tierPriceData["website_price"],
-                $tierPriceData["price_qty"]
-            );
-        }
-
-        return implode(",", $result);
-    }
-
     private function logListingProductMessage(
         \M2E\Kaufland\Model\Product $listingProduct,
         int $action,
-        $oldValue,
-        $newValue,
+        string $oldValue,
+        string $newValue,
         $messagePostfix = ''
     ): void {
         $oldValue = strlen($oldValue) > 150 ? substr($oldValue, 0, 150) . ' ...' : $oldValue;

@@ -17,6 +17,7 @@ class Repository
     private \M2E\Kaufland\Helper\Data\Cache\Runtime $runtimeCache;
     private \M2E\Kaufland\Model\ResourceModel\Listing $listingResource;
     private \M2E\Kaufland\Model\ResourceModel\ExternalChange $externalChangeResource;
+    private \M2E\Kaufland\Helper\Module\Database\Structure $dbStructureHelper;
 
     public function __construct(
         \M2E\Kaufland\Model\ResourceModel\Listing $listingResource,
@@ -25,7 +26,8 @@ class Repository
         ProductResource\CollectionFactory $listingProductCollectionFactory,
         \M2E\Kaufland\Model\ResourceModel\ExternalChange $externalChangeResource,
         \M2E\Kaufland\Model\ProductFactory $listingProductFactory,
-        \M2E\Kaufland\Model\Listing\Wizard\ProductCollectionFactory $wizardProductCollectionFactory
+        \M2E\Kaufland\Model\Listing\Wizard\ProductCollectionFactory $wizardProductCollectionFactory,
+        \M2E\Kaufland\Helper\Module\Database\Structure $dbStructureHelper
     ) {
         $this->listingProductResource = $listingProductResource;
         $this->listingProductCollectionFactory = $listingProductCollectionFactory;
@@ -34,6 +36,7 @@ class Repository
         $this->listingResource = $listingResource;
         $this->externalChangeResource = $externalChangeResource;
         $this->wizardProductCollectionFactory = $wizardProductCollectionFactory;
+        $this->dbStructureHelper = $dbStructureHelper;
     }
 
     public function create(\M2E\Kaufland\Model\Product $product): void
@@ -263,6 +266,34 @@ class Repository
         );
 
         return array_values($collection->getItems());
+    }
+
+    /**
+     * @param string $sku
+     *
+     * @return \M2E\Kaufland\Model\Product[]
+     */
+    public function findProductsByMagentoSku(
+        string $sku
+    ): array {
+        $collection = $this->listingProductCollectionFactory->create();
+        $entityTableName = $this->dbStructureHelper->getTableNameWithPrefix('catalog_product_entity');
+
+        $collection->getSelect()
+                   ->join(
+                       ['cpe' => $entityTableName],
+                       sprintf(
+                           'cpe.entity_id = `main_table`.%s',
+                           ProductResource::COLUMN_MAGENTO_PRODUCT_ID,
+                       ),
+                       [],
+                   );
+        $collection->addFieldToFilter(
+            'cpe.sku',
+            ['like' => '%' . $sku . '%'],
+        );
+
+        return $collection->getItems();
     }
 
     /**

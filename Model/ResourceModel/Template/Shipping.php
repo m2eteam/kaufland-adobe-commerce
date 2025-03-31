@@ -7,6 +7,7 @@ namespace M2E\Kaufland\Model\ResourceModel\Template;
 class Shipping extends \M2E\Kaufland\Model\ResourceModel\ActiveRecord\AbstractModel
 {
     public const COLUMN_ID = 'id';
+    public const COLUMN_ACCOUNT_ID = 'account_id';
     public const COLUMN_TITLE = 'title';
     public const COLUMN_IS_CUSTOM_TEMPLATE = 'is_custom_template';
     public const COLUMN_HANDLING_TIME = 'handling_time';

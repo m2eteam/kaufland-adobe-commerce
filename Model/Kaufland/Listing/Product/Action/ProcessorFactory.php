@@ -28,13 +28,15 @@ class ProcessorFactory
         \M2E\Kaufland\Model\Product $listingProduct,
         Configurator $configurator,
         Logger $actionLogger,
-        array $params
+        array $params,
+        int $statusChanger
     ): AbstractProcessor {
         /** @var AbstractProcessor $obj */
         $obj = $this->objectManager->create($processorClass);
 
         $obj->setListingProduct($listingProduct);
         $obj->setActionConfigurator($configurator);
+        $obj->setStatusChanger($statusChanger);
 
         $obj->setActionLogger($actionLogger);
 
@@ -71,6 +73,7 @@ class ProcessorFactory
             $configurator,
             $actionLogger,
             $params,
+            $statusChanger,
         );
     }
 
@@ -94,6 +97,7 @@ class ProcessorFactory
             $configurator,
             $actionLogger,
             $params,
+            $statusChanger,
         );
     }
 
@@ -117,6 +121,7 @@ class ProcessorFactory
             $configurator,
             $actionLogger,
             $params,
+            $statusChanger,
         );
     }
 
@@ -140,6 +145,7 @@ class ProcessorFactory
             $configurator,
             $actionLogger,
             $params,
+            $statusChanger,
         );
     }
 
@@ -163,6 +169,7 @@ class ProcessorFactory
             $configurator,
             $actionLogger,
             $params,
+            $statusChanger,
         );
     }
 

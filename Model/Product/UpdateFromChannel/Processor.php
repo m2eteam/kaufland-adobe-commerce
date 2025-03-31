@@ -205,13 +205,11 @@ class Processor
     ): \M2E\Kaufland\Model\Listing\Log\Record {
         switch ($calculatedStatus->getStatus()) {
             case \M2E\Kaufland\Model\Product::STATUS_NOT_LISTED:
-                $this->product->setStatusNotListed()
-                              ->setStatusChanger($calculatedStatus->getStatusChanger());
+                $this->product->setStatusNotListed($calculatedStatus->getStatusChanger());
                 break;
 
             default:
-                $this->product->setStatus($calculatedStatus->getStatus())
-                              ->setStatusChanger($calculatedStatus->getStatusChanger());
+                $this->product->setStatus($calculatedStatus->getStatus(), $calculatedStatus->getStatusChanger());
         }
 
         return $calculatedStatus->getMessageAboutChange();

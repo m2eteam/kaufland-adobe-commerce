@@ -23,7 +23,7 @@ class SearchChannelProductsService
      *
      * @return \M2E\Kaufland\Model\Kaufland\Connector\Product\Search\Product[]
      * @throws \M2E\Kaufland\Model\Exception
-     * @throws \M2E\Kaufland\Model\Exception\Connection
+     * @throws \M2E\Core\Model\Exception\Connection
      */
     public function findByEans(
         \M2E\Kaufland\Model\Account $account,

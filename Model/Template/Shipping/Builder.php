@@ -17,6 +17,10 @@ class Builder extends \M2E\Kaufland\Model\Kaufland\Template\AbstractBuilder
 
         $data = array_merge($this->getDefaultData(), $data);
 
+        if (isset($this->rawData['account_id'])) {
+            $data['account_id'] = (int)$this->rawData['account_id'];
+        }
+
         if (isset($this->rawData['listing_type'])) {
             $data['listing_type'] = (int)$this->rawData['listing_type'];
         }

@@ -78,8 +78,7 @@ class Processor
         );
 
         foreach ($removedProducts as $product) {
-            $product->setStatusNotListed()
-                    ->setStatusChanger(\M2E\Kaufland\Model\Product::STATUS_CHANGER_COMPONENT);
+            $product->setStatusNotListed(\M2E\Kaufland\Model\Product::STATUS_CHANGER_COMPONENT);
 
             $this->productRepository->save($product);
 

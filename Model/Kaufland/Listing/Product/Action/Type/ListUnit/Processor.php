@@ -83,6 +83,7 @@ class Processor extends \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Abst
             $this->getActionConfigurator(),
             $this->requestData,
             $this->getParams(),
+            $this->getStatusChanger(),
             $this->requestMetadata,
         );
 

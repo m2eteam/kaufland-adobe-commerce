@@ -44,7 +44,7 @@ class RelistAction extends AbstractRealtime
             return [];
         }
 
-        return [$calculator->calculateToRelist($product)];
+        return [$calculator->calculateToRelist($product, \M2E\Kaufland\Model\Product::STATUS_CHANGER_USER)];
     }
 
     protected function logAboutSkipAction(

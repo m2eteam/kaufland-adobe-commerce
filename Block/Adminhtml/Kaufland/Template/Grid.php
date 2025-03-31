@@ -4,6 +4,7 @@ namespace M2E\Kaufland\Block\Adminhtml\Kaufland\Template;
 
 use M2E\Kaufland\Block\Adminhtml\Magento\Grid\AbstractGrid;
 use Magento\Framework\DB\Select;
+use M2E\Kaufland\Model\ResourceModel\Account as AccountResource;
 
 class Grid extends AbstractGrid
 {
@@ -14,8 +15,13 @@ class Grid extends AbstractGrid
     private \M2E\Kaufland\Model\ResourceModel\Template\Shipping\CollectionFactory $shippingCollectionFactory;
     private \M2E\Kaufland\Model\ResourceModel\Template\Description\CollectionFactory $descriptionCollectionFactory;
     private \M2E\Kaufland\Model\Storefront\Repository $storefrontRepository;
+    private \M2E\Kaufland\Model\ResourceModel\Account $accountResource;
+    private \M2E\Kaufland\Model\ResourceModel\Account\CollectionFactory $accountCollectionFactory;
+    private AccountResource\Collection $accountCollection;
 
     public function __construct(
+        \M2E\Kaufland\Model\ResourceModel\Account $accountResource,
+        \M2E\Kaufland\Model\ResourceModel\Account\CollectionFactory $accountCollectionFactory,
         \M2E\Kaufland\Model\ResourceModel\Template\SellingFormat\CollectionFactory $sellingCollectionFactory,
         \M2E\Kaufland\Model\ResourceModel\Template\Synchronization\CollectionFactory $syncCollectionFactory,
         \M2E\Kaufland\Model\ResourceModel\Template\Shipping\CollectionFactory $shippingCollectionFactory,
@@ -31,6 +37,8 @@ class Grid extends AbstractGrid
         $this->resourceConnection = $resourceConnection;
 
         parent::__construct($context, $backendHelper, $data);
+        $this->accountResource = $accountResource;
+        $this->accountCollectionFactory = $accountCollectionFactory;
         $this->sellingCollectionFactory = $sellingCollectionFactory;
         $this->syncCollectionFactory = $syncCollectionFactory;
         $this->shippingCollectionFactory = $shippingCollectionFactory;
@@ -69,6 +77,8 @@ class Grid extends AbstractGrid
                 new \Zend_Db_Expr(
                     '\'' . \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SELLING_FORMAT . '\' as `nick`'
                 ),
+                new \Zend_Db_Expr('NULL as `account_title`'),
+                new \Zend_Db_Expr('\'0\' as `account_id`'),
                 new \Zend_Db_Expr('\'0\' as `storefront_id`'),
                 'create_date',
                 'update_date',
@@ -88,6 +98,8 @@ class Grid extends AbstractGrid
                 new \Zend_Db_Expr(
                     '\'' . \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SYNCHRONIZATION . '\' as `nick`'
                 ),
+                new \Zend_Db_Expr('NULL as `account_title`'),
+                new \Zend_Db_Expr('\'0\' as `account_id`'),
                 new \Zend_Db_Expr('\'0\' as `storefront_id`'),
                 'create_date',
                 'update_date',
@@ -98,6 +110,15 @@ class Grid extends AbstractGrid
         ///Prepare Shipping collection
         $collectionShipping = $this->shippingCollectionFactory->create();
         $collectionShipping->getSelect()->reset(Select::COLUMNS);
+        $collectionShipping->getSelect()->join(
+            ['account' => $this->accountResource->getMainTable()],
+            sprintf(
+                'account.%s = main_table.%s',
+                \M2E\Kaufland\Model\ResourceModel\Account::COLUMN_ID,
+                \M2E\Kaufland\Model\ResourceModel\Template\Shipping::COLUMN_ACCOUNT_ID
+            ),
+            []
+        );
         $collectionShipping->getSelect()->columns(
             [
                 'id as template_id',
@@ -105,6 +126,8 @@ class Grid extends AbstractGrid
                 new \Zend_Db_Expr(
                     '\'' . \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SHIPPING . '\' as `nick`'
                 ),
+                new \Zend_Db_Expr('account.title as `account_title`'),
+                new \Zend_Db_Expr('account.id as `account_id`'),
                 'storefront_id',
                 'create_date',
                 'update_date',
@@ -121,6 +144,8 @@ class Grid extends AbstractGrid
                 new \Zend_Db_Expr(
                     '\'' . \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_DESCRIPTION . '\' as `nick`'
                 ),
+                new \Zend_Db_Expr('NULL as `account_title`'),
+                new \Zend_Db_Expr('\'0\' as `account_id`'),
                 new \Zend_Db_Expr('\'0\' as `storefront_id`'),
                 'create_date',
                 'update_date',
@@ -145,7 +170,16 @@ class Grid extends AbstractGrid
         $resultCollection->setConnection($this->resourceConnection->getConnection());
         $resultCollection->getSelect()->reset()->from(
             ['main_table' => $unionSelect],
-            ['template_id', 'title', 'nick', 'storefront_id', 'create_date', 'update_date']
+            [
+                'template_id',
+                'title',
+                'account_title',
+                'account_id',
+                'nick',
+                'storefront_id',
+                'create_date',
+                'update_date'
+            ]
         );
         // ---------------------------------------
 
@@ -180,6 +214,18 @@ class Grid extends AbstractGrid
             'index' => 'nick',
             'filter_index' => 'main_table.nick',
             'options' => $options,
+        ]);
+
+        $this->addColumn('account', [
+            'header' => $this->__('Account'),
+            'align' => 'left',
+            'type' => 'options',
+            'width' => '100px',
+            'index' => 'account_title',
+            'filter_index' => 'account_title',
+            'filter_condition_callback' => [$this, 'callbackFilterAccount'],
+            'frame_callback' => [$this, 'callbackColumnAccountTitle'],
+            'options' => $this->getAccountTitles(),
         ]);
 
         $this->addColumn('storefront', [
@@ -302,5 +348,48 @@ class Grid extends AbstractGrid
         }
 
         return $storefrontTitles;
+    }
+
+    protected function callbackFilterAccount($collection, $column): void
+    {
+        $value = $column->getFilter()->getValue();
+
+        if ($value == null) {
+            return;
+        }
+
+        $collection->getSelect()->where('account_id = 0 OR account_id = ?', (int)$value);
+    }
+
+    public function callbackColumnAccountTitle($value, $row, $column, $isExport): string
+    {
+        if (empty($value)) {
+            return $this->__('Any');
+        }
+
+        return $value;
+    }
+
+    private function getAccountCollection(): AccountResource\Collection
+    {
+        /** @psalm-suppress RedundantPropertyInitializationCheck */
+        if (!isset($this->accountCollection)) {
+            $collection = $this->accountCollectionFactory->create();
+            $collection->setOrder(AccountResource::COLUMN_TITLE, 'ASC');
+
+            $this->accountCollection = $collection;
+        }
+
+        return $this->accountCollection;
+    }
+
+    private function getAccountTitles(): array
+    {
+        $result = [];
+        foreach ($this->getAccountCollection()->getItems() as $account) {
+            $result[$account->getId()] = $account->getTitle();
+        }
+
+        return $result;
     }
 }

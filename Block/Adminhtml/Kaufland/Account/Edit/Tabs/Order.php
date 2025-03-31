@@ -2,6 +2,7 @@
 
 namespace M2E\Kaufland\Block\Adminhtml\Kaufland\Account\Edit\Tabs;
 
+use M2E\Kaufland\Model\Account\Settings\Order as OrderSettings;
 use M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractForm;
 use M2E\Kaufland\Model\Account;
 use Magento\Framework\Message\MessageInterface;
@@ -61,7 +62,7 @@ for your Magento Orders as well as specify the automatic creation of invoices an
                 ),
             ]
         );
-
+        //region Product Is Listed By M2E Kaufland
         $fieldset = $form->addFieldset(
             'listed_by_m2e',
             [
@@ -121,7 +122,9 @@ for your Magento Orders as well as specify the automatic creation of invoices an
                 'tooltip' => __('The Magento Store View that Orders will be placed in.'),
             ]
         );
+        //endregion
 
+        //region Product Is Listed By Any Other Software
         $fieldset = $form->addFieldset(
             'listed_by_other',
             [
@@ -238,7 +241,9 @@ for an item that does <b>not</b> belong to the M2E Kaufland Listing.'
                 'tooltip' => __('Tax Class which will be used for Products created by M2E Kaufland.'),
             ]
         );
+        //endregion
 
+        //region Magento Order Number
         $fieldset = $form->addFieldset(
             'magento_block_kaufland_accounts_magento_orders_number',
             [
@@ -285,7 +290,9 @@ for an item that does <b>not</b> belong to the M2E Kaufland Listing.'
                 'note' => __('e.g.') . ' <span id="order_number_example_container"></span>',
             ]
         );
+        //endregion
 
+        //region Shipping information
         $shipByDateFieldset = $form->addFieldset(
             'magento_block_kaufland_accounts_magento_orders_shipping_information',
             [
@@ -325,7 +332,9 @@ for an item that does <b>not</b> belong to the M2E Kaufland Listing.'
                 ),
             ]
         );
+        //endregion
 
+        //region Customer Settings
         $fieldset = $form->addFieldset(
             'magento_block_kaufland_accounts_magento_orders_customer',
             [
@@ -458,7 +467,9 @@ for an item that does <b>not</b> belong to the M2E Kaufland Listing.'
                 ),
             ]
         );
+        //endregion
 
+        //region Order Creation Rules
         $fieldset = $form->addFieldset(
             'magento_block_kaufland_accounts_magento_orders_rules',
             [
@@ -509,12 +520,28 @@ for an item that does <b>not</b> belong to the M2E Kaufland Listing.'
                 ),
             ]
         );
+        //endregion
 
+        //region Refund & Cancellation
         $fieldset = $form->addFieldset(
             'magento_block_kaufland_accounts_magento_orders_cancellation',
             [
-                'legend' => $this->__('Cancellation'),
+                'legend' => $this->__('Refund & Cancellation'),
                 'collapsable' => true,
+            ]
+        );
+
+        $fieldset->addField(
+            'magento_orders_create_creditmemo_if_order_cancelled',
+            'select',
+            [
+                'name' => 'magento_orders_settings[create_creditmemo_if_order_cancelled][mode]',
+                'label' => __('Automatically create Credit Memo when Order is cancelled'),
+                'values' => [
+                    OrderSettings::CREATE_CREDIT_MEMO_IF_ORDER_CANCELLED_YES => __('Yes'),
+                    OrderSettings::CREATE_CREDIT_MEMO_IF_ORDER_CANCELLED_NO => __('No'),
+                ],
+                'value' => $orderSettings->getCreateCreditMemoIfOrderCancelledMode(),
             ]
         );
 
@@ -575,7 +602,9 @@ for an item that does <b>not</b> belong to the M2E Kaufland Listing.'
                 'value' => $orderSettings->getOrderCancelOnChannelReason(),
             ]
         );
+        //endregion
 
+        //region Order Tax Settings
         $fieldset = $form->addFieldset(
             'magento_block_kaufland_accounts_magento_orders_tax',
             [
@@ -602,7 +631,9 @@ for an item that does <b>not</b> belong to the M2E Kaufland Listing.'
                 ),
             ]
         );
+        //endregion
 
+        //region Status Mapping Settings
         $fieldset = $form->addFieldset(
             'magento_block_kaufland_accounts_magento_orders_status_mapping',
             [
@@ -656,6 +687,7 @@ for an item that does <b>not</b> belong to the M2E Kaufland Listing.'
                 'disabled' => $orderSettings->isOrderStatusMappingModeDefault(),
             ]
         );
+        //endregion
 
         $this->setForm($form);
 

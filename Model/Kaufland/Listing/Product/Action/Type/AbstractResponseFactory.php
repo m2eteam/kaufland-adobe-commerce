@@ -18,6 +18,7 @@ abstract class AbstractResponseFactory
         \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Configurator $configurator,
         \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\RequestData $requestData,
         array $params,
+        int $statusChanger,
         array $requestMetadata = []
     ): AbstractResponse {
         /** @var AbstractResponse $obj */
@@ -26,6 +27,7 @@ abstract class AbstractResponseFactory
         $obj->setConfigurator($configurator);
         $obj->setRequestData($requestData);
         $obj->setParams($params);
+        $obj->setStatusChanger($statusChanger);
         $obj->setRequestMetaData($requestMetadata);
 
         return $obj;

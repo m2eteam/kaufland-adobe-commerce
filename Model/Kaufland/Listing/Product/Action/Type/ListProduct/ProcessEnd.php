@@ -42,6 +42,7 @@ class ProcessEnd extends \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Asy
             $this->getListingProduct()->getActionConfigurator(),
             $this->getRequestData(),
             $this->getParams(),
+            $this->getStatusChanger(),
             $this->getRequestMetadata()
         );
 

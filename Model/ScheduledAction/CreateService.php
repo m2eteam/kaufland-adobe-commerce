@@ -21,6 +21,7 @@ class CreateService
     public function create(
         \M2E\Kaufland\Model\Product $listingProduct,
         int $action,
+        int $statusChanger,
         array $data,
         array $tags = [],
         bool $isForce = false,
@@ -34,6 +35,7 @@ class CreateService
         $scheduledAction->init(
             $listingProduct,
             $action,
+            $statusChanger,
             $data,
             $isForce,
             $tags,

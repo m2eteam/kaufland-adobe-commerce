@@ -13,6 +13,7 @@ abstract class AbstractProcessor
     private \M2E\Kaufland\Model\Product $listingProduct;
     private \M2E\Kaufland\Model\Account $account;
     private \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Configurator $actionConfigurator;
+    private int $statusChanger;
     private array $params = [];
 
     // ----------------------------------------
@@ -132,6 +133,16 @@ abstract class AbstractProcessor
 
     # region init
     // ----------------------------------------
+
+    public function setStatusChanger(int $statusChanger): void
+    {
+        $this->statusChanger = $statusChanger;
+    }
+
+    protected function getStatusChanger(): int
+    {
+        return $this->statusChanger;
+    }
 
     public function setParams(array $params): void
     {

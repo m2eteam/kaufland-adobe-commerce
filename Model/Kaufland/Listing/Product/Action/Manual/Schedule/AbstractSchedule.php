@@ -38,8 +38,6 @@ abstract class AbstractSchedule extends \M2E\Kaufland\Model\Kaufland\Listing\Pro
         array $params,
         \M2E\Kaufland\Model\ScheduledAction\CreateService $createService
     ): void {
-        $params['status_changer'] = \M2E\Kaufland\Model\Product::STATUS_CHANGER_USER;
-
         $scheduledActionParams = [
             'params' => $params,
         ];
@@ -52,6 +50,7 @@ abstract class AbstractSchedule extends \M2E\Kaufland\Model\Kaufland\Listing\Pro
         $createService->create(
             $action->getProduct(),
             $scheduledAction,
+            \M2E\Kaufland\Model\Product::STATUS_CHANGER_USER,
             $scheduledActionParams,
             $action->getConfigurator()->getAllowedDataTypes(),
             true,

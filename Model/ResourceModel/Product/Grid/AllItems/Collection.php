@@ -84,6 +84,7 @@ class Collection extends DefaultCollection implements SearchResultInterface
                 'product_' . ProductResource::COLUMN_ONLINE_QTY => ProductResource::COLUMN_ONLINE_QTY,
                 'product_' . ProductResource::COLUMN_ONLINE_TITLE => ProductResource::COLUMN_ONLINE_TITLE,
                 'product_' . ProductResource::COLUMN_ONLINE_PRICE => ProductResource::COLUMN_ONLINE_PRICE,
+                'product_' . ProductResource::COLUMN_OFFER_ID => ProductResource::COLUMN_OFFER_ID,
                 'product_' . ProductResource::COLUMN_TEMPLATE_CATEGORY_ID => ProductResource::COLUMN_TEMPLATE_CATEGORY_ID,
                 'product_' . ProductResource::COLUMN_KAUFLAND_PRODUCT_ID => ProductResource::COLUMN_KAUFLAND_PRODUCT_ID,
                 'product_' . ProductResource::COLUMN_IS_INCOMPLETE => ProductResource::COLUMN_IS_INCOMPLETE,

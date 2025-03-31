@@ -11,6 +11,8 @@ use M2E\Kaufland\Helper\Module\Database\Tables as TablesHelper;
 use M2E\Kaufland\Model\ResourceModel\Lock\Item as LockItemResource;
 use M2E\Kaufland\Model\ResourceModel\Lock\Transactional as LockTransactionalResource;
 use Magento\Framework\DB\Ddl\Table;
+use M2E\Kaufland\Model\Cron\Config as CronConfig;
+use M2E\Kaufland\Model\Cron\Task\System\Servicing\SynchronizeTask as CronTaskServicing;
 
 class CoreHandler implements \M2E\Core\Model\Setup\InstallHandlerInterface
 {
@@ -253,8 +255,6 @@ class CoreHandler implements \M2E\Core\Model\Setup\InstallHandlerInterface
     public function installData(\Magento\Framework\Setup\SetupInterface $setup): void
     {
         #region config
-        $servicingInterval = random_int(43200, 86400);
-
         $config = $this->modifierConfigFactory->create(
             \M2E\Kaufland\Helper\Module::IDENTIFIER,
             $setup
@@ -263,10 +263,10 @@ class CoreHandler implements \M2E\Core\Model\Setup\InstallHandlerInterface
         $config->insert(ModuleAdapter::CONFIG_GROUP_ROOT, ModuleAdapter::CONFIG_KEY_DISABLED, '0');
         $config->insert(ModuleAdapter::CONFIG_GROUP_ROOT, MOduleEnvAdapter::CONFIG_KEY_ENVIRONMENT, 'production');
         $config->insert('/server/', 'application_key', '7248382d47edc4f925a076e419480d0540508ffe');
-        $config->insert('/cron/', 'mode', '1');
-        $config->insert('/cron/', 'runner', 'magento');
-        $config->insert('/cron/magento/', 'disabled', '0');
-        $config->insert('/cron/task/system/servicing/synchronize/', 'interval', $servicingInterval);
+        $config->insert(CronConfig::CONFIG_GROUP, CronConfig::CONFIG_KEY_MODE, '1');
+        $config->insert(CronConfig::CONFIG_GROUP, CronConfig::CONFIG_KEY_RUNNER, CronConfig::RUNNER_MAGENTO);
+        $config->insert(CronConfig::getRunnerConfigGroup(CronConfig::RUNNER_MAGENTO), CronConfig::CONFIG_KEY_RUNNER_DISABLED, '0');
+        $config->insert(CronConfig::getTaskConfigGroup(CronTaskServicing::NICK), CronConfig::CONFIG_KEY_TASK_INTERVAL, random_int(43200, 86400));
         $config->insert('/logs/clearing/listings/', 'mode', '1');
         $config->insert('/logs/clearing/listings/', 'days', '30');
         $config->insert('/logs/clearing/synchronizations/', 'mode', '1');

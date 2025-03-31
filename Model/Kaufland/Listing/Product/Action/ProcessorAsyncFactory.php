@@ -58,7 +58,8 @@ class ProcessorAsyncFactory
             $this->processingRunner,
             $this->initiatorFactory,
             $this->logBufferFactory->create(),
-            $params
+            $params,
+            $statusChanger
         );
 
         return $action;
@@ -73,7 +74,8 @@ class ProcessorAsyncFactory
         array $params,
         array $requestMetadata,
         array $requestData,
-        array $warningMessages
+        array $warningMessages,
+        int $statusChanger
     ): Async\AbstractProcessEnd {
         $actionLogger = $this->loggerFactory->create(
             $actionLogId,
@@ -94,7 +96,8 @@ class ProcessorAsyncFactory
             $this->createRequestData($requestData),
             $params,
             $requestMetadata,
-            $warningMessages
+            $warningMessages,
+            $statusChanger
         );
 
         return $action;

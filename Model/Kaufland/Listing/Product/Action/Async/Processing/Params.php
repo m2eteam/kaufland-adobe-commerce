@@ -16,6 +16,7 @@ class Params
     private array $requestData;
     private array $configuratorData;
     private array $warningMessages;
+    private int $statusChanger;
 
     public function toArray(): array
     {
@@ -29,7 +30,8 @@ class Params
             'request_metadata' => $this->getRequestMetadata(),
             'request_data' => $this->getRequestData(),
             'configurator_data' => $this->getConfiguratorData(),
-            'warning_messages' => $this->getWarningMessages()
+            'warning_messages' => $this->getWarningMessages(),
+            'status_changer' => $this->getStatusChanger()
         ];
     }
 
@@ -45,7 +47,8 @@ class Params
                 $data['action_start_params'],
                 $data['request_metadata'],
                 $data['request_data'],
-                $data['configurator_data']
+                $data['configurator_data'],
+                $data['status_changer']
             )
         ) {
             throw new \M2E\Kaufland\Model\Exception\Logic('Processing params are not valid.');
@@ -61,7 +64,8 @@ class Params
             $data['request_metadata'],
             $data['request_data'],
             $data['configurator_data'],
-            $data['warning_messages'] ?? []
+            $data['warning_messages'] ?? [],
+            $data['status_changer']
         );
     }
 
@@ -75,7 +79,8 @@ class Params
         array $requestMetadata,
         array $requestData,
         array $configuratorData,
-        array $warningMessages
+        array $warningMessages,
+        int $statusChanger
     ) {
         $this->listingProductId = $listingProductId;
         $this->actionLogId = $actionLogId;
@@ -87,6 +92,7 @@ class Params
         $this->requestData = $requestData;
         $this->configuratorData = $configuratorData;
         $this->warningMessages = $warningMessages;
+        $this->statusChanger = $statusChanger;
     }
 
     public function getListingProductId(): int
@@ -137,5 +143,10 @@ class Params
     public function getWarningMessages(): array
     {
         return $this->warningMessages;
+    }
+
+    public function getStatusChanger(): int
+    {
+        return $this->statusChanger;
     }
 }

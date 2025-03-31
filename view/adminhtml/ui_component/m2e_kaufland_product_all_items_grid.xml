@@ -218,6 +218,18 @@
             </action>
         </massaction>
 
+        <exportButton name="export_button" class="M2E\Core\Ui\Component\ExportButton">
+            <settings>
+                <options>
+                    <option name="csv" xsi:type="array">
+                        <item name="value" xsi:type="string">csv</item>
+                        <item name="label" xsi:type="string" translate="true">CSV</item>
+                        <item name="url" xsi:type="string">m2e_kaufland/ui_export/gridToCsv</item>
+                    </option>
+                </options>
+            </settings>
+        </exportButton>
+
         <bookmark name="bookmarks"/>
 
         <paging name="listing_paging"/>
@@ -245,6 +257,7 @@
                 <item name="config" xsi:type="array">
                     <item name="label" translate="true" xsi:type="string">ID</item>
                     <item name="visible" xsi:type="boolean">false</item>
+                    <item name="exportable" xsi:type="boolean">false</item>
                 </item>
             </argument>
         </column>
@@ -266,6 +279,27 @@
                     <item name="label" translate="true" xsi:type="string">Product Title / Listing / Product SKU</item>
                     <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
                     <item name="sortOrder" xsi:type="number">20</item>
+                    <item name="exportable" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </column>
+
+        <column name="name">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" translate="true" xsi:type="string">Product Title</item>
+                    <item name="sortOrder" xsi:type="number">30</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </column>
+
+        <column name="product_offer_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" translate="true" xsi:type="string">Product SKU</item>
+                    <item name="sortOrder" xsi:type="number">40</item>
+                    <item name="visible" xsi:type="boolean">false</item>
                 </item>
             </argument>
         </column>
@@ -325,9 +359,9 @@
                     <item name="label" translate="true" xsi:type="string">Manage</item>
                     <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
                     <item name="sortOrder" xsi:type="number">200</item>
+                    <item name="exportable" xsi:type="boolean">false</item>
                 </item>
             </argument>
         </column>
-
     </columns>
 </listing>

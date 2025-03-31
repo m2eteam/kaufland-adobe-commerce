@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace M2E\Kaufland\Model\Cron\Task\Product;
 
-class InspectDirectChangesTask extends \M2E\Kaufland\Model\Cron\AbstractTask
+class InspectDirectChangesTask implements
+    \M2E\Core\Model\Cron\TaskHandlerInterface,
+    \M2E\Core\Model\Cron\Task\PossibleRunInterface
 {
     public const NICK = 'product/inspect_direct_changes';
 
@@ -13,48 +15,18 @@ class InspectDirectChangesTask extends \M2E\Kaufland\Model\Cron\AbstractTask
 
     public function __construct(
         \M2E\Kaufland\Model\Product\InspectDirectChanges\Config $config,
-        \M2E\Kaufland\Model\Product\InspectDirectChanges $inspectDirectChanges,
-        \M2E\Kaufland\Model\Cron\Manager $cronManager,
-        \M2E\Kaufland\Model\Synchronization\LogService $syncLogger,
-        \M2E\Core\Helper\Data $helperData,
-        \Magento\Framework\Event\Manager $eventManager,
-        \M2E\Kaufland\Model\Factory $modelFactory,
-        \M2E\Kaufland\Model\ActiveRecord\Factory $activeRecordFactory,
-        \M2E\Kaufland\Model\Cron\TaskRepository $taskRepo,
-        \Magento\Framework\App\ResourceConnection $resource
+        \M2E\Kaufland\Model\Product\InspectDirectChanges $inspectDirectChanges
     ) {
-        parent::__construct(
-            $cronManager,
-            $syncLogger,
-            $helperData,
-            $eventManager,
-            $modelFactory,
-            $activeRecordFactory,
-            $taskRepo,
-            $resource
-        );
-
         $this->config = $config;
         $this->inspectDirectChanges = $inspectDirectChanges;
     }
 
-    protected function getNick(): string
+    public function isPossibleToRun(): bool
     {
-        return self::NICK;
+        return $this->config->isEnableProductInspectorMode();
     }
 
-    public function isPossibleToRun()
-    {
-        if (
-            !$this->config->isEnableProductInspectorMode()
-        ) {
-            return false;
-        }
-
-        return parent::isPossibleToRun();
-    }
-
-    protected function performActions(): void
+    public function process($context): void
     {
         $this->inspectDirectChanges->process();
     }

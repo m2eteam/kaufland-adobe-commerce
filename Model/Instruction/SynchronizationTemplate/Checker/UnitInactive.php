@@ -68,11 +68,11 @@ class UnitInactive extends \M2E\Kaufland\Model\Instruction\SynchronizationTempla
         return true;
     }
 
-    public function process(array $params = []): void
+    public function process(): void
     {
         $product = $this->getInput()->getListingProduct();
 
-        $calculateResult = $this->actionCalculator->calculateToRelist($product);
+        $calculateResult = $this->actionCalculator->calculateToRelist($product, Product::STATUS_CHANGER_SYNCH);
         if (!$calculateResult->isActionRelist()) {
             $this->tryRemoveExistScheduledAction();
 
@@ -89,7 +89,8 @@ class UnitInactive extends \M2E\Kaufland\Model\Instruction\SynchronizationTempla
         $this->scheduledActionCreate->create(
             $this->getInput()->getListingProduct(),
             \M2E\Kaufland\Model\Product::ACTION_RELIST_UNIT,
-            ['params' => $params],
+            \M2E\Kaufland\Model\Product::STATUS_CHANGER_SYNCH,
+            [],
             $calculateResult->getConfigurator()->getAllowedDataTypes(),
             false,
             $calculateResult->getConfigurator(),

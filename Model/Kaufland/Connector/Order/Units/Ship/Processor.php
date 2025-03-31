@@ -15,7 +15,7 @@ class Processor
      * @param \M2E\Kaufland\Model\Kaufland\Connector\Order\Units\Ship\Unit[] $packages
      *
      * @throws \M2E\Kaufland\Model\Exception
-     * @throws \M2E\Kaufland\Model\Exception\Connection
+     * @throws \M2E\Core\Model\Exception\Connection
      */
     public function process(
         \M2E\Kaufland\Model\Account $account,

@@ -4,7 +4,7 @@ namespace M2E\Kaufland\Model\Cron\Task\Order;
 
 use M2E\Kaufland\Model\Cron\Task\Order\CreatorFactory;
 
-class CreateFailedTask extends \M2E\Kaufland\Model\Cron\AbstractTask
+class CreateFailedTask implements \M2E\Core\Model\Cron\TaskHandlerInterface
 {
     public const NICK = 'order/create_failed';
 
@@ -12,51 +12,28 @@ class CreateFailedTask extends \M2E\Kaufland\Model\Cron\AbstractTask
     /** @var \M2E\Kaufland\Model\Cron\Task\Order\CreatorFactory */
     private CreatorFactory $orderCreatorFactory;
     private \M2E\Kaufland\Model\Order\Repository $orderRepository;
+    private \M2E\Kaufland\Model\Synchronization\LogService $syncLog;
 
     public function __construct(
         \M2E\Kaufland\Model\Order\Repository $orderRepository,
         \M2E\Kaufland\Model\Cron\Task\Order\CreatorFactory $orderCreatorFactory,
-        \M2E\Kaufland\Model\Account\Repository $accountRepository,
-        \M2E\Kaufland\Model\Cron\Manager $cronManager,
-        \M2E\Kaufland\Model\Synchronization\LogService $syncLogger,
-        \M2E\Core\Helper\Data $helperData,
-        \Magento\Framework\Event\Manager $eventManager,
-        \M2E\Kaufland\Model\Factory $modelFactory,
-        \M2E\Kaufland\Model\ActiveRecord\Factory $activeRecordFactory,
-        \M2E\Kaufland\Model\Cron\TaskRepository $taskRepo,
-        \Magento\Framework\App\ResourceConnection $resource
+        \M2E\Kaufland\Model\Account\Repository $accountRepository
     ) {
-        parent::__construct(
-            $cronManager,
-            $syncLogger,
-            $helperData,
-            $eventManager,
-            $modelFactory,
-            $activeRecordFactory,
-            $taskRepo,
-            $resource
-        );
         $this->orderRepository = $orderRepository;
         $this->accountRepository = $accountRepository;
         $this->orderCreatorFactory = $orderCreatorFactory;
     }
 
-    protected function getNick(): string
+    /**
+     * @param \M2E\Kaufland\Model\Cron\TaskContext $context
+     *
+     * @return void
+     */
+    public function process($context): void
     {
-        return self::NICK;
-    }
+        $this->syncLog = $context->getSynchronizationLog();
+        $this->syncLog->setTask(\M2E\Kaufland\Model\Synchronization\Log::TASK_ORDERS);
 
-    protected function getSynchronizationLog(): \M2E\Kaufland\Model\Synchronization\LogService
-    {
-        $synchronizationLog = parent::getSynchronizationLog();
-
-        $synchronizationLog->setTask(\M2E\Kaufland\Model\Synchronization\Log::TASK_ORDERS);
-
-        return $synchronizationLog;
-    }
-
-    protected function performActions()
-    {
         foreach ($this->accountRepository->getAll() as $account) {
             try {
                 $borderDate = \M2E\Core\Helper\Date::createCurrentGmt();
@@ -68,21 +45,21 @@ class CreateFailedTask extends \M2E\Kaufland\Model\Cron\AbstractTask
                     \M2E\Kaufland\Model\Order::MAGENTO_ORDER_CREATE_MAX_TRIES
                 );
                 $this->createMagentoOrders($kauflandOrders);
-            } catch (\Exception $exception) {
+            } catch (\Throwable $exception) {
                 $message = (string)\__(
                     'The "Create Failed Orders" Action for Account "%1" was completed with error.',
                     $account->getTitle(),
                 );
 
-                $this->processTaskAccountException($message, __FILE__, __LINE__);
-                $this->processTaskException($exception);
+                $context->getExceptionHandler()->processTaskAccountException($message, __FILE__, __LINE__);
+                $context->getExceptionHandler()->processTaskException($exception);
             }
         }
     }
 
-    protected function createMagentoOrders($kauflandOrders)
+    private function createMagentoOrders(array $kauflandOrders): void
     {
-        $ordersCreator = $this->orderCreatorFactory->create($this->getSynchronizationLog());
+        $ordersCreator = $this->orderCreatorFactory->create($this->syncLog);
 
         foreach ($kauflandOrders as $order) {
             /** @var \M2E\Kaufland\Model\Order $order */

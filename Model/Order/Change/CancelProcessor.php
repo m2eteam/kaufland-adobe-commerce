@@ -27,7 +27,7 @@ class CancelProcessor
      *
      * @return void
      * @throws \M2E\Kaufland\Model\Exception
-     * @throws \M2E\Kaufland\Model\Exception\Connection
+     * @throws \M2E\Core\Model\Exception\Connection
      * @throws \M2E\Kaufland\Model\Exception\Logic
      * @throws \Magento\Framework\Exception\AlreadyExistsException
      */

@@ -42,7 +42,7 @@ class Simple
      *
      * @return void
      * @throws \M2E\Kaufland\Model\Exception
-     * @throws \M2E\Kaufland\Model\Exception\Connection|\JsonException
+     * @throws \M2E\Core\Model\Exception\Connection|\JsonException
      */
     private function processRecords(array $processings): void
     {

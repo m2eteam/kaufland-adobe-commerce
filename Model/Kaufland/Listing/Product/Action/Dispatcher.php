@@ -42,8 +42,6 @@ class Dispatcher
 
         $groupedPackages = $this->groupProductsByAccountAndStorefront($packageCollection);
 
-        $params += ['status_changer' => $statusChanger];
-
         return $this->processAccountsStorefront(
             $groupedPackages,
             $params,

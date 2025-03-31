@@ -27,10 +27,6 @@ class Handler implements \M2E\Kaufland\Model\Instruction\Handler\HandlerInterfac
             $input->setScheduledAction($scheduledAction);
         }
 
-        $params = [
-            'status_changer' => \M2E\Kaufland\Model\Product::STATUS_CHANGER_SYNCH,
-        ];
-
         foreach ($this->getAllCheckers() as $checkerClassName) {
             $checkerModel = $this->checkerFactory->create($checkerClassName, $input);
 
@@ -38,7 +34,7 @@ class Handler implements \M2E\Kaufland\Model\Instruction\Handler\HandlerInterfac
                 continue;
             }
 
-            $checkerModel->process($params);
+            $checkerModel->process();
         }
     }
 

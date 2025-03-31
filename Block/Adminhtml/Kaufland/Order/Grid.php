@@ -426,7 +426,7 @@ HTML;
 
             try {
                 $product = $item->getProduct();
-            } catch (\M2E\Kaufland\Model\Exception $e) {
+            } catch (\M2E\Core\Model\Exception $e) {
                 $product = null;
 
                 $this->logService->addMessage(

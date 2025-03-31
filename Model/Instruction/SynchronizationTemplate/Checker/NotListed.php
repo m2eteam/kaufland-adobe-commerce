@@ -32,7 +32,7 @@ class NotListed extends \M2E\Kaufland\Model\Instruction\SynchronizationTemplate\
         return $this->input->getListingProduct()->isListable();
     }
 
-    public function process(array $params = []): void
+    public function process(): void
     {
         $product = $this->getInput()->getListingProduct();
 
@@ -55,7 +55,8 @@ class NotListed extends \M2E\Kaufland\Model\Instruction\SynchronizationTemplate\
             $product->isListableAsProduct()
                 ? \M2E\Kaufland\Model\Product::ACTION_LIST_PRODUCT
                 : \M2E\Kaufland\Model\Product::ACTION_LIST_UNIT,
-            ['params' => $params],
+            \M2E\Kaufland\Model\Product::STATUS_CHANGER_SYNCH,
+            [],
             $calculateResult->getConfigurator()->getAllowedDataTypes(),
             false,
             $calculateResult->getConfigurator()

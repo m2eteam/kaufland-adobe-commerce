@@ -21,6 +21,11 @@ class Transactional extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
 
     public function getNick(): string
     {
-        return (string)$this->getData('nick');
+        return (string)$this->getData(\M2E\Kaufland\Model\ResourceModel\Lock\Transactional::COLUMN_NICK);
+    }
+
+    public function getCreateDate(): ?string
+    {
+        return $this->getData(\M2E\Kaufland\Model\ResourceModel\Lock\Transactional::COLUMN_CREATE_DATE);
     }
 }
