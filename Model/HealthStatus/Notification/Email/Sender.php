@@ -4,7 +4,7 @@ namespace M2E\Kaufland\Model\HealthStatus\Notification\Email;
 
 class Sender extends \M2E\Kaufland\Model\AbstractModel
 {
-    private const FROM_NAME = 'M2E Kaufland Health Status';
+    private const FROM_NAME = 'M2E Kaufland Connect Health Status';
     private const TEMPLATE_PATH = 'Kaufland_health_status_notification_email_template';
 
     /** @var \Magento\Framework\Translate\Inline\StateInterface */

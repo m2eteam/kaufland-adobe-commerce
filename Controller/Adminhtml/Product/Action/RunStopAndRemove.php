@@ -42,11 +42,17 @@ class RunStopAndRemove extends AbstractAction
             ['result' => $result] = $this->actionService->runStopAndRemove($products);
             if ($result === 'success') {
                 $this->getMessageManager()->addSuccessMessage(
-                    __('"Stopping On Kaufland And Removing From Listing Selected Items" task has completed.'),
+                    __(
+                        '"Stopping On %channel_title And Removing From Listing Selected Items" task has completed.',
+                        ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]
+                    )
                 );
             } else {
                 $this->getMessageManager()->addErrorMessage(
-                    __('"Stopping On Kaufland And Removing From Listing Selected Items"as completed with errors.'),
+                    __(
+                        '"Stopping On %channel_title And Removing From Listing Selected Items"as completed with errors.',
+                        ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]
+                    ),
                 );
             }
 
@@ -56,7 +62,10 @@ class RunStopAndRemove extends AbstractAction
         $this->actionService->scheduleStopAndRemove($products);
 
         $this->getMessageManager()->addSuccessMessage(
-            __('"Stopping On Kaufland And Removing From Listing Selected Items" task has completed.'),
+            __(
+                '"Stopping On %channel_title And Removing From Listing Selected Items" task has completed.',
+                ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]
+            ),
         );
 
         return $this->redirectToGrid();

@@ -95,18 +95,24 @@ class PlaceReservationsForSalesEvent extends \M2E\Kaufland\Plugin\AbstractPlugin
                 break;
 
             case Reserve::EVENT_TYPE_MAGENTO_RESERVATION_PLACED:
-                $resultMessage = sprintf(
-                    'M2E Kaufland reserved Product Quantity from the "%s" Stock in the amount of %s.',
-                    $stock->getName(),
-                    $qty
+                $resultMessage = __(
+                    '%extension_title reserved Product Quantity from the "%stock_name" Stock in the amount of %qty.',
+                    [
+                        'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                        'stock_name'      => $stock->getName(),
+                        'qty'             => $qty,
+                    ]
                 );
                 break;
 
             case Reserve::EVENT_TYPE_MAGENTO_RESERVATION_RELEASED:
-                $resultMessage = sprintf(
-                    'M2E Kaufland released Product Quantity reservation from the "%s" Stock in the amount of %s.',
-                    $stock->getName(),
-                    $qty
+                $resultMessage = __(
+                    '%extension_title released Product Quantity reservation from the "%stock_name" Stock in the amount of %qty.',
+                    [
+                        'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                        'stock_name'      => $stock->getName(),
+                        'qty'             => $qty,
+                    ]
                 );
                 break;
 

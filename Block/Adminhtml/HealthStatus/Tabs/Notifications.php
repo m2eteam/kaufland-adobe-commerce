@@ -46,14 +46,14 @@ class Notifications extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractF
             'health_status_notification_help_block',
             self::HELP_BLOCK,
             [
-                'content' => $this->__(
-                    'You can specify how M2E Kaufland should notify you about Health Status of your M2E Kaufland by selecting:
+                'content' => __(
+                    'You can specify how %extension_title should notify you about Health Status of your %extension_title by selecting:
 <ul>
     <li>
         <b>Do Not Notify</b> - no notification required;
     </li>
     <li>
-        <b>On each Extension Page (default)</b> - notification will be shown on each page of M2E Kaufland Module;
+        <b>On each Extension Page (default)</b> - notification will be shown on each page of %extension_title Module;
     </li>
     <li>
         <b>On each Magento Page</b> - notification will be shown on each page of Magento;
@@ -76,7 +76,10 @@ Also, you can select a minimal Notifications Level:
     <li>
         <b>Notice</b> - notification will arise in case the error, warning or notice occur.
     </li>
-</ul>'
+</ul>',
+                    [
+                        'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                    ]
                 ),
             ]
         );

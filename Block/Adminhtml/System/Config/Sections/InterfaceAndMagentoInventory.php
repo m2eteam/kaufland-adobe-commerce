@@ -83,9 +83,12 @@ details.</p><br>
                 'value' => $this->configurationHelper->getViewShowBlockNoticesMode(),
                 'tooltip' => __(
                     '<p>Choose whether you want the help information to be available at the top of
-                    each M2E Kaufland Page.</p><br>
-                    <p><strong>Please note</strong>, it does not disable the help-tips
-                    (the icons with the additional information next to the main options).</p>'
+            each %extension_title Page.</p><br>
+            <p><strong>Please note</strong>, it does not disable the help-tips
+            (the icons with the additional information next to the main options).</p>',
+                    [
+                        'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                    ]
                 ),
             ]
         );
@@ -120,9 +123,13 @@ details.</p><br>
                 ],
                 'value' => $this->configurationHelper->isEnableProductForceQtyMode(),
                 'tooltip' => __(
-                    'Choose whether M2E Kaufland is allowed to List Products with unlimited stock or that are
-                    temporarily out of stock.<br>
-                    <b>Disallow</b> is the recommended setting for Kaufland Integration.'
+                    'Choose whether %extension_title is allowed to List Products with unlimited ' .
+                    'stock or that are temporarily out of stock.<br><b>Disallow</b> is the recommended setting ' .
+                    'for %channel_title.',
+                    [
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                        'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                    ]
                 ),
             ]
         );
@@ -157,15 +164,16 @@ details.</p><br>
                 'value' => $this->configurationHelper
                     ->getMagentoAttributePriceTypeConvertingMode(),
                 'tooltip' => __(
-                    '<p>Choose whether Magento Price Attribute values should be converted automatically.
-                    With this option enabled, M2E Kaufland will provide currency conversion based on Magento
-                    Currency Settings.</p>
-                    <p><strong>For example</strong>, the Item Price is set to be taken from Magento Price
-                    Attribute (e.g. 5 USD).<br>
-                    If this Item is listed on Storefront with a different Base Currency (e.g. GBP),
-                    the currency conversion is performed automatically based on the set exchange rate
-                    (e.g. 1 USD = 0.82 GBP).<br>
-                    The Item will be available on Channel at the Price of 4.1 GBP.</p>'
+                    '<p>Set this option to "Yes" to activate currency conversion for price values ' .
+                    'from custom Magento Attributes (conversion for standard Magento Price attributes is automatic).</p>' .
+                    '<p>Once enabled, %extension_title will convert prices according to your Magento Currency Settings. <strong>For example</strong>, ' .
+                    '%extension_title handles the conversion using the established exchange rate (e.g., 1 USD = 0.92 EUR). If a product\'s ' .
+                    'price is set to 5 USD in a Magento Attribute, it will be listed at 4.62 EUR on %channel_title, where EUR is ' .
+                    'the base currency.</p>',
+                    [
+                        'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                    ]
                 ),
             ]
         );

@@ -31,7 +31,13 @@ class Index extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\Log\AbstractList
             }
 
             $this->getResult()->getConfig()->getTitle()->prepend(
-                __('M2E Kaufland Listing "%s" Log', ['s' => $listing->getTitle()]),
+                __(
+                    '%extension_title Listing "%s" Log',
+                    [
+                        's' => $listing->getTitle(),
+                        'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                    ]
+                ),
             );
         } else {
             $this->getResult()->getConfig()->getTitle()->prepend(__('Listings Logs & Events'));

@@ -48,7 +48,12 @@ class View extends \M2E\Kaufland\Plugin\AbstractPlugin
         $interceptor->addButton(
             'go_to_kauflnd_order',
             [
-                'label' => __('Show Kaufland Order'),
+                'label' => __(
+                    'Show %channel_title Order',
+                    [
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                    ],
+                ),
                 'onclick' => "setLocation('$buttonUrl')",
             ],
             0,

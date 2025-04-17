@@ -17,7 +17,7 @@ class Log extends \M2E\Kaufland\Model\Log\AbstractModel
     public const _TASK_OTHER = 'Other';
 
     public const TASK_LISTINGS = 2;
-    public const _TASK_LISTINGS = 'M2E Kaufland Listings';
+    public const _TASK_LISTINGS = 'M2E Kaufland Connect Listings';
 
     public const TASK_OTHER_LISTINGS = 5;
     public const _TASK_OTHER_LISTINGS = 'Unmanaged Listings';

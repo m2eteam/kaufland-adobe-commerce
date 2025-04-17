@@ -103,7 +103,7 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Magento\Grid\AbstractGrid
         ]);
 
         $this->addColumn('kaufland_product_id', [
-            'header' => __('Kaufland Product ID'),
+            'header' => __('%channel_title Product ID', ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]),
             'align' => 'left',
             'type' => 'text',
             'index' => 'kaufland_product_id',

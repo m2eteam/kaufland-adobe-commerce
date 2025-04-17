@@ -172,4 +172,19 @@ class Module
     {
         $this->permanentCache->removeAllValues();
     }
+
+    public static function getExtensionTitle(): string
+    {
+        return 'M2E Kaufland Connect';
+    }
+
+    public static function getChannelTitle(): string
+    {
+        return 'Kaufland';
+    }
+
+    public static function getMenuRootNodeLabel(): string
+    {
+        return (string)__('Kaufland');
+    }
 }

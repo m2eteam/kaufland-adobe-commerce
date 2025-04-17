@@ -100,7 +100,13 @@ class View extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\AbstractListing
              ->getConfig()
              ->getTitle()
              ->prepend(
-                 (string)__('M2E Kaufland Listing "%listing_title"', ['listing_title' => $listing->getTitle()])
+                 (string)__(
+                     '%extension_title Listing "%listing_title"',
+                     [
+                         'listing_title' => $listing->getTitle(),
+                         'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                     ]
+                 )
              );
 
         $this->addContent(

@@ -106,7 +106,12 @@ class Creator
                 $order->getLogService()->setInitiator(\M2E\Core\Helper\Data::INITIATOR_EXTENSION);
 
                 $order->addInfoLog(
-                    'Magento order creation rules are met. M2E Kaufland will attempt to create Magento order.',
+                    strtr(
+                        'Magento order creation rules are met. :extension_title will attempt to create Magento order.',
+                        [
+                            ':extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                        ]
+                    ),
                     [],
                     [],
                     true

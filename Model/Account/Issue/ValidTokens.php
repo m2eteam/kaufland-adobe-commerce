@@ -115,9 +115,12 @@ class ValidTokens implements \M2E\Kaufland\Model\Issue\LocatorInterface
     private function getIssue(string $accountName): Issue
     {
         $text = __(
-            "The token of Kaufland account \"%account_name\" is no longer valid.
-         Please edit your Kaufland account and get a new token.",
-            ['account_name' => $accountName],
+            "The token of %channel_title account \"%account_name\" is no longer valid.
+         Please edit your %channel_title account and get a new token.",
+            [
+                'account_name' => $accountName,
+                'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+            ],
         );
 
         return $this->issueFactory->createErrorDataObject($accountName, (string)$text, null);

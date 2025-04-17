@@ -42,11 +42,15 @@ class RunStop extends AbstractAction
             ['result' => $result] = $this->actionService->runStop($products);
             if ($result === 'success') {
                 $this->getMessageManager()->addSuccessMessage(
-                    __('"Stopping Selected Items On Kaufland" task has completed.'),
+                    __('"Stopping Selected Items On %channel_title" task has completed.', [
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                    ])
                 );
             } else {
                 $this->getMessageManager()->addErrorMessage(
-                    __('"Stopping Selected Items On Kaufland" task has completed with errors.'),
+                    __('"Stopping Selected Items On %channel_title" task has completed with errors.', [
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                    ])
                 );
             }
 
@@ -56,7 +60,9 @@ class RunStop extends AbstractAction
         $this->actionService->scheduleStop($products);
 
         $this->getMessageManager()->addSuccessMessage(
-            __('"Stopping Selected Items On Kaufland" task has completed.'),
+            __('"Stopping Selected Items On %channel_title" task has completed.', [
+                'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+            ])
         );
 
         return $this->redirectToGrid();

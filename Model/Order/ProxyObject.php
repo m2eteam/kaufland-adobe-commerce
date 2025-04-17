@@ -203,8 +203,13 @@ class ProxyObject
 
             if ($customerDataObject->getId() === null) {
                 throw new \M2E\Kaufland\Model\Exception(
-                    "Customer with ID specified in Kaufland Account
-                    Settings does not exist."
+                    strtr(
+                        "Customer with ID specified in :channel_title Account
+                    Settings does not exist.",
+                        [
+                            ':channel_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                        ]
+                    )
                 );
             }
 
@@ -436,7 +441,10 @@ class ProxyObject
         $shippingMethod = $this->order->getShippingService();
 
         return [
-            'carrier_title' => (string)__('Kaufland Delivery Option'),
+            'carrier_title' => (string)__(
+                '%channel_title Delivery Option',
+                ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]
+            ),
             'shipping_method' => $shippingMethod . $additionalData,
             'shipping_price' => $this->getBaseShippingPrice(),
         ];

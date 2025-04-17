@@ -17,10 +17,19 @@ class Form extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractForm
             ]
         );
 
-        $text = __('After an M2E Kaufland listing is configured and created, Magento Products should
-                    be added into it.');
-        $text2 = __('The Products you add to the Listing will further be
-                    Listed on Kaufland.');
+        $text = __(
+            'After a %extension_title listing is configured and created, Magento Products should be added into it.',
+            [
+                'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+            ]
+        );
+        $text2 = __(
+            'The Products you add to the Listing will further be
+                    Listed on %channel_title.',
+            [
+                'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+            ]
+        );
         $text3 = __('There are several different options of how Magento products can be found/selected
                     and added to the Listing.');
 

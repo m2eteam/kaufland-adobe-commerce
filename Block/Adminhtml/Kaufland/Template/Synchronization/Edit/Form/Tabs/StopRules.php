@@ -44,14 +44,18 @@ class StopRules extends AbstractTab
             self::HELP_BLOCK,
             [
                 'content' => __(
-                    'Set the Conditions when M2E Kaufland should stop Listings on Kaufland.<br/><br/>
-                    If all Conditions are set to No or No Action then no Kaufland Items using this Synchronization
+                    'Set the Conditions when %extension_title should stop Listings on %channel_title.<br/><br/>
+                    If all Conditions are set to No or No Action then no %channel_title Items using this Synchronization
                     Policy will be Stopped.
                     If all Options are enabled, then an Item will be Stopped if at least one of the Stop
                     Conditions is met.<br/><br/>
                     More detailed information about ability to work with this Page you can find
                     <a href="%url" target="_blank" class="external-link">here.</a>',
-                    ['url' => 'https://docs-m2.m2epro.com/stop-rules-for-kaufland-listings'],
+                    [
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                        'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                        'url' => 'https://docs-m2.m2epro.com/stop-rules-for-kaufland-listings'
+                    ],
                 ),
             ]
         );
@@ -101,7 +105,8 @@ class StopRules extends AbstractTab
                     1 => __('Yes'),
                 ],
                 'tooltip' => __(
-                    'Automatically stops an Item that is on Kaufland if Status is changed to \'Disabled\' in Magento.'
+                    'Automatically stops an Item that is on %channel_title if Status is changed to \'Disabled\' in Magento.',
+                    ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]
                 ),
             ]
         );
@@ -118,8 +123,9 @@ class StopRules extends AbstractTab
                     1 => __('Yes'),
                 ],
                 'tooltip' => __(
-                    'Automatically stops an Item that is on Kaufland if Stock Availability is changed
-                    to \'Out of Stock\' in Magento.'
+                    'Automatically stops an Item that is on %channel_title if Stock Availability is changed
+                    to \'Out of Stock\' in Magento.',
+                    ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]
                 ),
             ]
         );
@@ -149,8 +155,9 @@ Please read <a href="%url" target="_blank">this article</a> before disabling the
                     TemplateSynchronization::QTY_MODE_YES => __('Less or Equal'),
                 ],
                 'tooltip' => __(
-                    'Automatically stops an Item on Kaufland if Quantity according to the
-                     Selling Policy is changed <b>and</b> it meets the selected Conditions.'
+                    'Automatically stops an Item on %channel_title if Quantity according to the
+                     Selling Policy is changed <b>and</b> it meets the selected Conditions.',
+                    ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]
                 ),
             ]
         )->setAfterElementHtml(

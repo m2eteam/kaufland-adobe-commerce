@@ -14,7 +14,11 @@ class View extends AbstractView
     protected function _toHtml()
     {
         $message = (string)__(
-            'This Log contains information about the actions applied to M2E Kaufland Listings and related Items.'
+            'This Log contains information about the actions applied to ' .
+            '%extension_title Listings and related Items.',
+            [
+                'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+            ]
         );
         $helpBlock = $this
             ->getLayout()

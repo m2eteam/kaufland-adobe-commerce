@@ -8,28 +8,26 @@ use M2E\Kaufland\Controller\Adminhtml\Kaufland\Template\AbstractDescription;
 
 class GetRandomMagentoProductId extends AbstractDescription
 {
-    private \M2E\Kaufland\Model\ResourceModel\Listing $listingResource;
-    private \M2E\Kaufland\Model\ResourceModel\Product\CollectionFactory $listingProductCollectionFactory;
+    private \M2E\Kaufland\Model\Product\Repository $productRepository;
 
     public function __construct(
-        \M2E\Kaufland\Model\ResourceModel\Product\CollectionFactory $listingProductCollectionFactory,
-        \M2E\Kaufland\Model\ResourceModel\Listing                   $listingResource,
-        \Magento\Framework\HTTP\PhpEnvironment\Request                $phpEnvironmentRequest,
-        \Magento\Catalog\Model\Product                                $productModel,
-        \M2E\Kaufland\Model\Kaufland\Template\Manager             $templateManager
+        \Magento\Framework\HTTP\PhpEnvironment\Request $phpEnvironmentRequest,
+        \Magento\Catalog\Model\Product $productModel,
+        \M2E\Kaufland\Model\Kaufland\Template\Manager $templateManager,
+        \M2E\Kaufland\Model\Product\Repository $productRepository
     ) {
-        $this->listingResource = $listingResource;
         parent::__construct(
             $phpEnvironmentRequest,
             $productModel,
             $templateManager
         );
-        $this->listingProductCollectionFactory = $listingProductCollectionFactory;
+
+        $this->productRepository = $productRepository;
     }
 
     public function execute()
     {
-        $storeId = $this->getRequest()->getPost('store_id', \Magento\Store\Model\Store::DEFAULT_STORE_ID);
+        $storeId = (int)$this->getRequest()->getPost('store_id', \Magento\Store\Model\Store::DEFAULT_STORE_ID);
         $productId = $this->getProductIdFromListing($storeId) ?? $this->getProductIdFromMagento();
 
         if ($productId) {
@@ -47,33 +45,24 @@ class GetRandomMagentoProductId extends AbstractDescription
         return $this->getResult();
     }
 
-    private function getProductIdFromListing($storeId): ?int
+    private function getProductIdFromListing(int $storeId): ?int
     {
-        $listingProductCollection = $this->listingProductCollectionFactory->create();
+        $listingProductCollection = $this->productRepository->getProductCollectionByStoreId($storeId);
         $collectionSize = $listingProductCollection->getSize();
 
         if ($collectionSize == 0) {
             return null;
         }
 
-        $offset = rand(0, $collectionSize - 1);
         $listingProductCollection
             ->getSelect()
             ->reset(\Magento\Framework\DB\Select::COLUMNS)
-            ->columns(['id', 'product_id'])
-            ->joinLeft(
-                ['ml' => $this->listingResource->getMainTable()],
-                '`ml`.`id` = `main_table`.`listing_id`',
-                ['store_id']
-            )
-            ->limit(1, $offset);
+            ->columns(\M2E\Kaufland\Model\ResourceModel\Product::COLUMN_MAGENTO_PRODUCT_ID)
+            ->limit(1, $this->calculateOffset($collectionSize));
 
-        /** @var \M2E\Kaufland\Model\Product $listingProduct */
-        $listingProduct = $listingProductCollection
-            ->addFieldToFilter('store_id', $storeId)
-            ->getFirstItem();
+        $listingProduct = $listingProductCollection->getFirstItem();
 
-        return $listingProduct->getId();
+        return $listingProduct->getMagentoProductId();
     }
 
     private function getProductIdFromMagento(): ?int
@@ -85,16 +74,20 @@ class GetRandomMagentoProductId extends AbstractDescription
             return null;
         }
 
-        $offset = rand(0, $collectionSize - 1);
         $productCollection
             ->getSelect()
             ->reset(\Magento\Framework\DB\Select::COLUMNS)
             ->columns('entity_id')
-            ->limit(1, $offset);
+            ->limit(1, $this->calculateOffset($collectionSize));
 
         /** @var \Magento\Catalog\Model\Product $product */
         $product = $productCollection->getFirstItem();
 
-        return $product->getId();
+        return (int)$product->getEntityId();
+    }
+
+    private function calculateOffset(int $collectionSize): int
+    {
+        return rand(0, $collectionSize - 1);
     }
 }

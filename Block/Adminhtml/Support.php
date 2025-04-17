@@ -21,20 +21,23 @@ class Support extends \M2E\Kaufland\Block\Adminhtml\Magento\AbstractBlock
             'no_collapse' => true,
             'no_hide' => true,
             'content' => __(
-                '<p>Have any questions regarding the use of M2E Kaufland, its functionality, technical aspects, or billing?
+                '<p>Have any questions regarding the use of %extension_title, its functionality, technical aspects, or billing?
                 You can always find answers in our
-                <a href="%1" target="_blank" class="external-link">documentation</a> or
-                <a href="%2" target="_blank" class="external-link">Knowledge Base</a>
-                created specifically for M2E Kaufland clients. There is also a
-                <a href="%3" target="_blank" class="external-link">YouTube channel</a>
+                <a href="%docs_url" target="_blank" class="external-link">documentation</a> or
+                <a href="%helpdesk_url" target="_blank" class="external-link">Knowledge Base</a>
+                created specifically for %extension_title clients. There is also a
+                <a href="%youtube_url" target="_blank" class="external-link">YouTube channel</a>
                 with helpful video guides.</p>
                 <p>In case you cannot find a solution to your problem within the available resources,
-                feel free to reach out to M2E Kaufland Support Team by clicking Contact Us. If your subscription plan
+                feel free to reach out to %extension_title Support Team by clicking Contact Us. If your subscription plan
                 does not include a ticket system, you will receive an email with the plan\'s terms
                 in response to your request.</p>',
-                'https://docs-m2.m2epro.com/m2e-kaufland-user-guide',
-                'https://help.m2epro.com/en/support/solutions/9000117126',
-                'https://www.youtube.com/channel/UChPCt1cp3Hp3u63f-lNBUnA'
+                [
+                    'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                    'docs_url' => 'https://docs-m2.m2epro.com/m2e-kaufland-user-guide',
+                    'helpdesk_url' => 'https://help.m2epro.com/en/support/solutions/9000117126',
+                    'youtube_url' => 'https://www.youtube.com/channel/UChPCt1cp3Hp3u63f-lNBUnA',
+                ]
             ),
         ]);
 

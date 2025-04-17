@@ -42,11 +42,15 @@ class RunRevise extends AbstractAction
             ['result' => $result] = $this->actionService->runRevise($products);
             if ($result === 'success') {
                 $this->getMessageManager()->addSuccessMessage(
-                    __('"Revising Selected Items On Kaufland" task has completed.'),
+                    __('"Revising Selected Items On %channel_title" task has completed.', [
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                    ])
                 );
             } else {
                 $this->getMessageManager()->addErrorMessage(
-                    __('"Revising Selected Items On Kaufland" task has completed with errors.'),
+                    __('"Revising Selected Items On %channel_title" task has completed with errors.', [
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                    ])
                 );
             }
 
@@ -56,7 +60,9 @@ class RunRevise extends AbstractAction
         $this->actionService->scheduleRevise($products);
 
         $this->getMessageManager()->addSuccessMessage(
-            __('"Revising Selected Items On Kaufland" task has completed.'),
+            __('"Revising Selected Items On %channel_title" task has completed.', [
+                'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+            ])
         );
 
         return $this->redirectToGrid();

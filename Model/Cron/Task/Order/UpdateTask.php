@@ -179,10 +179,11 @@ class UpdateTask implements \M2E\Core\Model\Cron\TaskHandlerInterface
             $this->removeChangesByOrder($order);
 
             $successMessage = __(
-                'Order status was updated to Shipped. Tracking number %tracking for %carrier has been sent to Kaufland',
+                'Order status was updated to Shipped. Tracking number %tracking for %carrier has been sent to %channel_title',
                 [
                     'tracking' => $trackingNumber,
                     'carrier' => $carrierCode,
+                    'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
                 ],
             );
 

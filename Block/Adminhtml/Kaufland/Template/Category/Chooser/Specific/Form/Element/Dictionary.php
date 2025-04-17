@@ -183,7 +183,7 @@ class Dictionary extends \Magento\Framework\Data\Form\Element\AbstractElement
             ],
             DictionaryAlias::VALUE_MODE_KAUFLAND_RECOMMENDED => [
                 'value' => DictionaryAlias::VALUE_MODE_KAUFLAND_RECOMMENDED,
-                'label' => __('Kaufland Recommended'),
+                'label' => __('%channel_title Recommended', ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]),
             ],
             DictionaryAlias::VALUE_MODE_CUSTOM_ATTRIBUTE => [
                 'value' => DictionaryAlias::VALUE_MODE_CUSTOM_ATTRIBUTE,

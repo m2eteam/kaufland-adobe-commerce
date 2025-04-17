@@ -19,8 +19,13 @@ class Mapping extends AbstractContainer
 
         $this->setChild('product_mapping_grid', $mappingGrid);
 
-        $text = __('As M2E Kaufland was not able to find appropriate Product in Magento Catalog,
-                     you are supposed to find and map it manually.');
+        $text = __(
+            'As %extension_title was not able to find appropriate Product in Magento Catalog,
+    you are supposed to find and map it manually.',
+            [
+                'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+            ]
+        );
         $note = __('Note:');
         $text2 = __('Magento Order can be only created when all Products of
                      Order are found in Magento Catalog.');

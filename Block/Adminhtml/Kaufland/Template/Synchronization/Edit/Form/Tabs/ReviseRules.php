@@ -38,14 +38,17 @@ class ReviseRules extends AbstractTab
             self::HELP_BLOCK,
             [
                 'content' => __(
-                    '<p>Specify which Channel data should be automatically revised by M2E Kaufland.</p><br>
+                    '<p>Specify which Channel data should be automatically revised by %extension_title.</p><br>
 
 <p>Selected Item Properties will be automatically updated based on the changes in related Magento Attributes or
 Policy Templates.</p><br>
 
 <p>More detailed information on how to work with this Page can be found
 <a href="%url" target="_blank" class="external-link">here.</a></p>',
-                    ['url' => 'https://docs-m2.m2epro.com/revise-rules-for-kaufland-listings'],
+                    [
+                        'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                        'url' => 'https://docs-m2.m2epro.com/revise-rules-for-kaufland-listings'
+                    ],
                 ),
             ]
         );
@@ -70,10 +73,13 @@ Policy Templates.</p><br>
                 ],
                 'disabled' => true,
                 'tooltip' => __(
-                    'Automatically revises Item Quantity on Kaufland when Product Quantity, Magento Attribute
-                    used for Item Quantity or Custom Quantity value are modified in Magento or Policy Template.
-                    The Quantity management is the basic functionality the Magento-to-Kaufland integration is based on
-                    and it cannot be disabled.'
+                    'Automatically revises Item Quantity on %channel_title when Product Quantity, Magento Attribute
+    used for Item Quantity or Custom Quantity value are modified in Magento or Policy Template.
+    The Quantity management is the basic functionality the Magento-to-%channel_title integration is based on
+    and it cannot be disabled.',
+                    [
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                    ]
                 ),
             ]
         );
@@ -122,8 +128,11 @@ HTML
                     1 => __('Yes'),
                 ],
                 'tooltip' => __(
-                    'Automatically revises Item Price on Kaufland when Product Price, Special Price or Magento Attribute
-                    used for Item Price are modified in Magento or Policy Template.'
+                    'Automatically revises Item Price on %channel_title when Product Price, Special Price or Magento Attribute
+                    used for Item Price are modified in Magento or Policy Template.',
+                    [
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                    ]
                 ),
             ]
         );
@@ -140,8 +149,11 @@ HTML
                     1 => __('Yes'),
                 ],
                 'tooltip' => __(
-                    'Automatically revises Item Title on Kaufland when Product Name,Magento Attribute
-                    used for Item Title or Custom Title value are modified in Magento or Policy Template.'
+                    'Automatically revises Item Title on %channel_title when Product Name,Magento Attribute
+                    used for Item Title or Custom Title value are modified in Magento or Policy Template.',
+                    [
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                    ]
                 ),
             ]
         );
@@ -158,8 +170,11 @@ HTML
                     1 => __('Yes'),
                 ],
                 'tooltip' => __(
-                    'Automatically revises Item Description on Kaufland when Product Description, Product Short
-                    Description or Custom Description value are modified in Magento or Policy Template.'
+                    'Automatically revises Item Description on %channel_title when Product Description, Product Short
+                    Description or Custom Description value are modified in Magento or Policy Template.',
+                    [
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                    ]
                 ),
             ]
         );
@@ -176,8 +191,11 @@ HTML
                     1 => __('Yes'),
                 ],
                 'tooltip' => __(
-                    'Automatically revises Item Image(s) on Kaufland when Product Image(s)
-                    or Magento Attribute used for Product Image(s) are modified in Magento or Policy Template.'
+                    'Automatically revises Item Image(s) on %channel_title when Product Image(s)
+                    or Magento Attribute used for Product Image(s) are modified in Magento or Policy Template.',
+                    [
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                    ]
                 ),
             ]
         );
@@ -194,8 +212,11 @@ HTML
                     1 => __('Yes'),
                 ],
                 'tooltip' => __(
-                    'Automatically revises Item Categories/Attributes on Kaufland when Categories/Attributes
-                    data or Magento Attributes used for Categories/Attributes are modified.'
+                    'Automatically revises Item Categories/Attributes on %channel_title when Categories/Attributes
+                    data or Magento Attributes used for Categories/Attributes are modified.',
+                    [
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                    ]
                 ),
             ]
         );

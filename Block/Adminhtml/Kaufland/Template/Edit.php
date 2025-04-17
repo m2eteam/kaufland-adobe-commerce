@@ -69,8 +69,11 @@ class Edit extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractContainer
         if ($template->getId()) {
             $saveConfirmation = \M2E\Core\Helper\Data::escapeJs(
                 (string)__(
-                    '<br/><b>Note:</b> All changes you have made will be automatically
-                    applied to all M2E Kaufland Listings where this Policy is used.'
+                    '<br/><b>Note:</b> All changes you have made will be automatically ' .
+                    'applied to all %extension_title Listings where this Policy is used.',
+                    [
+                        'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                    ]
                 )
             );
         }

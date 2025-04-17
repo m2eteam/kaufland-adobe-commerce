@@ -9,8 +9,10 @@ class ProcessEnd extends \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Asy
     private \M2E\Kaufland\Model\Tag\ListingProduct\Buffer $tagBuffer;
     private \M2E\Kaufland\Model\Kaufland\TagFactory $tagFactory;
     private ResponseFactory $responseFactory;
+    private \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Type\ReviseProduct\LoggerFactory $loggerFactory;
 
     public function __construct(
+        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Type\ReviseProduct\LoggerFactory $loggerFactory,
         \M2E\Kaufland\Model\Tag\ListingProduct\Buffer $tagBuffer,
         \M2E\Kaufland\Model\Kaufland\TagFactory $tagFactory,
         ResponseFactory $responseFactory
@@ -18,6 +20,7 @@ class ProcessEnd extends \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Asy
         $this->tagBuffer = $tagBuffer;
         $this->tagFactory = $tagFactory;
         $this->responseFactory = $responseFactory;
+        $this->loggerFactory = $loggerFactory;
     }
 
     protected function processComplete(array $resultData, array $messages): void
@@ -51,6 +54,9 @@ class ProcessEnd extends \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Asy
             return;
         }
 
+        $logger = $this->loggerFactory->create();
+        $logger->saveProductDataBeforeUpdate($this->getListingProduct());
+
         $responseObj->processSuccess($data);
 
         $messages = $responseObj->getMessages($data);
@@ -59,7 +65,22 @@ class ProcessEnd extends \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Asy
             $this->addActionLogMessages($messages);
         }
 
-        $this->generateResultMessage($data);
+        if ($data['status'] === false) {
+            $resultMessage = (string)__('Item was not revised');
+            $this->getLogBuffer()->addFail($resultMessage);
+
+            return;
+        }
+
+        $logs = $logger->calculateLogs($this->getListingProduct());
+
+        if (empty($logs)) {
+            $this->getLogBuffer()->addSuccess('Item was revised');
+        }
+
+        foreach ($logs as $log) {
+            $this->addActionLogMessage($log);
+        }
     }
 
     /**
@@ -101,20 +122,6 @@ class ProcessEnd extends \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Asy
             $this->tagBuffer->addTags($this->getListingProduct(), $tags);
             $this->tagBuffer->flush();
         }
-    }
-
-    private function generateResultMessage($data): void
-    {
-
-        if ($data['status'] === false) {
-            $resultMessage = (string)__('Product was not revised');
-            $this->getLogBuffer()->addFail($resultMessage);
-
-            return;
-        }
-
-        $message = (string)__('Product was revised');
-        $this->getLogBuffer()->addSuccess($message);
     }
 
     protected function getProductLockType(): string

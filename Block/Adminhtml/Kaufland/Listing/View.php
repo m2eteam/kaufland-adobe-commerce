@@ -65,10 +65,13 @@ class View extends \M2E\Kaufland\Block\Adminhtml\Magento\Grid\AbstractContainer
             $this->appendHelpBlock(
                 [
                     'content' => __(
-                        '<p>M2E Kaufland Listing is a group of Magento Products sold on a certain Storefront
-                    from a particular Account. M2E Kaufland has several options to display the content of
-                    Listings referring to different data details. Each of the view options contains a
-                    unique set of available Actions accessible in the Mass Actions drop-down.</p>'
+                        '<p>%extension_title Listing is a group of Magento Products sold on a certain Storefront
+                from a particular Account. %extension_title has several options to display the content of
+                Listings referring to different data details. Each of the view options contains a
+                unique set of available Actions accessible in the Mass Actions drop-down.</p>',
+                        [
+                            'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                        ]
                     ),
                 ]
             );

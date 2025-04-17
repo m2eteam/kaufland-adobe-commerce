@@ -136,7 +136,10 @@ abstract class AbstractValidator
                 isset($this->params['status_changer']) &&
                 $this->params['status_changer'] == \M2E\Kaufland\Model\Product::STATUS_CHANGER_USER
             ) {
-                $message = 'You are submitting an Item with zero quantity. It contradicts Kaufland requirements.';
+                $message = sprintf(
+                    'You are submitting an Item with zero quantity. It contradicts %s requirements.',
+                    \M2E\Kaufland\Helper\Module::getChannelTitle()
+                );
 
                 if ($this->getListingProduct()->isStoppable()) {
                     $message .= ' Please apply the Stop Action instead.';
@@ -144,8 +147,11 @@ abstract class AbstractValidator
 
                 $this->addMessage($message);
             } else {
-                $message = 'Cannot submit an Item with zero quantity. It contradicts Kaufland requirements.
-                            This action has been generated automatically based on your Synchronization Rule settings. ';
+                $message = sprintf(
+                    'Cannot submit an Item with zero quantity. It contradicts %s requirements.
+                            This action has been generated automatically based on your Synchronization Rule settings. ',
+                    \M2E\Kaufland\Helper\Module::getChannelTitle()
+                );
 
                 if ($this->getListingProduct()->isStoppable()) {
                     $message .= 'The error occurs when the Stop Rules are not properly configured or disabled. ';

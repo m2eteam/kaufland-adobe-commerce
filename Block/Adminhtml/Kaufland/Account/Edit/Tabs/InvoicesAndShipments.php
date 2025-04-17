@@ -30,8 +30,12 @@ class InvoicesAndShipments extends AbstractForm
             self::HELP_BLOCK,
             [
                 'content' => __(
-                    '<p>Under this tab, you can set M2E Kaufland to automatically create invoices and shipments in your Magento.
-To do that, keep Magento <i>Invoice/Shipment Creation</i> options enabled.</p>'
+                    '<p>Under this tab, you can set %extension_title to automatically create ' .
+                    'invoices and shipments in your Magento. To do that, keep Magento ' .
+                    '<i>Invoice/Shipment Creation</i> options enabled.</p>',
+                    [
+                        'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                    ]
                 ),
             ]
         );
@@ -66,8 +70,8 @@ To do that, keep Magento <i>Invoice/Shipment Creation</i> options enabled.</p>'
             'upload_magento_invoice',
             'select',
             [
-                'label' => __('Upload Invoice to Kaufland'),
-                'title' => __('Upload Invoice to Kaufland'),
+                'label' => __('Upload Invoice to %channel_title', ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]),
+                'title' => __('Upload Invoice to %channel_title', ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]),
                 'name' => 'upload_magento_invoice',
                 'values' => [
                     0 => __('No'),

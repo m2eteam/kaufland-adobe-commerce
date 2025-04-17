@@ -119,23 +119,4 @@ class Repository
         $this->resource->delete($storefront);
         $this->cache->removeValue($this->makeCacheKey($storefront, $storefront->getId()));
     }
-
-    public function getStorefrontByTitle(string $title): \M2E\Kaufland\Model\Storefront
-    {
-        $reverseMap = [
-            \M2E\Kaufland\Model\Storefront::STOREFRONT_DE => 'de',
-            \M2E\Kaufland\Model\Storefront::STOREFRONT_CZ => 'cz',
-            \M2E\Kaufland\Model\Storefront::STOREFRONT_SK => 'sk',
-            \M2E\Kaufland\Model\Storefront::STOREFRONT_PL => 'pl',
-            \M2E\Kaufland\Model\Storefront::STOREFRONT_AT => 'at',
-        ];
-
-        if (!isset($reverseMap[$title])) {
-            throw new \M2E\Kaufland\Model\Exception\Logic(
-                (string)__('Storefront with %title not defined.', ['title' => $title]),
-            );
-        }
-
-        return $this->getByCode($reverseMap[$title]);
-    }
 }

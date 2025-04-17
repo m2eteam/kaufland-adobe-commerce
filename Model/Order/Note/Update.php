@@ -31,8 +31,11 @@ class Update
         $this->repository->save($obj);
 
         $comment = (string)__(
-            'Custom Note for the corresponding Kaufland order was updated: %note.',
-            ['note' => $obj->getNote()],
+            'Custom Note for the corresponding %channel_title order was updated: %note.',
+            [
+                'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                'note' => $obj->getNote()
+            ],
         );
 
         $order = $this->orderRepository->get($obj->getOrderId());

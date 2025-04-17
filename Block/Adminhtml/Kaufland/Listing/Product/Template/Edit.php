@@ -34,9 +34,12 @@ class Edit extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractContainer
             [
                 'content' => __(
                     '<p>You may edit Policies assigned to your Listing or create new ones. The changes you make are automatically
-                    applied to all M2E Kaufland Listings that use this Policy.</p>
+                    applied to all %extension_title Listings that use this Policy.</p>
                     <p>Find more details on configuring Policies in the <a href="%url" target="_blank">documentation</a>.</p>',
-                    ['url' => 'https://docs-m2.m2epro.com/m2e-kaufland-policies'],
+                    [
+                        'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                        'url' => 'https://docs-m2.m2epro.com/m2e-kaufland-policies',
+                    ],
                 ),
                 'style' => 'margin-top: 30px',
             ]

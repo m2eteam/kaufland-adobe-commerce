@@ -16,9 +16,16 @@ class Content extends AbstractForm
 
     protected function _prepareLayout()
     {
-        $string = __('In this section, you can provide various Kaufland Marketplace settings, such as Product Identifier configurations, to optimize your marketplace presence.');
+        $string = __(
+            'In this section, you can provide various %channel_title Marketplace settings,
+             such as Product Identifier configurations, to optimize your marketplace presence.',
+            ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]
+        );
         $settings = __('Anytime you can change these settings under');
-        $path = __('Kaufland > Configuration > Settings');
+        $path = __(
+            '%channel_title > Configuration > Settings',
+            ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]
+        );
 
         $content = $string . '<br><br>' . $settings . ' <b>' . $path . '</b>';
         $this->getLayout()->getBlock('wizard.help.block')->setContent($content);

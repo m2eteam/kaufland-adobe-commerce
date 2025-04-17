@@ -8,23 +8,35 @@
 
 <div class="wizard_block">
     <h2>
-        <?php
-        echo __(
-            'Congratulations! You have registered your M2E Kaufland Extension and linked your Kaufland Account to it.'
+        <?= __(
+            'Congratulations! You have registered your %extension_title Extension and linked ' .
+            'your %channel_title Account to it.',
+            [
+                'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+            ]
         ); ?>
     </h2>
 
     <p>
-        <?php
-        echo __('The next step involves creating your first M2E Kaufland Listing.'); ?>
+        <?= __(
+            'The next step involves creating your first %extension_title Listing.',
+            [
+                'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+            ]
+        ); ?>
     </p>
     <br/>
 
     <p>
-        <?php
-        echo __(
-            'M2E Kaufland Listing is a group of Magento Products combined under specific sets of rules. <br/>These are the
-                    Products which will be offered as Kaufland Items by a Seller on a particular Storefront.'
+        <?= __(
+            '%extension_title Listing is a group of Magento Products combined under specific sets ' .
+            'of rules. <br/>These are the Products which will be offered as %channel_title Items by a Seller on ' .
+            'a particular Storefront.',
+            [
+                'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+            ]
         ); ?>
     </p>
     <br/>

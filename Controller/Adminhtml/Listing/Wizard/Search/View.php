@@ -46,14 +46,20 @@ class View extends \M2E\Kaufland\Controller\Adminhtml\Listing\Wizard\StepAbstrac
             $this->getMessageManager()->addErrorMessage(
                 __(
                     'Product search is unavailable due to a missing Product Identifier.
-                 Please make sure to set the EAN in Kaufland > Configuration > Settings > Main',
-                ),
+     Please make sure to set the EAN in %channel_title > Configuration > Settings > Main',
+                    ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]
+                )
             );
         }
 
         $this->getResultPage()
              ->getConfig()
-             ->getTitle()->prepend(__('Kaufland Product Search'));
+             ->getTitle()->prepend(
+                 __(
+                     '%channel_title Product Search',
+                     ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]
+                 )
+             );
 
         $this->addContent(
             $this->getLayout()->createBlock(

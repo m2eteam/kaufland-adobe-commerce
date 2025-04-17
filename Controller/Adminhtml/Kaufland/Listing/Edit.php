@@ -42,7 +42,13 @@ class Edit extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\AbstractListing
             ),
         );
         $this->getResultPage()->getConfig()->getTitle()->prepend(
-            __('Edit M2E Kaufland Listing "%listing_title" Settings', ['listing_title' => $listing->getTitle()]),
+            __(
+                'Edit %extension_title Listing "%listing_title" Settings',
+                [
+                    'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                    'listing_title' => $listing->getTitle()
+                ]
+            ),
         );
 
         return $this->getResult();

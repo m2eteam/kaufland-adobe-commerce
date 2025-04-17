@@ -21,7 +21,7 @@ class Combine extends \M2E\Kaufland\Model\Magento\Product\Rule\Condition\Combine
      */
     protected function getCustomLabel(): string
     {
-        return (string)__('Kaufland Values');
+        return \M2E\Kaufland\Helper\Module::getExtensionTitle() . ' Values';
     }
 
     protected function getCustomOptions(): array

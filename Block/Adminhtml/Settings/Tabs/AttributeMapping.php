@@ -55,10 +55,13 @@ class AttributeMapping extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\Abstra
             'gpsr_attributes',
             [
                 'legend' => __('GPSR Attributes'),
-                'tooltip' => __('The GPSR Attributes section allows you to define the default mapping between
-                Magento attributes and Kaufland attributes for the GPSR (General Product Safety Regulation) fields.
+                'tooltip' => __(
+                    'The GPSR Attributes section allows you to define the default mapping between
+                Magento attributes and %channel_title attributes for the GPSR (General Product Safety Regulation) fields.
                 By setting these mappings, you can automatically apply the appropriate attributes to all
-                Kaufland categories that require GPSR, simplifying the listing process and ensuring consistency across your products.'),
+                %channel_title categories that require GPSR, simplifying the listing process and ensuring consistency across your products.',
+                    ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]
+                ),
                 'collapsable' => true,
             ]
         );

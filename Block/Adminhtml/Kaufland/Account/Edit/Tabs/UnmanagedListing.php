@@ -34,11 +34,15 @@ class UnmanagedListing extends AbstractForm
             self::HELP_BLOCK,
             [
                 'content' => __(
-                    '<p>This tab of the Account settings contains main configurations for the Unmanaged Listing management.
-You can set preferences whether you would like to import Unmanaged Listings
-(Items that were Listed on Kaufland either directly on the channel or with the help of
-other than M2E Kaufland tool),
-automatically link them to Magento Product, etc.</p>'
+                    '<p>This tab of the Account settings contains main configurations ' .
+                    'for the Unmanaged Listing management. You can set preferences whether you would like to ' .
+                    'import Unmanaged Listings (Items that were Listed on %channel_title either directly on the ' .
+                    'channel or with the help of other than %extension_title tool), automatically link them ' .
+                    'to Magento Product, etc.</p>',
+                    [
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                        'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                    ]
                 ),
             ]
         );
@@ -63,8 +67,13 @@ automatically link them to Magento Product, etc.</p>'
                 ],
                 'value' => (int)$unmanagedListingSettings->isSyncEnabled(),
                 'tooltip' => __(
-                    'Choose whether to import items that have been listed on Kaufland either directly or using a tool
-                    other than M2E Kaufland. M2E Kaufland will import only active Kaufland items.'
+                    'Choose whether to import items that have been listed on %channel_title ' .
+                    'either directly or using a tool other than %extension_title. %extension_title will ' .
+                    'import only active %channel_title items.',
+                    [
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                        'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                    ]
                 ),
             ]
         );
@@ -83,8 +92,11 @@ automatically link them to Magento Product, etc.</p>'
                 ],
                 'value' => (int)$unmanagedListingSettings->isMappingEnabled(),
                 'tooltip' => __(
-                    'Choose whether imported Kaufland Listings should automatically link to a
-                    Product in your Magento Inventory.'
+                    'Choose whether imported %channel_title Listings should automatically ' .
+                    'link to a Product in your Magento Inventory.',
+                    [
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                    ]
                 ),
             ]
         );
@@ -95,10 +107,13 @@ automatically link them to Magento Product, etc.</p>'
                 'legend' => __('Magento Product Linking Settings'),
                 'collapsable' => true,
                 'tooltip' => __(
-                    '<p>In this section you can provide settings for automatic Linking of the newly
-                    imported Unmanaged Listings to the appropriate Magento Products.</p><br>
-                    <p>The imported Items are linked based on the correspondence between Kaufland Item
-                    values and Magento Product Attribute values. </p>'
+                    '<p>In this section you can provide settings for automatic Linking of the ' .
+                    'newly imported Unmanaged Listings to the appropriate Magento Products.</p><br>' .
+                    '<p>The imported Items are linked based on the correspondence between %channel_title Item ' .
+                    'values and Magento Product Attribute values. </p>',
+                    [
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                    ]
                 ),
             ]
         );
@@ -255,7 +270,9 @@ HTML
             self::SELECT,
             [
                 'name' => 'other_listings_mapping[item_id][mode]',
-                'label' => __('Kaufland Product ID'),
+                'label' => __('%channel_title Product ID', [
+                    'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                ]),
                 'class' => 'attribute-mode-select',
                 'style' => 'float:left; margin-right: 15px;',
                 'values' => [

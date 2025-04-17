@@ -24,6 +24,6 @@ abstract class AbstractWizard extends \M2E\Kaufland\Controller\Adminhtml\Abstrac
 
     protected function getMenuRootNodeLabel()
     {
-        return \M2E\Kaufland\Helper\View\Kaufland::getMenuRootNodeLabel();
+        return \M2E\Kaufland\Helper\Module::getMenuRootNodeLabel();
     }
 }

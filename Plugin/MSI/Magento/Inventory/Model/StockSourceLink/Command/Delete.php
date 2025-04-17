@@ -91,8 +91,11 @@ class Delete extends \M2E\Kaufland\Plugin\AbstractPlugin
             \M2E\Kaufland\Model\Listing\Log::ACTION_UNKNOWN,
             null,
             \M2E\Kaufland\Helper\Module\Log::encodeDescription(
-                'Source set was changed in the "%stock%" Stock used for M2E Kaufland Listing.',
-                ['!stock' => $stock->getName()]
+                'Source set was changed in the "%stock%" Stock used for %extension_title% Listing.',
+                [
+                    '!extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                    '!stock' => $stock->getName()
+                ]
             ),
             \M2E\Kaufland\Model\Log\AbstractModel::TYPE_INFO
         );

@@ -33,10 +33,18 @@ class Title extends \Magento\Ui\Component\Listing\Columns\Column
 
             $html = sprintf('<p>%s</p>', $productTitle);
 
-            $html .= $this->renderLine((string)\__('SKU'), $row['offer_id']);
-            $html .= $this->renderLine((string)\__('Kaufland Category'), $row['category_title']);
+            $html .= $this->renderLine((string)__('SKU'), $row['offer_id']);
+            if ($row['category_title'] !== null) {
+                $html .= $this->renderLine(
+                    (string)__(
+                        '%channel_title Category',
+                        ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]
+                    ),
+                    $row['category_title']
+                );
+            }
             $storefrontTitle = $this->getStorefrontTitle((int)$row['storefront_id']);
-            $html .= $this->renderLine((string)\__('Storefront'), $storefrontTitle);
+            $html .= $this->renderLine((string)__('Storefront'), $storefrontTitle);
 
             $row['title'] = $html;
         }

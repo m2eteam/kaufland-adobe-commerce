@@ -137,7 +137,7 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Magento\Grid\AbstractGrid
         ]);
 
         $this->addColumn('category', [
-            'header' => __('Kaufland Category'),
+            'header' => __('%channel_title Category', ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]),
             'align' => 'left',
             'width' => '*',
             'index' => 'category',
@@ -347,7 +347,13 @@ JS,
 
         // ---------------------------------------
 
-        $this->jsTranslator->add('Set Kaufland Category', __('Set Kaufland Category'));
+        $this->jsTranslator->add(
+            sprintf('Set %s Category', \M2E\Kaufland\Helper\Module::getChannelTitle()),
+            __(
+                'Set %channel_title Category',
+                ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]
+            )
+        );
         $this->jsTranslator->add('Category Settings', __('Category Settings'));
 
         $this->jsTranslator->add(

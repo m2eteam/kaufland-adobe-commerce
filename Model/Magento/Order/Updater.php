@@ -200,7 +200,14 @@ class Updater extends \M2E\Kaufland\Model\AbstractModel
 
         !is_array($comments) && $comments = [$comments];
 
-        $header = '<br/><b><u>' . __('M2E Kaufland Notes') . ':</u></b><br/><br/>';
+        $header = '<br/><b><u>' .
+            __(
+                '%extension_title Notes',
+                [
+                    'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                ]
+            )
+            . ':</u></b><br/><br/>';
         $comments = implode('<br/><br/>', $comments);
 
         $this->magentoOrder->addCommentToStatusHistory($header . $comments);

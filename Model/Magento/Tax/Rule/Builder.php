@@ -4,15 +4,15 @@ namespace M2E\Kaufland\Model\Magento\Tax\Rule;
 
 class Builder extends \M2E\Kaufland\Model\AbstractModel
 {
-    public const TAX_CLASS_NAME_PRODUCT = 'M2E Kaufland Product Tax Class';
-    public const TAX_CLASS_NAME_CUSTOMER = 'M2E Kaufland Customer Tax Class';
-    public const TAX_CLASS_NAME_SHIPPING = 'M2E Kaufland Shipping Tax Class';
+    public const TAX_CLASS_NAME_PRODUCT = 'M2E Kaufland Connect Product Tax Class';
+    public const TAX_CLASS_NAME_CUSTOMER = 'M2E Kaufland Connect Customer Tax Class';
+    public const TAX_CLASS_NAME_SHIPPING = 'M2E Kaufland Connect Shipping Tax Class';
 
-    public const TAX_RATE_CODE_PRODUCT = 'M2E Kaufland Tax Rate';
-    public const TAX_RULE_CODE_PRODUCT = 'M2E Kaufland Tax Rule';
+    public const TAX_RATE_CODE_PRODUCT = 'M2E Kaufland Connect Tax Rate';
+    public const TAX_RULE_CODE_PRODUCT = 'M2E Kaufland Connect Tax Rule';
 
-    public const TAX_RATE_CODE_SHIPPING = 'M2E Kaufland Shipping Tax Rate';
-    public const TAX_RULE_CODE_SHIPPING = 'M2E Kaufland Shipping Tax Rule';
+    public const TAX_RATE_CODE_SHIPPING = 'M2E Kaufland Connect Shipping Tax Rate';
+    public const TAX_RULE_CODE_SHIPPING = 'M2E Kaufland Connect Shipping Tax Rule';
 
     protected $classModelFactory;
     protected $rateFactory;

@@ -32,7 +32,10 @@ $attributesByInputTypes = $block->getData('attributes_by_input_types');
                 <?php
                 echo $block->getTooltipHtml(
                     $block->__(
-                        'The Currency for Kaufland Listings. Automatically set based on the Storefront you chose earlier.'
+                        'The Currency for %channel_title Listings. Automatically set based on the Storefront you chose earlier.',
+                        [
+                            'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                        ],
                     ),
                     true
                 ); ?>

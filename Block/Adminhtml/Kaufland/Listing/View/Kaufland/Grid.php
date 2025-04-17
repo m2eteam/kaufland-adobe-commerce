@@ -145,7 +145,7 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Listing\View\AbstractGrid
         ]);
 
         $this->addColumn('kaufland_product_id', [
-            'header' => __('Kaufland Product ID'),
+            'header' => __('%channel_title Product ID', ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]),
             'align' => 'left',
             'width' => '100px',
             'type' => 'text',
@@ -245,27 +245,44 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Listing\View\AbstractGrid
         // ---------------------------------------
 
         $this->getMassactionBlock()->addItem('list', [
-            'label' => __('List Item(s) on Kaufland'),
+            'label' => __(
+                'List Item(s) on %channel_title',
+                ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]
+            ),
             'url' => '',
         ], 'actions');
 
         $this->getMassactionBlock()->addItem('revise', [
-            'label' => __('Revise Item(s) on Kaufland'),
+            'label' => __(
+                'Revise Item(s) on %channel_title',
+                ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]
+            ),
             'url' => '',
         ], 'actions');
 
         $this->getMassactionBlock()->addItem('relist', [
-            'label' => __('Relist Item(s) on Kaufland'),
+            'label' => __(
+                'Relist Item(s) on %channel_title',
+                ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]
+            ),
             'url' => '',
         ], 'actions');
 
         $this->getMassactionBlock()->addItem('stop', [
-            'label' => __('Stop Item(s) on Kaufland'),
+            'label' => __(
+                'Stop Item(s) on %channel_title',
+                ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]
+            ),
             'url' => '',
         ], 'actions');
 
         $this->getMassactionBlock()->addItem('stopAndRemove', [
-            'label' => __('Remove from Kaufland / Remove From Listing'),
+            'label' => __(
+                'Remove from %channel_title / Remove from Listing',
+                [
+                    'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                ]
+            ),
             'url' => '',
         ], 'actions');
 
@@ -484,6 +501,8 @@ JS
         $taskCompletedErrorMessage = '"%task_title%" task has completed with errors. ';
         $taskCompletedErrorMessage .= '<a target="_blank" href="%url%">View Log</a> for details.';
 
+        $channelTitle = \M2E\Kaufland\Helper\Module::getChannelTitle();
+
         $this->jsTranslator->addTranslations([
             'task_completed_message' => __('Task completed. Please wait ...'),
 
@@ -492,7 +511,12 @@ JS
             'task_completed_warning_message' => __($taskCompletedWarningMessage),
             'task_completed_error_message' => __($taskCompletedErrorMessage),
 
-            'sending_data_message' => __('Sending %product_title% Product(s) data on Kaufland.'),
+            'sending_data_message' => __(
+                'Sending %product_title% Product(s) data on %channel_title.',
+                [
+                    'channel_title' => $channelTitle,
+                ]
+            ),
 
             'View Full Product Log' => __('View Full Product Log.'),
 
@@ -501,13 +525,29 @@ JS
 
             'Listing is empty.' => __('Listing is empty.'),
 
-            'listing_all_items_message' => __('Listing All Items On Kaufland'),
-            'listing_selected_items_message' => __('Listing Selected Items On Kaufland'),
-            'revising_selected_items_message' => __('Revising Selected Items On Kaufland'),
-            'relisting_selected_items_message' => __('Relisting Selected Items On Kaufland'),
-            'stopping_selected_items_message' => __('Stopping Selected Items On Kaufland'),
+            'listing_all_items_message' => __(
+                'Listing All Items On %channel_title',
+                ['channel_title' => $channelTitle]
+            ),
+            'listing_selected_items_message' => __(
+                'Listing Selected Items On %channel_title',
+                ['channel_title' => $channelTitle]
+            ),
+            'revising_selected_items_message' => __(
+                'Revising Selected Items On %channel_title',
+                ['channel_title' => $channelTitle]
+            ),
+            'relisting_selected_items_message' => __(
+                'Relisting Selected Items On %channel_title',
+                ['channel_title' => $channelTitle]
+            ),
+            'stopping_selected_items_message' => __(
+                'Stopping Selected Items On %channel_title',
+                ['channel_title' => $channelTitle]
+            ),
             'stopping_and_removing_selected_items_message' => __(
-                'Stopping On Kaufland And Removing From Listing Selected Items'
+                'Stopping On %channel_title And Removing From Listing Selected Items',
+                ['channel_title' => $channelTitle]
             ),
             'removing_selected_items_message' => __('Removing From Listing Selected Items'),
 

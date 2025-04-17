@@ -18,11 +18,13 @@ class Processor extends \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Abst
     private \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\RequestData $requestData;
     private \Magento\Framework\Locale\CurrencyInterface $localeCurrency;
     private array $requestMetadata;
+    private \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Type\ReviseUnit\LoggerFactory $loggerFactory;
 
     public function __construct(
         ValidatorFactory $actionValidatorFactory,
         RequestFactory $requestFactory,
         ResponseFactory $responseFactory,
+        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Type\ReviseUnit\LoggerFactory $loggerFactory,
         \M2E\Kaufland\Model\Tag\ListingProduct\Buffer $tagBuffer,
         \M2E\Kaufland\Model\Kaufland\TagFactory $tagFactory,
         \M2E\Kaufland\Model\Connector\Client\Single $serverClient,
@@ -35,6 +37,7 @@ class Processor extends \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Abst
         $this->tagBuffer = $tagBuffer;
         $this->tagFactory = $tagFactory;
         $this->localeCurrency = $localeCurrency;
+        $this->loggerFactory = $loggerFactory;
     }
 
     protected function getActionValidator(): AbstractValidator
@@ -84,6 +87,9 @@ class Processor extends \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Abst
             $this->requestMetadata,
         );
 
+        $logger = $this->loggerFactory->create();
+        $logger->saveProductDataBeforeUpdate($this->getListingProduct());
+
         $responseData = $response->getResponseData();
         if (!$responseObj->isSuccess($responseData)) {
             $messages = $responseObj->getMessages($responseData);
@@ -102,12 +108,14 @@ class Processor extends \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Abst
             $this->addActionLogMessages($messages);
         }
 
-        $this->processSuccessRevisePrice();
-        $this->processSuccessReviseQty();
-        $this->processSuccessReviseShipping();
+        $logs = $logger->calculateLogs($this->getListingProduct());
 
-        if ($this->getActionConfigurator()->isExcludingMode()) {
+        if (empty($logs)) {
             return 'Item was Revised';
+        }
+
+        foreach ($logs as $log) {
+            $this->addActionLogMessage($log);
         }
 
         return '';
@@ -161,79 +169,6 @@ class Processor extends \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Abst
 
             $this->tagBuffer->addTags($this->getListingProduct(), $tags);
             $this->tagBuffer->flush();
-        }
-    }
-
-    /**
-     * @throws \M2E\Kaufland\Model\Exception\Logic
-     * @throws \Magento\Framework\Currency\Exception\CurrencyException
-     */
-    private function processSuccessRevisePrice(): void
-    {
-        if (!$this->getActionConfigurator()->isPriceAllowed()) {
-            return;
-        }
-
-        $from = $this->getListingProduct()
-                     ->getOrigData(\M2E\Kaufland\Model\ResourceModel\Product::COLUMN_ONLINE_PRICE);
-        $to = $this->getListingProduct()->getOnlineCurrentPrice();
-        if ($from == $to) {
-            return;
-        }
-
-        $storefront = $this->getListingProduct()->getListing()->getStorefront();
-
-        $currencyCode = $storefront->getCurrencyCode();
-        $currency = $this->localeCurrency->getCurrency($currencyCode);
-
-        $message = sprintf(
-            'Price was revised from %s to %s',
-            $currency->toCurrency($from),
-            $currency->toCurrency($to)
-        );
-
-        $this->addActionLogMessage(\M2E\Core\Model\Response\Message::createSuccess($message));
-    }
-
-    /**
-     * @throws \M2E\Kaufland\Model\Exception\Logic
-     */
-    private function processSuccessReviseQty(): void
-    {
-        if (!$this->getActionConfigurator()->isQtyAllowed()) {
-            return;
-        }
-
-        $from = $this->getListingProduct()
-                     ->getOrigData(\M2E\Kaufland\Model\ResourceModel\Product::COLUMN_ONLINE_QTY);
-        $to = $this->getListingProduct()->getOnlineQty();
-
-        if ($from == $to) {
-            return;
-        }
-
-        $message = sprintf('QTY was revised from %s to %s', $from, $to);
-        $this->addActionLogMessage(\M2E\Core\Model\Response\Message::createSuccess($message));
-    }
-
-    /**
-     * @throws \M2E\Kaufland\Model\Exception\Logic
-     */
-    private function processSuccessReviseShipping(): void
-    {
-        if (!$this->getActionConfigurator()->isShippingAllowed()) {
-            return;
-        }
-
-        $fromHandlingTime = (int)$this->getListingProduct()
-                                      ->getOrigData(
-                                          \M2E\Kaufland\Model\ResourceModel\Product::COLUMN_ONLINE_HANDLING_TIME
-                                      );
-        $toHandlingTime = $this->getListingProduct()->getOnlineHandlingTime();
-
-        if ($fromHandlingTime !== $toHandlingTime) {
-            $message = sprintf('Handling Time was revised from %s to %s', $fromHandlingTime, $toHandlingTime);
-            $this->addActionLogMessage(\M2E\Core\Model\Response\Message::createSuccess($message));
         }
     }
 }

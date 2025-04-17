@@ -65,7 +65,8 @@ class ReviseAction extends AbstractRealtime
                     \M2E\Kaufland\Model\Listing\Log\Record::createWarning(
                         (string)__(
                             'Product details (Title, Description, Images, Category) could not be updated. To revise the data, please ensure that
-             a Description Policy is assigned to the Listing and a proper Kaufland category is set for the Product.'
+        a Description Policy is assigned to the Listing and a proper %channel_title category is set for the Product.',
+                            ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]
                         )
                     ),
                     $product,

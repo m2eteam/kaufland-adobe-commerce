@@ -1,11 +1,5 @@
 <?php
 
-/**
- * @author     M2E Kaufland Developers Team
- * @copyright  M2E LTD
- * @license    Commercial use is forbidden
- */
-
 namespace M2E\Kaufland\Block\Adminhtml\Kaufland\Template\Synchronization\Edit\Form\Tabs;
 
 use M2E\Kaufland\Model\Template\Synchronization as TemplateSynchronization;
@@ -77,19 +71,23 @@ class ListRules extends AbstractTab
             self::HELP_BLOCK,
             [
                 'content' => __(
-                    '<p><strong>List Action</strong> - this Action can be executed for each Item in M2E Kaufland Listings
+                    '<p><strong>List Action</strong> - this Action can be executed for each Item in %extension_title Listings
                     which has <strong>Not Listed</strong> Status and which Settings meet the List Condition. If an
                     Item was not initially Listed for some reason, automatic synchronization will attempt to list
                     it again only if there is a change of Product Status, Stock Availability or Quantity
                     in Magento.</p><br>
 
-                    <p><strong>Note:</strong> M2E Kaufland Listings Synchronization must be enabled in
-                    Synchronization <strong>(Kaufland Integration > Configuration > Settings > Synchronization)</strong>.
+                    <p><strong>Note:</strong> %extension_title Listings Synchronization must be enabled in
+                    Synchronization <strong>(%channel_title Integration > Configuration > Settings > Synchronization)</strong>.
                     Otherwise, Synchronization Policy Rules will not take effect.</p><br>
 
                     <p>More detailed information about how to work with this Page you can find
                     <a href="%url" target="_blank" class="external-link">here.</a></p>',
-                    ['url' => 'https://docs-m2.m2epro.com/list-rules-for-kaufland-listings'],
+                    [
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                        'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                        'url' => 'https://docs-m2.m2epro.com/list-rules-for-kaufland-listings'
+                    ],
                 ),
             ]
         );
@@ -136,9 +134,12 @@ class ListRules extends AbstractTab
                     1 => __('Enabled'),
                 ],
                 'tooltip' => __(
-                    '<p><strong>Enabled:</strong> List Items on Kaufland automatically if they have status Enabled
+                    '<p><strong>Enabled:</strong> List Items on %channel_title automatically if they have status Enabled
                     in Magento Product. (Recommended)</p>
-                    <p><strong>Any:</strong> List Items with any Magento Product status on Kaufland automatically</p>'
+                    <p><strong>Any:</strong> List Items with any Magento Product status on %channel_title automatically</p>',
+                    [
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                    ]
                 ),
             ]
         );

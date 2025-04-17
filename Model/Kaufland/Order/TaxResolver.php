@@ -11,6 +11,8 @@ class TaxResolver
     private const TAX_VAT_CZ = 21;
     private const TAX_VAT_AT = 20;
     private const TAX_VAT_PL = 23;
+    private const TAX_VAT_IT = 22;
+    private const TAX_VAT_FR = 20;
 
     private \Magento\Tax\Model\Calculation $taxCalculator;
 
@@ -27,6 +29,8 @@ class TaxResolver
             'sk' => self::TAX_VAT_SK,
             'pl' => self::TAX_VAT_PL,
             'at' => self::TAX_VAT_AT,
+            'it' => self::TAX_VAT_IT,
+            'fr' => self::TAX_VAT_FR,
         ];
 
         if (!isset($map[$storefrontCode])) {

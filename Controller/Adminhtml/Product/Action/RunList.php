@@ -42,11 +42,17 @@ class RunList extends AbstractAction
             ['result' => $result] = $this->actionService->runList($products);
             if ($result === 'success') {
                 $this->getMessageManager()->addSuccessMessage(
-                    __('"Listing Selected Items On Kaufland" task has completed.'),
+                    __(
+                        '"Listing Selected Items On %channel_title" task has completed.',
+                        ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]
+                    ),
                 );
             } else {
                 $this->getMessageManager()->addErrorMessage(
-                    __('"Listing Selected Items On Kaufland" task has completed with errors.'),
+                    __(
+                        '"Listing Selected Items On %channel_title" task has completed with errors.',
+                        ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]
+                    ),
                 );
             }
 
@@ -56,7 +62,10 @@ class RunList extends AbstractAction
         $this->actionService->scheduleList($products);
 
         $this->getMessageManager()->addSuccessMessage(
-            __('"Listing Selected Items On Kaufland" task has completed.'),
+            __(
+                '"Listing Selected Items On %channel_title" task has completed.',
+                ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]
+            ),
         );
 
         return $this->redirectToGrid();

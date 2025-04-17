@@ -38,8 +38,11 @@ class Create extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\AbstractAccount
             $account = $this->accountCreate->create($title, (string)$clientKey, (string)$secretKey);
         } catch (\Throwable $e) {
             $message = (string)__(
-                'The Kaufland access obtaining is currently unavailable.<br/>Reason: %error_message',
-                ['error_message' => $e->getMessage()],
+                'The %channel_title access obtaining is currently unavailable.<br/>Reason: %error_message',
+                [
+                    'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                    'error_message' => $e->getMessage()
+                ],
             );
 
             $this->messageManager->addError($message);

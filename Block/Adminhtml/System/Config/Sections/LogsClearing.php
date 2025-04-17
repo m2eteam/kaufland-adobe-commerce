@@ -49,7 +49,12 @@ class LogsClearing extends \M2E\Kaufland\Block\Adminhtml\System\Config\Sections
         $fieldSet = $form->addFieldset(
             'magento_block_configuration_logs_clearing_listings',
             [
-                'legend' => __('M2E Kaufland Listings Logs & Events Clearing'),
+                'legend' => __(
+                    '%extension_title Listings Logs & Events Clearing',
+                    [
+                        'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                    ]
+                ),
                 'collapsable' => false,
             ]
         );

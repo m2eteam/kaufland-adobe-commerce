@@ -63,8 +63,12 @@ class SearchChannelIdStep extends \M2E\Kaufland\Block\Adminhtml\Magento\Grid\Abs
         $this->css->addFile('kaufland/listing/view.css');
 
         $text = __(
-            'Since most of the Products already exist in Kaufland Catalog, M2E Pro makes it possible
-                 to find them and to make a link between your Magento Products and existing Kaufland Products.',
+            'Since most of the Products already exist in %channel_title Catalog, %extension_title makes it possible
+     to find them and to make a link between your Magento Products and existing %channel_title Products.',
+            [
+                'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+            ]
         );
 
         $text2 = __(

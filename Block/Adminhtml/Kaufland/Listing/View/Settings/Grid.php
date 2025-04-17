@@ -182,7 +182,7 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Listing\View\AbstractGrid
         $this->addColumn(
             'category',
             [
-                'header' => __('Kaufland Category'),
+                'header' => __('%channel_title Category', ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]),
                 'align' => 'left',
                 'type' => 'text',
                 'frame_callback' => [$this, 'callbackColumnCategory'],
@@ -526,14 +526,22 @@ JS
             'Specifics' => __('Specifics'),
             'task_completed_message' => __('Task completed. Please wait ...'),
             'task_completed_success_message' => __('"%task_title%" Task has completed.'),
-            'sending_data_message' => __('Sending %product_title% Product(s) data on Kaufland.'),
+            'sending_data_message' => __(
+                'Sending %product_title% Product(s) data on %channel_title.',
+                [
+                    'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                ]
+            ),
             'View Full Product Log.' => __('View Full Product Log.'),
             'The Listing was locked by another process. Please try again later.' =>
                 __('The Listing was locked by another process. Please try again later.'),
             'Listing is empty.' => __('Listing is empty.'),
             'Please select Items.' => __('Please select Items.'),
             'Please select Action.' => __('Please select Action.'),
-            'popup_title' => __('Moving Kaufland Items'),
+            'popup_title' => __(
+                'Moving %channel_title Items',
+                ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]
+            ),
             'task_completed_warning_message' => __($taskCompletedWarningMessage),
             'task_completed_error_message' => __($taskCompletedErrorMessage),
             'Add New Listing' => __('Add New Listing'),

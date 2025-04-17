@@ -69,8 +69,13 @@ class Form extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractForm
                 'required' => true,
                 'class' => 'Kaufland-listing-title',
                 'tooltip' => __(
-                    'Create a descriptive and meaningful Title for your M2E Kaufland Listing. <br/>
-                    This is used for reference within M2E Kaufland and will not appear on your Kaufland Listings.'
+                    'Create a descriptive and meaningful Title for your %extension_title ' .
+                    'Listing. <br/> This is used for reference within %extension_title and will not appear on ' .
+                    'your %channel_title Listings.',
+                    [
+                        'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                    ]
                 ),
             ]
         );
@@ -78,7 +83,9 @@ class Form extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractForm
         $fieldset = $form->addFieldset(
             'kaufland_settings_fieldset',
             [
-                'legend' => __('Kaufland Settings'),
+                'legend' => __('%channel_title Settings', [
+                    'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                ]),
                 'collapsable' => false,
             ]
         );
@@ -152,8 +159,11 @@ HTML
                 'value' => $storefrontValue ?? $storefrontData['active_storefront_id'],
                 'values' => $storefrontData['storefronts'],
                 'tooltip' => __(
-                    'Choose the Storefront you want to list on using this M2E Kaufland Listing.
-                    Currency will be set automatically based on the Storefront you choose.'
+                    'Choose the Storefront you want to list on using this M2E %channel_title Listing.
+                    Currency will be set automatically based on the Storefront you choose.',
+                    [
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                    ]
                 ),
                 'field_extra_attributes' => 'style="margin-bottom: 0px"',
             ]
@@ -178,8 +188,12 @@ HTML
                 'required' => true,
                 'has_empty_option' => true,
                 'tooltip' => __(
-                    'Choose the Magento Store View you want to use for this M2E Kaufland Listing.
-                     Please remember that Attribute values from the selected Store View will be used in the Listing.'
+                    'Choose the Magento Store View you want to use for this %extension_title ' .
+                    'Listing. Please remember that Attribute values from the selected Store View will ' .
+                    'be used in the Listing.',
+                    [
+                        'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                    ]
                 ),
                 'display_default_store_mode' => StoreSwitcher::DISPLAY_DEFAULT_STORE_MODE_DOWN,
             ]

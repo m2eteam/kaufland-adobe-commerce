@@ -1,0 +1,34 @@
+<?php
+
+// @codingStandardsIgnoreFile
+
+/** @var \M2E\Kaufland\Block\Adminhtml\Kaufland\Template\Description\Preview $block */
+
+?>
+
+<?php
+echo $block->getLayout()->createBlock(\M2E\Kaufland\Block\Adminhtml\HelpBlock::class)->setData([
+    'style' => 'margin-top: 30px',
+    'no_hide' => true,
+    'title' => $block->__('Description Preview'),
+    'content' => $block->__(
+        'If your description contains %extension_title Attributes, some of them such as Image URLs, Images, etc. might display for the previewing the value which is different from the actual one that will be sent to %channel_title.',
+        [
+            'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+            'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+        ]
+    ),
+])->toHtml() ?>
+
+<div class="pagination_container page-main-actions">
+    <div class="product_title">
+        <h2><?php
+            echo $block->getData('title'); ?> (ID: <?php
+            echo $block->getData('magento_product_id'); ?>)</h2>
+    </div>
+</div>
+
+<div class="description_container">
+    <?php
+    echo $block->getData('description'); ?>
+</div>

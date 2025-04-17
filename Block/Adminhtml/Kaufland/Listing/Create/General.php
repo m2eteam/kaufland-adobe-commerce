@@ -38,8 +38,8 @@ class General extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractContain
 
         $helpBlock = $this->getLayout()->createBlock(\M2E\Kaufland\Block\Adminhtml\HelpBlock::class);
         $text = __(
-            'It is necessary to select an Kaufland Account (existing or create a new one) as well as choose a Storefront that you
-are going to sell Magento Products on.'
+            'It is necessary to select a %channel_title Account (existing or create a new one) as well as choose a Storefront that you are going to sell Magento Products on.',
+            ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]
         );
         $text1 = __(
             'It is also important to specify a Store View in accordance with which Magento Attribute values will be used in the

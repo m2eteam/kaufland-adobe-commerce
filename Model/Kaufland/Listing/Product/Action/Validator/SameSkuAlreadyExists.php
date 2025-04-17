@@ -47,9 +47,10 @@ class SameSkuAlreadyExists implements \M2E\Kaufland\Model\Kaufland\Listing\Produ
             $existListProduct = reset($existListProducts);
             if ($existListProduct->getId() !== $product->getId()) {
                 return (string)__(
-                    'Product with the same SKU already exists in your %listing_title Listing with the same Kaufland Offer ID.',
+                    'Product with the same SKU already exists in your %listing_title Listing with the same %channel_title Offer ID.',
                     [
                         'listing_title' => $existListProduct->getListing()->getTitle(),
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
                     ]
                 );
             }

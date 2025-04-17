@@ -9,7 +9,7 @@ abstract class TypeSwitcher extends \M2E\Kaufland\Block\Adminhtml\Switcher
 
     protected $paramName = 'listing_type';
 
-    //########################################
+    //---------------------------------------
 
     public function getLabel()
     {
@@ -29,7 +29,7 @@ abstract class TypeSwitcher extends \M2E\Kaufland\Block\Adminhtml\Switcher
             'mode' => [
                 'value' => [
                     [
-                        'label' => __('M2E Kaufland'),
+                        'label' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
                         'value' => self::LISTING_TYPE_M2E_PRO,
                     ],
                     [
@@ -40,6 +40,4 @@ abstract class TypeSwitcher extends \M2E\Kaufland\Block\Adminhtml\Switcher
             ],
         ];
     }
-
-    //########################################
 }

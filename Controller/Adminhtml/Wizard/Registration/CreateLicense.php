@@ -99,7 +99,10 @@ class CreateLicense extends \M2E\Kaufland\Controller\Adminhtml\Wizard\AbstractRe
             $this->exceptionHelper->process($e);
 
             $message = __(
-                'License Creation is failed. Please contact M2E Kaufland Support for resolution.'
+                'License Creation is failed. Please contact M2E %channel_title Support for resolution.',
+                [
+                    'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                ]
             );
 
             $this->setJsonContent([

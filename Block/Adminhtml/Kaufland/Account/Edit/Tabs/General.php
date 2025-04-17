@@ -24,11 +24,12 @@ class General extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractForm
         $form = $this->_formFactory->create();
 
         $content = __(
-            <<<HTML
-This Page shows the Environment for your Kaufland Account and details of the authorisation for
-M2E Kaufland to connect
-to your Kaufland Account.<br/><br/>
-HTML,
+            'This Page shows the Environment for your %channel_title Account and details of the ' .
+            'authorisation for %extension_title to connect to your %channel_title Account.<br/><br/>',
+            [
+                'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+            ]
         );
 
         $form->addField(
@@ -55,7 +56,12 @@ HTML,
                 'class' => 'kaufland-account-title',
                 'label' => __('Title'),
                 'value' => $this->account->getTitle(),
-                'tooltip' => __('Title or Identifier of Kaufland Account for your internal use.'),
+                'tooltip' => __(
+                    'Title or Identifier of %channel_title Account for your internal use.',
+                    [
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                    ]
+                ),
             ],
         );
 

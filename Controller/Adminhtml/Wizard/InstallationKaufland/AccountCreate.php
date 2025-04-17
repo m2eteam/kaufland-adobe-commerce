@@ -48,17 +48,21 @@ class AccountCreate extends Installation
                 || !$this->licenseService->get()->getInfo()->getIpIdentifier()->isValid()
             ) {
                 $error = __(
-                    'The Kaufland access obtaining is currently unavailable.<br/>Reason: %error_message
+                    'The %channel_title access obtaining is currently unavailable.<br/>Reason: %error_message
 </br>Go to the <a href="%url" target="_blank">License Page</a>.',
                     [
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
                         'error_message' => $exception->getMessage(),
                         'url' => $this->configurationHelper->getLicenseUrl(['wizard' => 1]),
                     ],
                 );
             } else {
                 $error = __(
-                    'The Kaufland access obtaining is currently unavailable.<br/>Reason: %error_message',
-                    ['error_message' => $exception->getMessage()]
+                    'The %channel_title access obtaining is currently unavailable.<br/>Reason: %error_message',
+                    [
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                        'error_message' => $exception->getMessage()
+                    ]
                 );
             }
 

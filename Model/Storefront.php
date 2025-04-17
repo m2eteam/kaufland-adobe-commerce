@@ -13,6 +13,8 @@ class Storefront extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
     public const STOREFRONT_SK = 'Slovakia';
     public const STOREFRONT_PL = 'Poland';
     public const STOREFRONT_AT = 'Austria';
+    public const STOREFRONT_IT = 'Italy';
+    public const STOREFRONT_FR = 'France';
 
     private Account\Repository $accountRepository;
 
@@ -141,6 +143,8 @@ class Storefront extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
             'sk' => self::STOREFRONT_SK,
             'pl' => self::STOREFRONT_PL,
             'at' => self::STOREFRONT_AT,
+            'it' => self::STOREFRONT_IT,
+            'fr' => self::STOREFRONT_FR,
         ];
 
         return $map[$storefrontCode] ?? $storefrontCode;
@@ -155,6 +159,8 @@ class Storefront extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
             'sk' => \M2E\Kaufland\Model\Currency::CURRENCY_EUR,
             'pl' => \M2E\Kaufland\Model\Currency::CURRENCY_PLZ,
             'at' => \M2E\Kaufland\Model\Currency::CURRENCY_EUR,
+            'it' => \M2E\Kaufland\Model\Currency::CURRENCY_EUR,
+            'fr' => \M2E\Kaufland\Model\Currency::CURRENCY_EUR,
         ];
 
         if (!isset($map[$storefrontCode])) {

@@ -19,7 +19,7 @@ abstract class AbstractMain extends \M2E\Kaufland\Controller\Adminhtml\AbstractM
 
         $this->getResultPage()
              ->getConfig()
-             ->getTitle()->prepend(\M2E\Kaufland\Helper\View\Kaufland::getTitle());
+            ->getTitle()->prepend(\M2E\Kaufland\Helper\Module::getChannelTitle());
 
         if ($this->getLayoutType() !== self::LAYOUT_BLANK) {
             $this->getResultPage()->setActiveMenu(\M2E\Kaufland\Helper\View\Kaufland::MENU_ROOT_NODE_NICK);

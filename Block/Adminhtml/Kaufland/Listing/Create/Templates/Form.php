@@ -308,7 +308,8 @@ HTML
                     $formData['sku_settings']['sku_mode'] : '',
                 'tooltip' => __(
                     'Select the Magento attribute that contains a unique SKU value.
-                    This SKU will be used to identify the Product when listing on the Kaufland channel.'
+    This SKU will be used to identify the Product when listing on the %channel_title channel.',
+                    ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]
                 ),
 
                 'create_magento_attribute' => true,
@@ -336,7 +337,8 @@ HTML
                 ],
                 'value' => $formData['sku_settings']['sku_modification_mode'],
                 'tooltip' => __(
-                    'Choose from the available options to modify Kaufland Item SKU from the Source attribute'
+                    'Choose from the available options to modify %channel_title Item SKU from the Source attribute',
+                    ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]
                 ),
             ]
         );
@@ -373,8 +375,9 @@ HTML
                 ],
                 'value' => $formData['sku_settings']['generate_sku_mode'],
                 'tooltip' => __(
-                    'Enable this setting to automatically generate a random, unique SKU for Products that will be listed on Kaufland channel.
-                     This option may be helpful when listing the same Magento product on the Kaufland more than once.'
+                    'Enable this setting to automatically generate a random, unique SKU for Products that will be listed on the %channel_title channel.
+    This option may be helpful when listing the same Magento product on the %channel_title more than once.',
+                    ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]
                 ),
             ]
         );

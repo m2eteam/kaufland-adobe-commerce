@@ -23,10 +23,14 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Account\Grid
 
         $this->jsTranslator->addTranslations(
             [
-                'Be attentive! By Deleting Account you delete all information on it from M2E Kaufland Server. '
-                . 'This will cause inappropriate work of all Accounts\' copies.' => __(
-                    'Be attentive! By Deleting Account you delete all information on it from M2E Kaufland Server. '
-                    . 'This will cause inappropriate work of all Accounts\' copies.'
+                sprintf(
+                    'Be attentive! By Deleting Account you delete all information on it from %s Server. '
+                    . 'This will cause inappropriate work of all Accounts\' copies.',
+                    \M2E\Kaufland\Helper\Module::getExtensionTitle()
+                ) => __(
+                    'Be attentive! By Deleting Account you delete all information on it from %1 Server. '
+                    . 'This will cause inappropriate work of all Accounts\' copies.',
+                    \M2E\Kaufland\Helper\Module::getExtensionTitle()
                 ),
                 'No Customer entry is found for specified ID.' => __(
                     'No Customer entry is found for specified ID.'

@@ -55,6 +55,7 @@ class UpgradeCollection extends \M2E\Core\Model\Setup\AbstractUpgradeCollection
             '2.2.3' => ['to' => '2.2.4', 'upgrade' => \M2E\Kaufland\Setup\Upgrade\v2_2_4\Config::class],
             '2.2.4' => ['to' => '2.2.5', 'upgrade' => null],
             '2.2.5' => ['to' => '2.3.0', 'upgrade' => \M2E\Kaufland\Setup\Upgrade\v2_3_0\Config::class],
+            '2.3.0' => ['to' => '2.4.0', 'upgrade' => null],
         ];
     }
 }

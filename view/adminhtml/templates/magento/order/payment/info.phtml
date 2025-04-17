@@ -20,7 +20,7 @@
     <?php
     if ($block->getChannelOrderId() != '') : ?>
         <tr>
-            <td style="width: 200px;"><?= __('Kaufland Order ID') ?>:</td>
+            <td style="width: 200px;"><?= __(\M2E\Kaufland\Helper\Module::getChannelTitle() . ' Order ID') ?>:</td>
             <td>
                 <?php
                 if ($block->getChannelOrderUrl() !== '') : ?>

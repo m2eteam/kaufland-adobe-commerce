@@ -137,7 +137,7 @@ abstract class AbstractGrid extends \M2E\Kaufland\Block\Adminhtml\Log\AbstractGr
         ]);
 
         $this->addColumn('channel_order_id', [
-            'header' => __('Kaufland Order #'),
+            'header' => __(\M2E\Kaufland\Helper\Module::getChannelTitle() . ' Order #'),
             'align' => 'left',
             'sortable' => false,
             'index' => 'channel_order_id',

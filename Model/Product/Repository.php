@@ -480,7 +480,7 @@ class Repository
                 '`ec`.%s = `l`.%s',
                 ExternalChangeResource::COLUMN_ACCOUNT_ID,
                 ListingResource::COLUMN_ACCOUNT_ID,
-            )
+            ),
         ];
 
         $collection = $this->listingProductCollectionFactory->create();
@@ -585,7 +585,7 @@ class Repository
             [ListingProductResource::COLUMN_OFFER_ID => null],
             [
                 ListingProductResource::COLUMN_LISTING_ID . ' = ?' => $listingId,
-                ListingProductResource::COLUMN_STATUS . ' = ?' => \M2E\Kaufland\Model\Product::STATUS_NOT_LISTED
+                ListingProductResource::COLUMN_STATUS . ' = ?' => \M2E\Kaufland\Model\Product::STATUS_NOT_LISTED,
             ]
         );
     }
@@ -629,6 +629,32 @@ class Repository
         $collection->getSelect()->where(
             sprintf('`listing`.`%s` = ?', $columnTemplateIdName),
             $columnTemplateId
+        );
+
+        return $collection;
+    }
+
+    /**
+     * @param int $storeId
+     *
+     * @return \M2E\Kaufland\Model\ResourceModel\Product\Collection
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function getProductCollectionByStoreId(int $storeId): ProductResource\Collection
+    {
+        $collection = $this->listingProductCollectionFactory->create();
+        $collection->joinLeft(
+            ['listing' => $this->listingResource->getMainTable()],
+            sprintf(
+                'listing.%s = main_table.%s',
+                \M2E\Kaufland\Model\ResourceModel\Listing::COLUMN_ID,
+                \M2E\Kaufland\Model\ResourceModel\Product::COLUMN_LISTING_ID
+            ),
+            [\M2E\Kaufland\Model\ResourceModel\Listing::COLUMN_STORE_ID]
+        );
+        $collection->addFieldToFilter(
+            \M2E\Kaufland\Model\ResourceModel\Listing::COLUMN_STORE_ID,
+            $storeId
         );
 
         return $collection;

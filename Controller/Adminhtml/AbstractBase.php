@@ -183,9 +183,12 @@ abstract class AbstractBase extends Action
 
         if ($moduleHelper->isDisabled()) {
             $message = __(
-                'M2E Kaufland is disabled. Inventory and Order synchronization is not running. ' .
+                '%extension_title is disabled. Inventory and Order synchronization is not running. ' .
                 'The Module interface is unavailable.<br>' .
-                'You can enable the Module under <i>Stores > Settings > Configuration > M2E Kaufland > Module</i>.'
+                'You can enable the Module under <i>Stores > Settings > Configuration > %extension_title > Module</i>.',
+                [
+                    'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                ]
             );
             $this->getMessageManager()->addNotice($message);
 

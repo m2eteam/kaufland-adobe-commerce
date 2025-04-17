@@ -44,17 +44,21 @@ class RelistRules extends AbstractTab
             self::HELP_BLOCK,
             [
                 'content' => __(
-                    '<p>If <strong>Relist Action</strong> is enabled, M2E Kaufland will relist Items that have been
-                    stopped or finished on Kaufland if they meet the Conditions you set. (Relist Action will not
+                    '<p>If <strong>Relist Action</strong> is enabled, %extension_title will relist Items that have been
+                    stopped or finished on %channel_title if they meet the Conditions you set. (Relist Action will not
                     list Items that have not been Listed yet)</p><br>
 
-                    <p>If the automatic relisting doesn\'t work (usually because of the errors returned from Kaufland),
-                    M2E Kaufland will attempt to list the Item again only if there is a change of Product Status,
+                    <p>If the automatic relisting doesn\'t work (usually because of the errors returned from %channel_title),
+                    %extension_title will attempt to list the Item again only if there is a change of Product Status,
                     Stock Availability or Quantity in Magento.</p><br>
 
                     <p>More detailed information about how to work with this Page you can find
                     <a href="%url" target="_blank" class="external-link">here.</a></p>',
-                    ['url' => 'https://docs-m2.m2epro.com/relist-rules-for-kaufland-listings'],
+                    [
+                        'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                        'url' => 'https://docs-m2.m2epro.com/relist-rules-for-kaufland-listings'
+                    ],
                 ),
             ]
         );
@@ -79,8 +83,11 @@ class RelistRules extends AbstractTab
                     1 => __('Enabled'),
                 ],
                 'tooltip' => __(
-                    'Choose whether you want to Relist Items covered by M2E Kaufland Listings using this
-                    Policy if the Relist Conditions are met.'
+                    'Choose whether you want to Relist Items covered by %extension_title Listings using this
+    Policy if the Relist Conditions are met.',
+                    [
+                        'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                    ]
                 ),
             ]
         );
@@ -125,10 +132,13 @@ class RelistRules extends AbstractTab
                 ],
                 'class' => 'Kaufland-validate-stop-relist-conditions-product-status',
                 'tooltip' => __(
-                    '<p><strong>Enabled:</strong> Relist Items on Kaufland automatically if they have status
+                    '<p><strong>Enabled:</strong> Relist Items on %channel_title automatically if they have status
                     Enabled in Magento Product. (Recommended)</p>
-                    <p><strong>Any:</strong> Relist Items on Kaufland automatically with any
-                    Magento Product status.</p>'
+                    <p><strong>Any:</strong> Relist Items on %channel_title automatically with any
+                    Magento Product status.</p>',
+                    [
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                    ]
                 ),
             ]
         );

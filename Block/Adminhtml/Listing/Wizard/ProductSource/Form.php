@@ -24,11 +24,14 @@ class Form extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractForm
             self::HELP_BLOCK,
             [
                 'content' => __(
-                    '<p>After an M2E Kaufland listing is configured and created, Magento Products should
-                    be added into it. <br> The Products you add to the Listing will further be
-                    Listed on Kaufland.</p><br>
-                    <p>There are several different options of how Magento products can be found/selected
-                    and added to the Listing.</p>'
+                    '<p>After an %extension_title listing is configured and created, ' .
+                    'Magento Products should be added into it. <br> The Products you add to the Listing will ' .
+                    'further be Listed on %channel_title.</p><br><p>There are several different options ' .
+                    'of how Magento products can be found/selected and added to the Listing.</p>',
+                    [
+                        'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                    ]
                 ),
             ]
         );

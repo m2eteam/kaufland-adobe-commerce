@@ -32,13 +32,16 @@ class ModuleControlPopup extends \M2E\Kaufland\Block\Adminhtml\Magento\AbstractB
         if ($isModuleDisabled) {
             $confirmContent = 'Are you sure ?';
         } else {
-            $confirmContent = <<<HTML
-<p>In case you confirm the Module disabling, the M2E Kaufland Storefront dynamic tasks run by
-Cron will be stopped and the M2E Kaufland Storefront Interface will be blocked.</p>
-
-<p><b>Note</b>: You can re-enable it anytime you would like by clicking on the <strong>Proceed</strong>
-button for <strong>Enable Module and Automatic Synchronization</strong> option.</p>
-HTML;
+            $confirmContent = __(
+                '<p>In case you confirm the Module disabling, the %extension_title Storefront' .
+                'dynamic tasks run by Cron will be stopped and the %extension_title Storefront Interface will be blocked.</p>' .
+                '<p><b>Note</b>: You can re-enable it anytime you would like by clicking on the ' .
+                '<strong>Proceed</strong> button for <strong>Enable Module and ' .
+                'Automatic Synchronization</strong> option.</p>',
+                [
+                    'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                ]
+            );
         }
 
         $html = <<<HTML

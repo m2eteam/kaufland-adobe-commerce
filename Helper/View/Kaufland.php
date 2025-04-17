@@ -20,16 +20,6 @@ class Kaufland
         $this->wizard = $wizard;
     }
 
-    public static function getTitle(): string
-    {
-        return (string)__('Kaufland Integration');
-    }
-
-    public static function getMenuRootNodeLabel(): string
-    {
-        return self::getTitle();
-    }
-
     /**
      * @return string
      */

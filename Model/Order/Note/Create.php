@@ -31,8 +31,11 @@ class Create
         $this->repository->create($obj);
 
         $comment = (string)__(
-            'Custom Note was added to the corresponding Kaufland order: %note.',
-            ['note' => $obj->getNote()],
+            'Custom Note was added to the corresponding %channel_title order: %note.',
+            [
+                'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                'note' => $obj->getNote()
+            ],
         );
         $this->updateMagentoOrderComment($order, $comment);
 

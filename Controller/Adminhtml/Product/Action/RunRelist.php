@@ -42,11 +42,15 @@ class RunRelist extends AbstractAction
             ['result' => $result] = $this->actionService->runRelist($products);
             if ($result === 'success') {
                 $this->getMessageManager()->addSuccessMessage(
-                    __('"Relisting Selected Items On Kaufland" task has completed.'),
+                    __('"Relisting Selected Items On %channel_title" task has completed.', [
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                    ])
                 );
             } else {
                 $this->getMessageManager()->addErrorMessage(
-                    __('"Relisting Selected Items On Kaufland" task has completed with errors.'),
+                    __('"Relisting Selected Items On %channel_title" task has completed with errors.', [
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                    ])
                 );
             }
 
@@ -56,7 +60,9 @@ class RunRelist extends AbstractAction
         $this->actionService->scheduleRelist($products);
 
         $this->getMessageManager()->addSuccessMessage(
-            __('"Relisting Selected Items On Kaufland" task has completed.'),
+            __('"Relisting Selected Items On %channel_title" task has completed.', [
+                'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+            ])
         );
 
         return $this->redirectToGrid();

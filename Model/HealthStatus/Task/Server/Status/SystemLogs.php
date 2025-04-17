@@ -38,10 +38,13 @@ class SystemLogs extends IssueType
             $result->setTaskResult(TaskResult::STATE_WARNING);
             $result->setTaskMessage(
                 __(
-                    'M2E Kaufland has recorded <b>%1</b>
-messages to the System Log during the last hour. <a target="_blank" href="%2">Click here</a> for the details.',
-                    $exceptionsCount,
-                    $this->urlBuilder->getUrl('Kaufland/synchronization_log/index'),
+                    '%extension_title has recorded <b>%exception_count</b> messages to the System Log during the ' .
+                    'last hour. <a target="_blank" href="%url">Click here</a> for the details.',
+                    [
+                        'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                        'exception_count' => $exceptionsCount,
+                        'url' => $this->urlBuilder->getUrl('m2e_kaufland/synchronization_log/index')
+                    ]
                 )
             );
         }
@@ -50,10 +53,13 @@ messages to the System Log during the last hour. <a target="_blank" href="%2">Cl
             $result->setTaskResult(TaskResult::STATE_CRITICAL);
             $result->setTaskMessage(
                 __(
-                    'M2E Kaufland has recorded <b>%1</b> messages to the System Log during the last hour.
-<a href="%2">Click here</a> for the details.',
-                    $exceptionsCount,
-                    $this->urlBuilder->getUrl('Kaufland/synchronization_log/index'),
+                    '%extension_title has recorded <b>%exception_count</b> messages to the System Log ' .
+                    'during the last hour. <a href="%url">Click here</a> for the details.',
+                    [
+                        'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                        'exception_count' => $exceptionsCount,
+                        'url' => $this->urlBuilder->getUrl('m2e_kaufland/synchronization_log/index')
+                    ]
                 )
             );
         }

@@ -9,9 +9,12 @@ class Order extends \M2E\Kaufland\Block\Adminhtml\Log\Order\AbstractContainer
         $url = 'https://docs-m2.m2epro.com/m2e-kaufland-logs-events';
         if ($this->getRequest()->getParam('magento_order_failed')) {
             $message = __(
-                'This Log contains information about your recent Kaufland orders for which Magento orders were not created.<br/><br/>
+                'This Log contains information about your recent %channel_title orders for which Magento orders were not created.<br/><br/>
                 Find detailed info in <a href="%url%" target="_blank">the article</a>.',
-                ['url' => $url]
+                [
+                    'url' => $url,
+                    'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                ]
             );
         } else {
             $message = __(

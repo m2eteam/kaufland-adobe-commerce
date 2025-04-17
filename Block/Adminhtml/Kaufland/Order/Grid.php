@@ -154,7 +154,7 @@ class Grid extends AbstractGrid
         $this->addColumn(
             'kaufland_order_id',
             [
-                'header' => __('Kaufland Order #'),
+                'header' => __(\M2E\Kaufland\Helper\Module::getChannelTitle() . ' Order #'),
                 'align' => 'left',
                 'width' => '145px',
                 'index' => 'kaufland_order_id',

@@ -52,21 +52,27 @@ class Order extends AbstractForm
             self::HELP_BLOCK,
             [
                 'content' => __(
-                    '<p>Specify how M2E Kaufland should manage the Orders imported from Kaufland.</p><br/>
+                    '<p>Specify how %extension_title should manage the Orders imported from %channel_title.</p><br/>
 <p>You are able to configure the different rules of <strong>Magento Order Creation</strong> considering whether the
-Item was listed via M2E Kaufland or by some other software.</p><br/>
-<p>Once Kaufland Order is imported, the <strong>Reserve Quantity</strong> feature will hold the Stock if Magento Order
+Item was listed via %extension_title or by some other software.</p><br/>
+<p>Once %channel_title Order is imported, the <strong>Reserve Quantity</strong> feature will hold the Stock if Magento Order
 could not be created immediately in accordance with provided settings.</p><br/>
 <p>Besides, you can configure the <strong>Tax, Order Number</strong> and <strong>Order Status Mapping</strong> Settings
-for your Magento Orders as well as specify the automatic creation of invoices and shipment notifications.</p>'
+for your Magento Orders as well as specify the automatic creation of invoices and shipment notifications.</p>',
+                    [
+                        'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                    ]
                 ),
             ]
         );
-        //region Product Is Listed By M2E Kaufland
+        //region Product Is Listed By M2E
         $fieldset = $form->addFieldset(
             'listed_by_m2e',
             [
-                'legend' => __('Product Is Listed By M2E Kaufland'),
+                'legend' => __('Product Is Listed By %extension_title', [
+                    'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                ]),
                 'collapsable' => false,
             ]
         );
@@ -83,8 +89,12 @@ for your Magento Orders as well as specify the automatic creation of invoices an
                 ],
                 'value' => (int)$orderSettings->isListingEnabled(),
                 'tooltip' => __(
-                    'Choose whether a Magento Order should be created if an Kaufland Order is received for
-                    an Kaufland Item Listed using M2E Kaufland.'
+                    'Choose whether a Magento Order should be created if an %channel_title ' .
+                    'Order is received for an %channel_title Item Listed using %extension_title.',
+                    [
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                        'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                    ]
                 ),
             ]
         );
@@ -102,8 +112,11 @@ for your Magento Orders as well as specify the automatic creation of invoices an
                 ],
                 'value' => $orderSettings->getListingStoreMode(),
                 'tooltip' => __(
-                    'Choose to specify the Magento Store View here or to keep the Magento
-                    Store View used in the M2E Kaufland Listing.'
+                    'Choose to specify the Magento Store View here or to keep the ' .
+                    'Magento Store View used in the %extension_title Listing.',
+                    [
+                        'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                    ]
                 ),
             ]
         );
@@ -145,8 +158,12 @@ for your Magento Orders as well as specify the automatic creation of invoices an
                 ],
                 'value' => (int)$orderSettings->isUnmanagedListingEnabled(),
                 'tooltip' => __(
-                    'Choose whether a Magento Order should be created if an Kaufland Order is received
-for an item that does <b>not</b> belong to the M2E Kaufland Listing.'
+                    'Choose whether a Magento Order should be created if an %channel_title Order is received
+for an item that does <b>not</b> belong to the %extension_title Listing.',
+                    [
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                        'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                    ]
                 ),
             ]
         );
@@ -185,10 +202,13 @@ for an item that does <b>not</b> belong to the M2E Kaufland Listing.'
                 'tooltip' => $tooltip
                     . '<span id="magento_orders_listings_other_product_mode_note">'
                     . __(
-                        '<br/><b>Note:</b> M2E Kaufland will create only Simple Magento Products.
-                        For Channel variational items it will create a Simple Product for each variation.
-                        Please note that the Create Product and Order option is not meant
-                        for the creation of full-fledged products in your Magento catalog.'
+                        '<br/><b>Note:</b> %extension_title will create only Simple Magento Products. For ' .
+                        'Channel variational items it will create a Simple Product for each variation. Please note ' .
+                        'that the Create Product and Order option is not meant for the creation of full-fledged ' .
+                        'products in your Magento catalog.',
+                        [
+                            'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                        ]
                     )
                     . '</span>',
             ]
@@ -238,7 +258,12 @@ for an item that does <b>not</b> belong to the M2E Kaufland Listing.'
                 'label' => __('Product Tax Class'),
                 'values' => $values,
                 'value' => $orderSettings->getUnmanagedListingProductTaxClassId(),
-                'tooltip' => __('Tax Class which will be used for Products created by M2E Kaufland.'),
+                'tooltip' => __(
+                    'Tax Class which will be used for Products created by %extension_title.',
+                    [
+                        'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                    ]
+                ),
             ]
         );
         //endregion
@@ -264,8 +289,12 @@ for an item that does <b>not</b> belong to the M2E Kaufland Listing.'
                 ],
                 'value' => $orderSettings->getMagentoOrderNumberSource(),
                 'tooltip' => __(
-                    'If source is set to Magento, Magento Order numbers are created basing on your Magento Settings.
-                    If source is set to Kaufland, Magento Order numbers are the same as Kaufland Order numbers.'
+                    'If source is set to Magento, Magento Order numbers are created basing ' .
+                    'on your Magento Settings. If source is set to %channel_title, Magento Order numbers are the same ' .
+                    'as %channel_title Order numbers.',
+                    [
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                    ],
                 ),
             ]
         );
@@ -356,13 +385,16 @@ for an item that does <b>not</b> belong to the M2E Kaufland Listing.'
                 ],
                 'value' => $orderSettings->getCustomerMode(),
                 'tooltip' => __(
-                    '<b>Guest Account:</b> Magento Guest Checkout Option must be enabled to use this Option.
-                    Use the default Guest Account. Do not create a Customer Account.<br/><br/>
-                    <b>Predefined Customer:</b> Use a specific Customer for all Orders.
-                    You should specify the Magento Customer ID to use.<br/><br/>
-                    <b>Create New:</b> Create a new Customer in Magento for the Order.
-                    If an existing Magento Customer has the same email address as the email address used for the
-                    Kaufland Order, the Order will be assigned to that Customer instead.'
+                    '<b>Guest Account:</b> Magento Guest Checkout Option must be enabled to ' .
+                    'use this Option. Use the default Guest Account. Do not create a Customer Account.<br/><br/>' .
+                    '<b>Predefined Customer:</b> Use a specific Customer for all Orders. You should specify the ' .
+                    'Magento Customer ID to use.<br/><br/>' .
+                    '<b>Create New:</b> Create a new Customer in Magento for the Order. If an existing ' .
+                    'Magento Customer has the same email address as the email address used for the ' .
+                    '%channel_title Order, the Order will be assigned to that Customer instead.',
+                    [
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                    ]
                 ),
             ]
         );
@@ -515,8 +547,12 @@ for an item that does <b>not</b> belong to the M2E Kaufland Listing.'
                 'values' => $values,
                 'value' => $orderSettings->getQtyReservationDays(),
                 'tooltip' => __(
-                    'Choose for how long M2E Kaufland should reserve Magento Product quantity per kaufland Order until
-                    Magento Order is created.'
+                    'Choose for how long %extension_title should reserve Magento Product quantity ' .
+                    'per %channel_title Order until Magento Order is created.',
+                    [
+                        'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle(),
+                    ]
                 ),
             ]
         );
@@ -551,14 +587,20 @@ for an item that does <b>not</b> belong to the M2E Kaufland Listing.'
             [
                 'container_id' => 'magento_orders_cancel_container',
                 'name' => 'magento_orders_settings[order_cancel_on_channel][mode]',
-                'label' => $this->__('Cancel Kaufland Orders'),
+                'label' => __(
+                    'Cancel %channel_title Orders',
+                    ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]
+                ),
                 'values' => [
                     \M2E\Kaufland\Model\Account\Settings\Order::CANCEL_ON_CHANNEL_NO => $this->__('No'),
                     \M2E\Kaufland\Model\Account\Settings\Order::CANCEL_ON_CHANNEL_YES => $this->__('Yes'),
                 ],
                 'value' => $orderSettings->getOrderCancelOrRefundOnChannelMode(),
-                'tooltip' => $this->__(
-                    'Enable to cancel Kaufland orders and automatically update their statuses on the Channel.',
+                'tooltip' => __(
+                    'Enable to cancel %channel_title orders and automatically update their statuses on the Channel.',
+                    [
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()
+                    ]
                 ),
             ]
         );
@@ -621,9 +663,9 @@ for an item that does <b>not</b> belong to the M2E Kaufland Listing.'
                 'label' => __('Tax Source'),
                 'values' => [
                     \M2E\Kaufland\Model\Account\Settings\Order::TAX_MODE_NONE => __('None'),
-                    \M2E\Kaufland\Model\Account\Settings\Order::TAX_MODE_CHANNEL => __('Kaufland'),
+                    \M2E\Kaufland\Model\Account\Settings\Order::TAX_MODE_CHANNEL => __(\M2E\Kaufland\Helper\Module::getChannelTitle()),
                     \M2E\Kaufland\Model\Account\Settings\Order::TAX_MODE_MAGENTO => __('Magento'),
-                    \M2E\Kaufland\Model\Account\Settings\Order::TAX_MODE_MIXED => __('Kaufland & Magento'),
+                    \M2E\Kaufland\Model\Account\Settings\Order::TAX_MODE_MIXED => __(\M2E\Kaufland\Helper\Module::getChannelTitle() . ' & Magento'),
                 ],
                 'value' => $orderSettings->getTaxMode(),
                 'tooltip' => __(
@@ -654,8 +696,11 @@ for an item that does <b>not</b> belong to the M2E Kaufland Listing.'
                 ],
                 'value' => $orderSettings->getStatusMappingMode(),
                 'tooltip' => __(
-                    'Configure the mapping between Kaufland and Magento order statuses.
-                    Magento order statuses will automatically update according to these settings.'
+                    'Configure the mapping between %channel_title and Magento order statuses.
+                    Magento order statuses will automatically update according to these settings.',
+                    [
+                        'channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()
+                    ]
                 ),
             ]
         );

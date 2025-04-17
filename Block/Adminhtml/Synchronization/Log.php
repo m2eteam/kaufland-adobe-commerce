@@ -46,8 +46,11 @@ class Log extends AbstractContainer
                 [
                     'data' => [
                         'content' => __(
-                            'The Log includes information about synchronization of
-                             M2E Kaufland Listings, Orders, Storefronts, Unmanaged Listings.'
+                            'The Log includes information about synchronization ' .
+                            'of %extension_title Listings, Orders, Unmanaged Listings.',
+                            [
+                                'extension_title' => \M2E\Kaufland\Helper\Module::getExtensionTitle(),
+                            ]
                         ),
                     ],
                 ]
