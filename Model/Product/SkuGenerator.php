@@ -28,7 +28,7 @@ class SkuGenerator
         if ($this->skuSettings->isSkuDefaultMode()) {
             $result = $this->product->getMagentoProduct()->getSku();
         } elseif ($this->skuSettings->isSkuProductIdMode()) {
-            $result = $this->product->getMagentoProduct()->getProductId();
+            $result = (string)$this->product->getMagentoProduct()->getProductId();
         } elseif ($this->skuSettings->isSkuAttributeMode()) {
             $result = $this->product->getMagentoProduct()->getAttributeValue($this->skuSettings->getSkuCustomAttribute());
         }
