@@ -7,13 +7,13 @@ namespace M2E\Kaufland\Model\Product;
 class ActionCalculator
 {
     private \M2E\Kaufland\Model\Magento\Product\RuleFactory $ruleFactory;
-    private \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Type\ReviseProduct\Checker $reviseChecker;
-    private \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Type\ReviseUnit\Checker $reviseUnitChecker;
+    private Action\Type\ReviseProduct\Checker $reviseChecker;
+    private Action\Type\ReviseUnit\Checker $reviseUnitChecker;
 
     public function __construct(
         \M2E\Kaufland\Model\Magento\Product\RuleFactory $ruleFactory,
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Type\ReviseProduct\Checker $reviseChecker,
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Type\ReviseUnit\Checker  $reviseUnitChecker
+        Action\Type\ReviseProduct\Checker $reviseChecker,
+        Action\Type\ReviseUnit\Checker  $reviseUnitChecker
     ) {
         $this->ruleFactory = $ruleFactory;
         $this->reviseChecker = $reviseChecker;
@@ -69,7 +69,7 @@ class ActionCalculator
             return Action::createNothing($product);
         }
 
-        $configurator = new \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Configurator();
+        $configurator = new Action\Configurator();
         $configurator->enableAll();
 
         return Action::createList($product, $configurator);
@@ -132,7 +132,7 @@ class ActionCalculator
             return Action::createStop($product);
         }
 
-        $configurator = new \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Configurator();
+        $configurator = new Action\Configurator();
         $configurator->disableAll();
 
         if (!$this->needRevise($product)) {
@@ -175,7 +175,7 @@ class ActionCalculator
             return Action::createNothing($product);
         }
 
-        $configurator = new \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Configurator();
+        $configurator = new Action\Configurator();
         $configurator->disableAll();
 
         $this->updateConfiguratorAddTitle(
@@ -207,7 +207,7 @@ class ActionCalculator
     }
 
     private function updateConfiguratorAddPrice(
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Configurator $configurator,
+        Action\Configurator $configurator,
         \M2E\Kaufland\Model\Product $product
     ): void {
         if ($this->reviseUnitChecker->isNeedReviseForPrice($product)) {
@@ -220,7 +220,7 @@ class ActionCalculator
     }
 
     private function updateConfiguratorAddQty(
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Configurator $configurator,
+        Action\Configurator $configurator,
         \M2E\Kaufland\Model\Product $product
     ): void {
         if ($this->reviseUnitChecker->isNeedReviseForQty($product)) {
@@ -233,7 +233,7 @@ class ActionCalculator
     }
 
     private function updateConfiguratorAddShipping(
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Configurator $configurator,
+        Action\Configurator $configurator,
         \M2E\Kaufland\Model\Product $product
     ): void {
         if ($this->reviseUnitChecker->isNeedReviseForShipping($product)) {
@@ -246,7 +246,7 @@ class ActionCalculator
     }
 
     private function updateConfiguratorAddTitle(
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Configurator $configurator,
+        Action\Configurator $configurator,
         \M2E\Kaufland\Model\Product $product,
         bool $hasInstructionsForUpdateTitle
     ): void {
@@ -264,7 +264,7 @@ class ActionCalculator
     }
 
     private function updateConfiguratorAddDescription(
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Configurator $configurator,
+        Action\Configurator $configurator,
         \M2E\Kaufland\Model\Product $product,
         bool $hasInstructionsForUpdateDescription
     ): void {
@@ -282,7 +282,7 @@ class ActionCalculator
     }
 
     private function updateConfiguratorAddImages(
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Configurator $configurator,
+        Action\Configurator $configurator,
         \M2E\Kaufland\Model\Product $product,
         bool $hasInstructionsForUpdateImages
     ): void {
@@ -300,7 +300,7 @@ class ActionCalculator
     }
 
     private function updateConfiguratorAddCategories(
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Configurator $configurator,
+        Action\Configurator $configurator,
         \M2E\Kaufland\Model\Product $product,
         bool $hasInstructionsForUpdateCategories
     ): void {
@@ -373,7 +373,7 @@ class ActionCalculator
             return Action::createNothing($product);
         }
 
-        $configurator = new \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Configurator();
+        $configurator = new Action\Configurator();
         $configurator->enableAll();
 
         return Action::createRelist($product, $configurator);
@@ -561,15 +561,12 @@ class ActionCalculator
         $productQty = $product->getQty();
         $channelQty = $product->getOnlineQty();
 
-        if ($syncPolicy->isReviseUpdateQtyMaxAppliedValueModeOn()) {
-            if (
-                $productQty > $maxAppliedValue
-                && $channelQty > $maxAppliedValue
-            ) {
-                return false;
-            }
-
-            return true;
+        if (
+            $syncPolicy->isReviseUpdateQtyMaxAppliedValueModeOn()
+            && $productQty > $maxAppliedValue
+            && $channelQty > $maxAppliedValue
+        ) {
+            return false;
         }
 
         if ($productQty === $channelQty) {

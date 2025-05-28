@@ -6,12 +6,12 @@ namespace M2E\Kaufland\Controller\Adminhtml\Kaufland\Listing;
 
 class RunListProducts extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\Listing\AbstractAction
 {
-    private \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Manual\Realtime\ListAction $realtimeListAction;
-    private \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Manual\Schedule\ListAction $scheduledListAction;
+    private \M2E\Kaufland\Model\Product\Action\Manual\Realtime\ListAction $realtimeListAction;
+    private \M2E\Kaufland\Model\Product\Action\Manual\Schedule\ListAction $scheduledListAction;
 
     public function __construct(
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Manual\Realtime\ListAction $realtimeListAction,
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Manual\Schedule\ListAction $scheduledListAction,
+        \M2E\Kaufland\Model\Product\Action\Manual\Realtime\ListAction $realtimeListAction,
+        \M2E\Kaufland\Model\Product\Action\Manual\Schedule\ListAction $scheduledListAction,
         \M2E\Kaufland\Model\ResourceModel\Product\CollectionFactory $listingProductCollectionFactory,
         \M2E\Kaufland\Model\Listing\LogService $listingLogService
     ) {

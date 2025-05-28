@@ -6,7 +6,7 @@ namespace M2E\Kaufland\Model\Account;
 
 class Create
 {
-    private \M2E\Kaufland\Model\Kaufland\Connector\Account\Add\Processor $addProcessor;
+    private \M2E\Kaufland\Model\Channel\Account\Add\Processor $addProcessor;
     private Repository $accountRepository;
     private \M2E\Kaufland\Model\AccountFactory $accountFactory;
     private \M2E\Core\Helper\Magento\Store $storeHelper;
@@ -16,7 +16,7 @@ class Create
 
     public function __construct(
         \M2E\Kaufland\Model\AccountFactory $accountFactory,
-        \M2E\Kaufland\Model\Kaufland\Connector\Account\Add\Processor $addProcessor,
+        \M2E\Kaufland\Model\Channel\Account\Add\Processor $addProcessor,
         \M2E\Kaufland\Model\Storefront\UpdateService $storefrontUpdateService,
         \M2E\Kaufland\Model\Warehouse\SynchronizeService $warehouseSynchronizeService,
         \M2E\Kaufland\Model\ShippingGroup\SynchronizeService $shippingGroupSynchronizeService,
@@ -68,7 +68,7 @@ class Create
         string $title,
         string $privateKey,
         string $secretKey
-    ): \M2E\Kaufland\Model\Kaufland\Connector\Account\Add\Response {
+    ): \M2E\Kaufland\Model\Channel\Connector\Account\Add\Response {
         return $this->addProcessor->process($title, $privateKey, $secretKey);
     }
 

@@ -25,7 +25,7 @@ class CreateService
         array $data,
         array $tags = [],
         bool $isForce = false,
-        ?\M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Configurator $configurator = null
+        ?\M2E\Kaufland\Model\Product\Action\Configurator $configurator = null
     ): \M2E\Kaufland\Model\ScheduledAction {
         $scheduledAction = $this->repository->findByListingProductIdAndType($listingProduct->getId(), $action);
         if ($scheduledAction === null) {

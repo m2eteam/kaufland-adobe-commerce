@@ -47,6 +47,14 @@ class GpsrService
     }
 
     /**
+     * @return \M2E\Core\Model\AttributeMapping\Pair[]
+     */
+    public function getAllGroupedByCode(): array
+    {
+        return $this->attributeProvider->getExistedMappingGroupedByCode();
+    }
+
+    /**
      * @param Pair[] $attributesMapping
      *
      * @return int - processed (updated or created) count
@@ -59,5 +67,10 @@ class GpsrService
     public function setToCategories(): void
     {
         $this->categoryModifier->process($this->getConfigured());
+    }
+
+    public function isGpsrAttribute(string $code): bool
+    {
+        return $this->attributeProvider->isGpsrAttribute($code);
     }
 }

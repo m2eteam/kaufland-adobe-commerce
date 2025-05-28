@@ -9,16 +9,16 @@ class CategoryModifier
     private const COUNT_CATEGORIES_FOR_CYCLE = 50;
 
     private \M2E\Kaufland\Model\ResourceModel\Category\Dictionary\CollectionFactory $templateCategoryCollectionFactory;
-    private \M2E\Kaufland\Model\Kaufland\Template\Category\AffectedListingsProductsFactory $affectedListingsProductsFactory;
+    private \M2E\Kaufland\Model\Template\Category\AffectedListingsProductsFactory $affectedListingsProductsFactory;
     private \M2E\Kaufland\Model\AttributeMapping\Gpsr\CategoryModifier\CategoryDiffStub $categoryDiffStub;
-    private \M2E\Kaufland\Model\Kaufland\Template\Category\ChangeProcessorFactory $changeProcessorFactory;
+    private \M2E\Kaufland\Model\Template\Category\ChangeProcessorFactory $changeProcessorFactory;
     private \M2E\Kaufland\Model\Category\Attribute\Repository $attributeRepository;
 
     public function __construct(
         \M2E\Kaufland\Model\ResourceModel\Category\Dictionary\CollectionFactory $templateCategoryCollectionFactory,
-        \M2E\Kaufland\Model\Kaufland\Template\Category\AffectedListingsProductsFactory $affectedListingsProductsFactory,
+        \M2E\Kaufland\Model\Template\Category\AffectedListingsProductsFactory $affectedListingsProductsFactory,
         \M2E\Kaufland\Model\AttributeMapping\Gpsr\CategoryModifier\CategoryDiffStub $categoryDiffStub,
-        \M2E\Kaufland\Model\Kaufland\Template\Category\ChangeProcessorFactory $changeProcessorFactory,
+        \M2E\Kaufland\Model\Template\Category\ChangeProcessorFactory $changeProcessorFactory,
         \M2E\Kaufland\Model\Category\Attribute\Repository $attributeRepository
     ) {
         $this->templateCategoryCollectionFactory = $templateCategoryCollectionFactory;

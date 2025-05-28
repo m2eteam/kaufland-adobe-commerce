@@ -3,7 +3,7 @@
 namespace M2E\Kaufland\Block\Adminhtml\Kaufland;
 
 use M2E\Kaufland\Block\Adminhtml\Magento\Grid\AbstractContainer;
-use M2E\Kaufland\Model\Kaufland\Template\Manager;
+use M2E\Kaufland\Model\Template\Manager;
 
 /**
  * Class \M2E\Kaufland\Block\Adminhtml\Kaufland\Template

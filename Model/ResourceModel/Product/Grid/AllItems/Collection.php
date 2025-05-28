@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace M2E\Kaufland\Model\ResourceModel\Product\Grid\AllItems;
 
-use Magento\Framework\Api\SearchCriteriaInterface;
+use M2E\Kaufland\Model\ResourceModel\Storefront as StorefrontResource;
 use Magento\Framework\Api\Search\AggregationInterface;
 use Magento\Framework\Api\Search\SearchResultInterface;
 use Magento\Framework\Data\Collection as DefaultCollection;
@@ -27,25 +27,22 @@ class Collection extends DefaultCollection implements SearchResultInterface
     private bool $isAlreadyFilteredByErrorCode = false;
 
     private ProductResource $listingProductResource;
-
     private ListingResource $listingResource;
-
     private AccountResource $accountResource;
-
+    private StorefrontResource $storefrontResource;
     private WrappedCollection $wrappedCollection;
-
     private RuntimeStorage $productUiRuntimeStorage;
     private TagProductRelationResource $tagProductRelationResource;
-
     private TagResource $tagResource;
-    private bool $isGetAllItemsFromFilter = false;
 
+    private bool $isGetAllItemsFromFilter = false;
     private AggregationInterface $aggregations;
 
     public function __construct(
         ProductResource $listingProductResource,
         ListingResource $listingResource,
         AccountResource $accountResource,
+        StorefrontResource $storefrontResource,
         TagProductRelationResource $tagProductRelationResource,
         TagResource $tagResource,
         RuntimeStorage $productUiRuntimeStorage,
@@ -56,6 +53,7 @@ class Collection extends DefaultCollection implements SearchResultInterface
         $this->listingProductResource = $listingProductResource;
         $this->listingResource = $listingResource;
         $this->accountResource = $accountResource;
+        $this->storefrontResource = $storefrontResource;
         $this->productUiRuntimeStorage = $productUiRuntimeStorage;
         $this->wrappedCollection = $magentoProductCollectionFactory->create();
         $this->tagProductRelationResource = $tagProductRelationResource;
@@ -110,6 +108,14 @@ class Collection extends DefaultCollection implements SearchResultInterface
             sprintf('%s = listing_%s', AccountResource::COLUMN_ID, ListingResource::COLUMN_ACCOUNT_ID),
             [
                 'account_' . AccountResource::COLUMN_TITLE => AccountResource::COLUMN_TITLE,
+            ],
+        );
+
+        $this->wrappedCollection->joinTable(
+            ['storefront' => $this->storefrontResource->getMainTable()],
+            sprintf('%s = listing_%s', StorefrontResource::COLUMN_ID, ListingResource::COLUMN_STOREFRONT_ID),
+            [
+                'storefront_currency' => $this->createStorefrontCurrencyExpression('storefront')
             ],
         );
     }
@@ -248,5 +254,25 @@ class Collection extends DefaultCollection implements SearchResultInterface
     public function getTotalCount(): int
     {
         return $this->wrappedCollection->getSize();
+    }
+
+    private function createStorefrontCurrencyExpression(string $storefrontTableAlias)
+    {
+        $expressionParts = [];
+        foreach (\M2E\Kaufland\Model\Storefront::STOREFRONT_CURRENCIES_MAP as $storefrontCode => $currency) {
+            $expressionParts[] = sprintf(
+                "WHEN `%s`.`%s` = '%s' THEN '%s'",
+                $storefrontTableAlias,
+                StorefrontResource::COLUMN_STOREFRONT_CODE,
+                $storefrontCode,
+                $currency
+            );
+        }
+
+        $currencyExpression = new \Magento\Framework\DB\Sql\Expression(
+            sprintf('(CASE %s END)', implode(' ', $expressionParts))
+        );
+
+        return (string)$currencyExpression;
     }
 }

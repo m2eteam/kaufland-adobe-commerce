@@ -6,14 +6,14 @@ class Creator
 {
     private bool $isValidateByAccountCreateDate = true;
     private \M2E\Kaufland\Model\Synchronization\LogService $syncLogService;
-    private \M2E\Kaufland\Model\Kaufland\Order\BuilderFactory $orderBuilderFactory;
+    private \M2E\Kaufland\Model\Order\BuilderFactory $orderBuilderFactory;
     private \M2E\Kaufland\Helper\Module\Exception $exceptionHelper;
     private \M2E\Kaufland\Model\Order\Repository $orderRepository;
     private \M2E\Kaufland\Model\Order\CreditMemoCreate $createCreditMemo;
 
     public function __construct(
         \M2E\Kaufland\Model\Synchronization\LogService $syncLogService,
-        \M2E\Kaufland\Model\Kaufland\Order\BuilderFactory $orderBuilderFactory,
+        \M2E\Kaufland\Model\Order\BuilderFactory $orderBuilderFactory,
         \M2E\Kaufland\Helper\Module\Exception $exceptionHelper,
         \M2E\Kaufland\Model\Order\Repository $orderRepository,
         \M2E\Kaufland\Model\Order\CreditMemoCreate $createCreditMemo

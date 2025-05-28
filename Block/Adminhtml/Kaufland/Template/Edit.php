@@ -150,10 +150,10 @@ class Edit extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractContainer
         $title = '';
 
         switch ($this->getTemplateNick()) {
-            case \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SELLING_FORMAT:
+            case \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SELLING_FORMAT:
                 $title = __('Selling');
                 break;
-            case \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SYNCHRONIZATION:
+            case \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SYNCHRONIZATION:
                 $title = __('Synchronization');
                 break;
         }

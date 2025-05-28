@@ -6,9 +6,9 @@ class DataLoader
 {
     /** @var \Magento\Store\Model\StoreManagerInterface */
     private $storeManager;
-    /** @var \M2E\Kaufland\Model\Kaufland\Template\Manager */
+    /** @var \M2E\Kaufland\Model\Template\Manager */
     private $templateManager;
-    /** @var \M2E\Kaufland\Model\Kaufland\Template\ManagerFactory */
+    /** @var \M2E\Kaufland\Model\Template\ManagerFactory */
     private $templateManagerFactory;
     /** @var \M2E\Core\Helper\Magento\Attribute */
     private $magentoAttributeHelper;
@@ -22,8 +22,8 @@ class DataLoader
         \M2E\Kaufland\Model\Account\Repository $accountRepository,
         \M2E\Kaufland\Helper\Data\GlobalData $globalData,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \M2E\Kaufland\Model\Kaufland\Template\Manager $templateManager,
-        \M2E\Kaufland\Model\Kaufland\Template\ManagerFactory $templateManagerFactory,
+        \M2E\Kaufland\Model\Template\Manager $templateManager,
+        \M2E\Kaufland\Model\Template\ManagerFactory $templateManagerFactory,
         \M2E\Core\Helper\Magento\Attribute $magentoAttributeHelper,
         \M2E\Core\Helper\Magento\AttributeSet $magentoAttributeSetHelper
     ) {
@@ -115,7 +115,7 @@ class DataLoader
             $templateMode = isset($sessionData["template_id_{$nick}"]) ? $sessionData["template_mode_{$nick}"] : null;
 
             if (empty($templateMode)) {
-                $templateMode = \M2E\Kaufland\Model\Kaufland\Template\Manager::MODE_CUSTOM;
+                $templateMode = \M2E\Kaufland\Model\Template\Manager::MODE_CUSTOM;
             }
 
             $templates[$nick] = [
@@ -206,7 +206,7 @@ class DataLoader
 
                     if ($templateId != $currentProductTemplateId || $templateMode != $currentProductTemplateMode) {
                         $templateId = null;
-                        $templateMode = \M2E\Kaufland\Model\Kaufland\Template\Manager::MODE_PARENT;
+                        $templateMode = \M2E\Kaufland\Model\Template\Manager::MODE_PARENT;
                         $forceParent = true;
                         break;
                     }
@@ -216,7 +216,7 @@ class DataLoader
             }
 
             if ($templateMode === null) {
-                $templateMode = \M2E\Kaufland\Model\Kaufland\Template\Manager::MODE_PARENT;
+                $templateMode = \M2E\Kaufland\Model\Template\Manager::MODE_PARENT;
             }
 
             $templates[$nick] = [
@@ -250,7 +250,7 @@ class DataLoader
             'templates' => [
                 $nick => [
                     'id' => $source->getId(),
-                    'mode' => \M2E\Kaufland\Model\Kaufland\Template\Manager::MODE_TEMPLATE,
+                    'mode' => \M2E\Kaufland\Model\Template\Manager::MODE_TEMPLATE,
                     'force_parent' => false,
                 ],
             ],
@@ -261,7 +261,7 @@ class DataLoader
     {
         $id = $source->getParam('id');
         $nick = $source->getParam('nick');
-        $mode = $source->getParam('mode', \M2E\Kaufland\Model\Kaufland\Template\Manager::MODE_CUSTOM);
+        $mode = $source->getParam('mode', \M2E\Kaufland\Model\Template\Manager::MODE_CUSTOM);
 
         $attributeSets = $source->getParam('attribute_sets', '');
         $attributeSets = array_filter(explode(',', $attributeSets));
@@ -297,13 +297,13 @@ class DataLoader
         $nick = null;
 
         if ($source instanceof \M2E\Kaufland\Model\Template\SellingFormat) {
-            $nick = \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SELLING_FORMAT;
+            $nick = \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SELLING_FORMAT;
         } elseif ($source instanceof \M2E\Kaufland\Model\Template\Synchronization) {
-            $nick = \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SYNCHRONIZATION;
+            $nick = \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SYNCHRONIZATION;
         } elseif ($source instanceof \M2E\Kaufland\Model\Template\Shipping) {
-            $nick = \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SHIPPING;
+            $nick = \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SHIPPING;
         } elseif ($source instanceof \M2E\Kaufland\Model\Template\Description) {
-            $nick = \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_DESCRIPTION;
+            $nick = \M2E\Kaufland\Model\Template\Manager::TEMPLATE_DESCRIPTION;
         }
 
         return $nick;

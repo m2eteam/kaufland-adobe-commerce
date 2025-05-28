@@ -4,10 +4,10 @@ namespace M2E\Kaufland\Controller\Adminhtml\Kaufland;
 
 abstract class AbstractTemplate extends AbstractMain
 {
-    protected \M2E\Kaufland\Model\Kaufland\Template\Manager $templateManager;
+    protected \M2E\Kaufland\Model\Template\Manager $templateManager;
 
     public function __construct(
-        \M2E\Kaufland\Model\Kaufland\Template\Manager $templateManager
+        \M2E\Kaufland\Model\Template\Manager $templateManager
     ) {
         parent::__construct();
         $this->templateManager = $templateManager;

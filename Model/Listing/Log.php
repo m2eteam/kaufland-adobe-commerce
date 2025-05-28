@@ -93,6 +93,9 @@ class Log extends \M2E\Kaufland\Model\Log\AbstractModel
     public const ACTION_REMAP_LISTING_PRODUCT = 34;
     public const _ACTION_REMAP_LISTING_PRODUCT = 'Relink';
 
+    public const ACTION_EDIT_LISTING_SETTINGS = 42;
+    public const _ACTION_EDIT_LISTING_SETTINGS = 'Edit Listing Settings';
+
     private \M2E\Kaufland\Model\Magento\ProductFactory $magentoProductFactory;
 
     public function __construct(

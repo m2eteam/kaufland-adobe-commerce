@@ -10,13 +10,13 @@ class SendInvoiceProcessor
 
     private \M2E\Kaufland\Model\Order\Change\Repository $changeRepository;
     private \M2E\Kaufland\Model\Order\Repository $orderRepository;
-    private \M2E\Kaufland\Model\Kaufland\Connector\Order\SendInvoice\Processor $sendInvoiceProcessor;
+    private \M2E\Kaufland\Model\Channel\Order\SendInvoice\Processor $sendInvoiceProcessor;
     private \Magento\Sales\Model\Order\Pdf\Invoice $pdfInvoice;
 
     public function __construct(
         \M2E\Kaufland\Model\Order\Change\Repository $changeRepository,
         \M2E\Kaufland\Model\Order\Repository $orderRepository,
-        \M2E\Kaufland\Model\Kaufland\Connector\Order\SendInvoice\Processor $sendInvoiceProcessor,
+        \M2E\Kaufland\Model\Channel\Order\SendInvoice\Processor $sendInvoiceProcessor,
         \Magento\Sales\Model\Order\Pdf\Invoice $pdfInvoice
     ) {
         $this->changeRepository = $changeRepository;
@@ -116,10 +116,10 @@ class SendInvoiceProcessor
      * @param \M2E\Kaufland\Model\Order $order
      * @param int $invoiceId
      *
-     * @return \M2E\Kaufland\Model\Kaufland\Connector\Order\SendInvoice\Invoice|null
+     * @return \M2E\Kaufland\Model\Channel\Order\SendInvoice\Invoice|null
      * @throws \Zend_Pdf_Exception
      */
-    private function getInvoice(\M2E\Kaufland\Model\Order $order, int $invoiceId): ?\M2E\Kaufland\Model\Kaufland\Connector\Order\SendInvoice\Invoice
+    private function getInvoice(\M2E\Kaufland\Model\Order $order, int $invoiceId): ?\M2E\Kaufland\Model\Channel\Order\SendInvoice\Invoice
     {
         /** @var \Magento\Sales\Model\ResourceModel\Order\Invoice\Collection $invoices */
         $invoices = $order->getMagentoOrder()->getInvoiceCollection();
@@ -134,6 +134,6 @@ class SendInvoiceProcessor
         $invoiceName = 'invoice_' . $invoice->getIncrementId() . '.pdf';
         $documentPdf = base64_encode($pdf->render());
 
-        return new \M2E\Kaufland\Model\Kaufland\Connector\Order\SendInvoice\Invoice($invoiceName, $documentPdf);
+        return new \M2E\Kaufland\Model\Channel\Order\SendInvoice\Invoice($invoiceName, $documentPdf);
     }
 }

@@ -26,7 +26,7 @@ class SynchronizeService
 
     /**
      * @param \M2E\Kaufland\Model\Storefront $storefront
-     * @param \M2E\Kaufland\Model\Kaufland\Connector\Account\ShippingGroup[] $shippingGroups
+     * @param \M2E\Kaufland\Model\Channel\ShippingGroup\Item[] $shippingGroups
      *
      * @return void
      * @throws \M2E\Kaufland\Model\Exception\Logic

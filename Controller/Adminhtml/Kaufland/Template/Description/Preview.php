@@ -11,8 +11,8 @@ use M2E\Kaufland\Model\Template\Description as TemplateDescription;
 
 class Preview extends AbstractDescription
 {
-    private \M2E\Kaufland\Model\Kaufland\Listing\Product\Description\RendererFactory $rendererFactory;
-    private \M2E\Kaufland\Model\Kaufland\Listing\Product\Description\TemplateParser $templateParser;
+    private \M2E\Kaufland\Model\Product\Description\RendererFactory $rendererFactory;
+    private \M2E\Kaufland\Model\Product\Description\TemplateParser $templateParser;
     private array $description = [];
     private \M2E\Kaufland\Model\ResourceModel\Listing $listingResource;
     private \M2E\Kaufland\Model\ResourceModel\Product\CollectionFactory $listingProductCollectionFactory;
@@ -21,11 +21,11 @@ class Preview extends AbstractDescription
     public function __construct(
         \M2E\Kaufland\Model\ResourceModel\Product\CollectionFactory $listingProductCollectionFactory,
         \M2E\Kaufland\Model\ResourceModel\Listing $listingResource,
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Description\RendererFactory $rendererFactory,
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Description\TemplateParser $templateParser,
+        \M2E\Kaufland\Model\Product\Description\RendererFactory $rendererFactory,
+        \M2E\Kaufland\Model\Product\Description\TemplateParser $templateParser,
         \Magento\Framework\HTTP\PhpEnvironment\Request $phpEnvironmentRequest,
         \Magento\Catalog\Model\Product $productModel,
-        \M2E\Kaufland\Model\Kaufland\Template\Manager $templateManager,
+        \M2E\Kaufland\Model\Template\Manager $templateManager,
         \M2E\Kaufland\Model\Magento\ProductFactory $ourMagentoProductFactory
     ) {
         parent::__construct($phpEnvironmentRequest, $productModel, $templateManager);

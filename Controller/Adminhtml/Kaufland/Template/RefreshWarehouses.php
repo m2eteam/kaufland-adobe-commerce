@@ -13,7 +13,7 @@ class RefreshWarehouses extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\Abst
     public function __construct(
         \M2E\Kaufland\Model\Account\Repository $accountRepository,
         \M2E\Kaufland\Model\Warehouse\SynchronizeService $warehouseSynchronizeService,
-        \M2E\Kaufland\Model\Kaufland\Template\Manager $templateManager,
+        \M2E\Kaufland\Model\Template\Manager $templateManager,
         \M2E\Kaufland\Model\Warehouse\Repository $warehouseRepository
     ) {
         parent::__construct($templateManager);

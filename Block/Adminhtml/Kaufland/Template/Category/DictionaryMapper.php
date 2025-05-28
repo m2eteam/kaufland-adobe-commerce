@@ -11,13 +11,21 @@ class DictionaryMapper
 {
     private \M2E\Kaufland\Model\Category\Attribute\Repository $attributeRepository;
     private \M2E\Kaufland\Model\AttributeMapping\GpsrService $gpsrService;
+    private \M2E\Kaufland\Model\AttributeMapping\GeneralService $generalService;
+
+    /** @var \M2E\Core\Model\AttributeMapping\Pair[] */
+    private array $generalAttributeMapping;
+    /** @var \M2E\Core\Model\AttributeMapping\Pair[] */
+    private array $gpsrAttributeMapping;
 
     public function __construct(
         \M2E\Kaufland\Model\Category\Attribute\Repository $attributeRepository,
-        \M2E\Kaufland\Model\AttributeMapping\GpsrService $gpsrService
+        \M2E\Kaufland\Model\AttributeMapping\GpsrService $gpsrService,
+        \M2E\Kaufland\Model\AttributeMapping\GeneralService $generalService
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->gpsrService = $gpsrService;
+        $this->generalService = $generalService;
     }
 
     /**
@@ -27,13 +35,15 @@ class DictionaryMapper
         \M2E\Kaufland\Model\Category\Dictionary $dictionary
     ): array {
         $gpsrAttributes = $this->getGpsrAttributesByAttributeCode();
+        $generalAttributes = $this->getGeneralAttributesMappingByCode();
+        $mappingAttributes = array_replace($gpsrAttributes, $generalAttributes);
         $savedAttributes = $this->loadSavedAttributes($dictionary, [
             Attribute::ATTRIBUTE_TYPE_PRODUCT,
         ]);
 
         $attributes = [];
         foreach ($dictionary->getProductAttributes() as $productAttribute) {
-            $item = $this->map($productAttribute, $savedAttributes, $gpsrAttributes);
+            $item = $this->map($productAttribute, $savedAttributes, $mappingAttributes);
 
             if ($item['required']) {
                 array_unshift($attributes, $item);
@@ -49,14 +59,14 @@ class DictionaryMapper
     /**
      * @param \M2E\Kaufland\Model\Category\Dictionary\AbstractAttribute $attribute
      * @param \M2E\Kaufland\Model\Category\Attribute[] $savedAttributes
-     * @param \M2E\Kaufland\Model\AttributeMapping\Gpsr\Pair[] $gpsrAttributesByCode
+     * @param \M2E\Core\Model\AttributeMapping\Pair[] $mappingAttributesByCode
      *
      * @return array
      */
     private function map(
         \M2E\Kaufland\Model\Category\Dictionary\AbstractAttribute $attribute,
         array $savedAttributes,
-        array $gpsrAttributesByCode
+        array $mappingAttributesByCode
     ): array {
         if (
             $attribute->getType() === \M2E\Kaufland\Model\Category\Dictionary::RENDER_TYPE_TEXT
@@ -81,10 +91,10 @@ class DictionaryMapper
         ];
 
         $existsAttribute = $savedAttributes[$attribute->getId()] ?? null;
-        $gpsrMapping = $gpsrAttributesByCode[$attribute->getNick()] ?? null;
+        $attributeMapping = $mappingAttributesByCode[$attribute->getNick()] ?? null;
         if (
             $existsAttribute !== null
-            || $gpsrMapping !== null
+            || $attributeMapping !== null
         ) {
             $item['template_attribute'] = [
                 'id' => $existsAttribute ? $existsAttribute->getAttributeId() : null,
@@ -93,12 +103,12 @@ class DictionaryMapper
                 'attribute_title' => $existsAttribute ? $existsAttribute->getAttributeId() : $attribute->getTitle(),
                 'value_mode' => $existsAttribute !== null
                     ? $existsAttribute->getValueMode()
-                    : ($gpsrMapping !== null ? \M2E\Kaufland\Model\Category\Attribute::VALUE_MODE_CUSTOM_ATTRIBUTE : \M2E\Kaufland\Model\Category\Attribute::VALUE_MODE_NONE),
+                    : ($attributeMapping !== null ? \M2E\Kaufland\Model\Category\Attribute::VALUE_MODE_CUSTOM_ATTRIBUTE : \M2E\Kaufland\Model\Category\Attribute::VALUE_MODE_NONE),
                 'value_kaufland_recommended' => $existsAttribute ? $existsAttribute->getRecommendedValue() : null,
                 'value_custom_value' => $existsAttribute ? $existsAttribute->getCustomValue() : null,
                 'value_custom_attribute' => $existsAttribute !== null
                     ? $existsAttribute->getCustomAttributeValue()
-                    : ($gpsrMapping !== null ? $gpsrMapping->magentoAttributeCode : null),
+                    : ($attributeMapping !== null ? $attributeMapping->getMagentoAttributeCode() : null),
             ];
         }
 
@@ -152,13 +162,36 @@ class DictionaryMapper
         return array_merge($requiredAttributes, $attributes);
     }
 
+    /**
+     * @return \M2E\Core\Model\AttributeMapping\Pair[]
+     */
     private function getGpsrAttributesByAttributeCode(): array
     {
-        $result = [];
-        foreach ($this->gpsrService->getConfigured() as $item) {
-            $result[$item->channelAttributeCode] = $item;
+        /** @psalm-suppress RedundantPropertyInitializationCheck */
+        if (isset($this->gpsrAttributeMapping)) {
+            return $this->gpsrAttributeMapping;
         }
 
-        return $result;
+        $result = $this->gpsrService->getAllGroupedByCode();
+
+        return $this->gpsrAttributeMapping = $result;
+    }
+
+    /**
+     * @return \M2E\Core\Model\AttributeMapping\Pair[]
+     */
+    private function getGeneralAttributesMappingByCode(): array
+    {
+        /** @psalm-suppress RedundantPropertyInitializationCheck */
+        if (isset($this->generalAttributeMapping)) {
+            return $this->generalAttributeMapping;
+        }
+
+        $result = [];
+        foreach ($this->generalService->getAll() as $item) {
+            $result[$item->getChannelAttributeCode()] = $item;
+        }
+
+        return $this->generalAttributeMapping = $result;
     }
 }

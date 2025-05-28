@@ -2,7 +2,7 @@
 
 namespace M2E\Kaufland\Model\Order\Shipment;
 
-use M2E\Kaufland\Model\Kaufland\Order\Shipment\ItemToShipLoader\ItemToShipLoaderFactory;
+use M2E\Kaufland\Model\Order\Shipment\ItemToShipLoader\ItemToShipLoaderFactory;
 use Magento\Sales\Model\ResourceModel\Order\Shipment\Track\Collection as TrackCollection;
 
 class Handler extends \M2E\Kaufland\Model\AbstractModel

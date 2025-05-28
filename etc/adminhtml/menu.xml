@@ -34,6 +34,10 @@
         <add id="M2E_Kaufland::configuration_categories" title="Categories" module="M2E_Kaufland" sortOrder="20"
              parent="M2E_Kaufland::configuration" action="m2e_kaufland/kaufland_template_category/index"
              resource="M2E_Kaufland::configuration_category"/>
+        <add id="M2E_Kaufland::configuration_mapping" module="M2E_Kaufland" sortOrder="25"
+             parent="M2E_Kaufland::configuration" title="Mapping"
+             action="m2e_kaufland/mapping/index"
+             resource="M2E_Kaufland::configuration_mapping"/>
         <add id="M2E_Kaufland::configuration_accounts" title="Accounts" module="M2E_Kaufland" sortOrder="30"
              parent="M2E_Kaufland::configuration" action="m2e_kaufland/kaufland_account/index"
              resource="M2E_Kaufland::configuration_accounts"/>

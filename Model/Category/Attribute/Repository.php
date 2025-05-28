@@ -76,4 +76,29 @@ class Repository
 
         return $collection->getSize();
     }
+
+    /**
+     * @return string[]
+     */
+    public function getAllCustomAttributeNicks(): array
+    {
+        $collection = $this->attributeCollectionFactory->create();
+        $collection->addFieldToFilter(
+            AttributeResource::COLUMN_VALUE_MODE,
+            \M2E\Kaufland\Model\Category\Attribute::VALUE_MODE_CUSTOM_ATTRIBUTE
+        );
+
+        $collection->removeAllFieldsFromSelect();
+
+        $collection->addFieldToSelect(AttributeResource::COLUMN_ATTRIBUTE_NICK);
+        $collection->distinct(true);
+
+        $result = [];
+        /** @var \M2E\Kaufland\Model\Category\Attribute $item */
+        foreach ($collection->getItems() as $item) {
+            $result[] = $item->getAttributeNick();
+        }
+
+        return $result;
+    }
 }

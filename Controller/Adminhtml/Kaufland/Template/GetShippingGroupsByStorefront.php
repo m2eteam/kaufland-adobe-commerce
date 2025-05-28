@@ -9,7 +9,7 @@ class GetShippingGroupsByStorefront extends \M2E\Kaufland\Controller\Adminhtml\K
     private \M2E\Kaufland\Model\ShippingGroup\Repository $shippingGroupRepository;
 
     public function __construct(
-        \M2E\Kaufland\Model\Kaufland\Template\Manager $templateManager,
+        \M2E\Kaufland\Model\Template\Manager $templateManager,
         \M2E\Kaufland\Model\ShippingGroup\Repository $shippingGroupRepository
     ) {
         parent::__construct($templateManager);

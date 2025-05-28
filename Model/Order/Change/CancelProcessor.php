@@ -10,12 +10,12 @@ class CancelProcessor
 
     private \M2E\Kaufland\Model\Order\Change\Repository $changeRepository;
     private \M2E\Kaufland\Model\Order\Repository $orderRepository;
-    private \M2E\Kaufland\Model\Kaufland\Connector\Order\Cancel\Processor $channelCancelProcessor;
+    private \M2E\Kaufland\Model\Channel\Order\Cancel\Processor $channelCancelProcessor;
 
     public function __construct(
         \M2E\Kaufland\Model\Order\Change\Repository $changeRepository,
         \M2E\Kaufland\Model\Order\Repository $orderRepository,
-        \M2E\Kaufland\Model\Kaufland\Connector\Order\Cancel\Processor $channelCancelProcessor
+        \M2E\Kaufland\Model\Channel\Order\Cancel\Processor $channelCancelProcessor
     ) {
         $this->changeRepository = $changeRepository;
         $this->orderRepository = $orderRepository;

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace M2E\Kaufland\Model\Instruction\SynchronizationTemplate\Checker;
 
-use M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Configurator;
-use M2E\Kaufland\Model\Kaufland\Template\ChangeProcessor\ChangeProcessorAbstract;
 use M2E\Kaufland\Model\Magento\Product\ChangeAttributeTracker;
 use M2E\Kaufland\Model\Product;
+use M2E\Kaufland\Model\Product\Action\Configurator;
+use M2E\Kaufland\Model\Template\ChangeProcessor\ChangeProcessorAbstract;
 use M2E\Kaufland\Model\Template\Description as DescriptionPolicy;
 use M2E\Kaufland\Model\Template\Synchronization\ChangeProcessor as SyncChangeProcessor;
 

@@ -11,12 +11,12 @@ class UploadByUser implements \M2E\Core\Model\Cron\TaskHandlerInterface
     private \M2E\Kaufland\Model\Cron\Task\Order\CreatorFactory $orderCreatorFactory;
     private \M2E\Kaufland\Model\Cron\Task\Order\UploadByUser\ManagerFactory $uploadByUserManagerFactory;
     private \M2E\Kaufland\Model\Account\Repository $accountRepository;
-    private \M2E\Kaufland\Model\Kaufland\Connector\Order\Receive\ItemsByCreateDate\Processor $receiveOrderProcessor;
+    private \M2E\Kaufland\Model\Channel\Order\Receive\ItemsByCreateDate\Processor $receiveOrderProcessor;
     private \M2E\Kaufland\Model\Synchronization\LogService $syncLog;
 
     public function __construct(
         \M2E\Kaufland\Model\Account\Repository $accountRepository,
-        \M2E\Kaufland\Model\Kaufland\Connector\Order\Receive\ItemsByCreateDate\Processor $receiveOrderProcessor,
+        \M2E\Kaufland\Model\Channel\Order\Receive\ItemsByCreateDate\Processor $receiveOrderProcessor,
         \M2E\Kaufland\Model\Cron\Task\Order\UploadByUser\ManagerFactory $uploadByUserManagerFactory,
         \M2E\Kaufland\Model\Cron\Task\Order\CreatorFactory $orderCreatorFactory
     ) {

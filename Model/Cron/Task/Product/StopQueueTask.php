@@ -52,7 +52,7 @@ class StopQueueTask implements \M2E\Core\Model\Cron\TaskHandlerInterface
 
             $processedItems[$uniqueProcessedItemKey] = true;
 
-            $command = new \M2E\Kaufland\Model\Kaufland\Connector\Item\DeleteCommand(
+            $command = new \M2E\Kaufland\Model\Channel\Connector\Product\DeleteCommand(
                 $requestData['account'],
                 [
                     'storefront' => $requestData['storefront'],

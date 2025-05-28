@@ -10,16 +10,16 @@ class Update
 {
     private \M2E\Kaufland\Model\Warehouse\SynchronizeService $warehouseSynchronizeService;
     private \M2E\Kaufland\Model\ShippingGroup\SynchronizeService $shippingGroupSynchronizeService;
-    private \M2E\Kaufland\Model\Kaufland\Connector\Account\Update\Processor $updateProcessor;
+    private \M2E\Kaufland\Model\Channel\Account\Update\Processor $updateProcessor;
     private \M2E\Kaufland\Model\Storefront\UpdateService $storefrontUpdateService;
-    private \M2E\Kaufland\Model\Kaufland\Connector\Storefront\Get\Processor $storefrontProcessor;
+    private \M2E\Kaufland\Model\Channel\Storefront\Processor $storefrontProcessor;
     private \M2E\Kaufland\Helper\Data\Cache\Permanent $cache;
     /** @var \M2E\Kaufland\Model\Account\Repository */
     private Repository $accountRepository;
 
     public function __construct(
-        \M2E\Kaufland\Model\Kaufland\Connector\Storefront\Get\Processor $storefrontProcessor,
-        \M2E\Kaufland\Model\Kaufland\Connector\Account\Update\Processor $updateProcessor,
+        \M2E\Kaufland\Model\Channel\Storefront\Processor $storefrontProcessor,
+        \M2E\Kaufland\Model\Channel\Account\Update\Processor $updateProcessor,
         \M2E\Kaufland\Model\Storefront\UpdateService $storefrontUpdateService,
         \M2E\Kaufland\Model\Account\Repository $accountRepository,
         \M2E\Kaufland\Model\Warehouse\SynchronizeService $warehouseSynchronizeService,
@@ -70,7 +70,7 @@ class Update
         string $title,
         string $clientKey,
         string $secretKey
-    ): \M2E\Kaufland\Model\Kaufland\Connector\Account\Update\Response {
+    ): \M2E\Kaufland\Model\Channel\Connector\Account\Update\Response {
         return $this->updateProcessor->process($account, $title, $clientKey, $secretKey);
     }
 

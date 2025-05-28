@@ -17,7 +17,7 @@ abstract class AbstractDescription extends AbstractTemplate
     public function __construct(
         \Magento\Framework\HTTP\PhpEnvironment\Request $phpEnvironmentRequest,
         \Magento\Catalog\Model\Product $productModel,
-        \M2E\Kaufland\Model\Kaufland\Template\Manager $templateManager
+        \M2E\Kaufland\Model\Template\Manager $templateManager
     ) {
         parent::__construct($templateManager);
         $this->phpEnvironmentRequest = $phpEnvironmentRequest;

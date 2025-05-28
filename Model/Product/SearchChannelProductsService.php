@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace M2E\Kaufland\Model\Product;
 
-use M2E\Kaufland\Model\Kaufland\Connector\Product\Search\SearchByEanCommand;
+use M2E\Kaufland\Model\Channel\Connector\Product\Search\SearchByEanCommand;
 
 class SearchChannelProductsService
 {
@@ -21,7 +21,7 @@ class SearchChannelProductsService
      * @param \M2E\Kaufland\Model\Storefront $storefront
      * @param array $eans
      *
-     * @return \M2E\Kaufland\Model\Kaufland\Connector\Product\Search\Product[]
+     * @return \M2E\Kaufland\Model\Channel\Connector\Product\Search\Product[]
      * @throws \M2E\Kaufland\Model\Exception
      * @throws \M2E\Core\Model\Exception\Connection
      */
@@ -38,7 +38,7 @@ class SearchChannelProductsService
                 $eanPack
             );
 
-            /** @var \M2E\Kaufland\Model\Kaufland\Connector\Product\Search\Response $response */
+            /** @var \M2E\Kaufland\Model\Channel\Connector\Product\Search\Response $response */
             $response = $this->serverClient->process($command);
             if (empty($response->getProducts())) {
                 continue;

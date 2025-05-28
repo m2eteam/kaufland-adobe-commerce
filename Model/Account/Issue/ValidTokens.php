@@ -74,10 +74,10 @@ class ValidTokens implements \M2E\Kaufland\Model\Issue\LocatorInterface
             return [];
         }
 
-        $command = new \M2E\Kaufland\Model\Kaufland\Connector\Account\Get\AuthInfoCommand(
+        $command = new \M2E\Kaufland\Model\Channel\Connector\Account\Get\AuthInfoCommand(
             array_keys($accountsHashes),
         );
-        /** @var \M2E\Kaufland\Model\Kaufland\Connector\Account\Get\Result $validateResult */
+        /** @var \M2E\Kaufland\Model\Channel\Connector\Account\Get\Result $validateResult */
         $validateResult = $this->connector->process($command);
         $result = [];
         foreach ($accountsHashes as $hash => $title) {

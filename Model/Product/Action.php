@@ -10,12 +10,12 @@ class Action
 
     private int $action;
     private \M2E\Kaufland\Model\Product $product;
-    private \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Configurator $configurator;
+    private Action\Configurator $configurator;
 
     private function __construct(
         int $action,
         \M2E\Kaufland\Model\Product $product,
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Configurator $configurator
+        Action\Configurator $configurator
     ) {
         $this->product = $product;
         $this->configurator = $configurator;
@@ -32,7 +32,7 @@ class Action
         return $this->action;
     }
 
-    public function getConfigurator(): \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Configurator
+    public function getConfigurator(): Action\Configurator
     {
         return $this->configurator;
     }
@@ -79,13 +79,13 @@ class Action
         return new self(
             self::ACTION_NOTHING,
             $product,
-            new \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Configurator(),
+            new Action\Configurator(),
         );
     }
 
     public static function createList(
         \M2E\Kaufland\Model\Product $product,
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Configurator $configurator
+        Action\Configurator $configurator
     ): self {
         return new self(
             \M2E\Kaufland\Model\Product::ACTION_LIST_UNIT,
@@ -96,7 +96,7 @@ class Action
 
     public static function createRelist(
         \M2E\Kaufland\Model\Product $product,
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Configurator $configurator
+        Action\Configurator $configurator
     ): self {
         return new self(
             \M2E\Kaufland\Model\Product::ACTION_RELIST_UNIT,
@@ -107,7 +107,7 @@ class Action
 
     public static function createReviseUnit(
         \M2E\Kaufland\Model\Product $product,
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Configurator $configurator
+        Action\Configurator $configurator
     ): self {
         return new self(
             \M2E\Kaufland\Model\Product::ACTION_REVISE_UNIT,
@@ -118,7 +118,7 @@ class Action
 
     public static function createReviseProduct(
         \M2E\Kaufland\Model\Product $product,
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Configurator $configurator
+        Action\Configurator $configurator
     ): self {
         return new self(
             \M2E\Kaufland\Model\Product::ACTION_REVISE_PRODUCT,
@@ -133,7 +133,7 @@ class Action
         return new self(
             \M2E\Kaufland\Model\Product::ACTION_STOP_UNIT,
             $product,
-            new \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Configurator(),
+            new Action\Configurator(),
         );
     }
 
@@ -143,7 +143,7 @@ class Action
         return new self(
             \M2E\Kaufland\Model\Product::ACTION_DELETE_UNIT,
             $product,
-            new \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Configurator(),
+            new Action\Configurator(),
         );
     }
 }

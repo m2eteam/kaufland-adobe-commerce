@@ -85,7 +85,7 @@ class Attribute extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
 
     public function getAttributeTitle(): string
     {
-        return (string)$this->getData(AttributeResource::COLUMN_ATTRIBUTE_NICK);
+        return (string)$this->getData(AttributeResource::COLUMN_ATTRIBUTE_TITLE);
     }
 
     public function setAttributeNick(string $nick): void

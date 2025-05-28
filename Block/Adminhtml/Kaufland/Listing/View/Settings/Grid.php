@@ -2,13 +2,12 @@
 
 namespace M2E\Kaufland\Block\Adminhtml\Kaufland\Listing\View\Settings;
 
-use M2E\Kaufland\Block\Adminhtml\Kaufland\Listing\View\Settings\Grid\Column\Filter\PolicySettings
-    as PolicySettingsFilter;
+use M2E\Kaufland\Block\Adminhtml\Kaufland\Listing\View\Settings\Grid\Column\Filter\PolicySettings as PolicySettingsFilter;
 use M2E\Kaufland\Model\ResourceModel\Category\Dictionary as CategoryDictionaryResource;
 use M2E\Kaufland\Model\ResourceModel\Product as ListingProductResource;
 use M2E\Kaufland\Model\ResourceModel\Template\SellingFormat as SellingFormatResource;
 use M2E\Kaufland\Model\ResourceModel\Template\Synchronization as SynchronizationResource;
-use M2E\Kaufland\Model\Kaufland\Template\Manager;
+use M2E\Kaufland\Model\Template\Manager;
 
 class Grid extends \M2E\Kaufland\Block\Adminhtml\Listing\View\AbstractGrid
 {
@@ -464,7 +463,7 @@ JS
 
         // ---------------------------------------
         $this->jsPhp->addConstants(
-            \M2E\Kaufland\Helper\Data::getClassConstants(\M2E\Kaufland\Model\Kaufland\Template\Manager::class)
+            \M2E\Kaufland\Helper\Data::getClassConstants(\M2E\Kaufland\Model\Template\Manager::class)
         );
         // ---------------------------------------
 

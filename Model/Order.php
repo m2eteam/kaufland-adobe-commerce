@@ -59,7 +59,7 @@ class Order extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
     private \Magento\Sales\Model\Order\Email\Sender\OrderSender $orderSender;
     private \Magento\Sales\Model\Order\Email\Sender\InvoiceSender $invoiceSender;
     private \M2E\Kaufland\Model\Order\ProxyObjectFactory $proxyObjectFactory;
-    private Kaufland\Order\ShippingAddressFactory $shippingAddressFactory;
+    private \M2E\Kaufland\Model\Order\ShippingAddressFactory $shippingAddressFactory;
 
     private \M2E\Kaufland\Model\ResourceModel\Order\Change\CollectionFactory $orderChangeCollectionFactory;
     private \M2E\Kaufland\Model\Order\Log\ServiceFactory $orderLogServiceFactory;
@@ -97,7 +97,7 @@ class Order extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         \M2E\Kaufland\Model\Order\ReserveFactory $orderReserveFactory,
         \M2E\Kaufland\Model\Order\Log\ServiceFactory $orderLogServiceFactory,
         \M2E\Kaufland\Model\Order\ProxyObjectFactory $proxyObjectFactory,
-        \M2E\Kaufland\Model\Kaufland\Order\ShippingAddressFactory $shippingAddressFactory,
+        \M2E\Kaufland\Model\Order\ShippingAddressFactory $shippingAddressFactory,
         Storefront\Repository $storefrontRepository,
         \M2E\Kaufland\Model\ResourceModel\Order\Item\CollectionFactory $orderItemCollectionFactory,
         \M2E\Kaufland\Model\ResourceModel\Order\Note\CollectionFactory $orderNoteCollectionFactory,

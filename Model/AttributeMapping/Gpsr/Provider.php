@@ -25,11 +25,13 @@ class Provider
         ],
     ];
 
-    private \M2E\Kaufland\Model\AttributeMapping\Repository $attributeMappingRepository;
+    private \M2E\Core\Model\AttributeMapping\Adapter $attributeMappingAdapter;
+    private \M2E\Core\Model\AttributeMapping\AdapterFactory $attributeMappingAdapterFactory;
 
-    public function __construct(\M2E\Kaufland\Model\AttributeMapping\Repository $attributeMappingRepository)
-    {
-        $this->attributeMappingRepository = $attributeMappingRepository;
+    public function __construct(
+        \M2E\Core\Model\AttributeMapping\AdapterFactory $attributeMappingAdapterFactory
+    ) {
+        $this->attributeMappingAdapterFactory = $attributeMappingAdapterFactory;
     }
 
     /**
@@ -84,15 +86,13 @@ class Provider
     }
 
     /**
-     * @return \M2E\Kaufland\Model\AttributeMapping\Pair[]
+     * @return \M2E\Core\Model\AttributeMapping\Pair[]
      */
-    private function getExistedMappingGroupedByCode(): array
+    public function getExistedMappingGroupedByCode(): array
     {
         $result = [];
 
-        $existed = $this->attributeMappingRepository->findByType(
-            \M2E\Kaufland\Model\AttributeMapping\GpsrService::MAPPING_TYPE
-        );
+        $existed = $this->getAdapter()->findByType(\M2E\Kaufland\Model\AttributeMapping\GpsrService::MAPPING_TYPE);
         foreach ($existed as $pair) {
             $result[$pair->getChannelAttributeCode()] = $pair;
         }
@@ -121,5 +121,28 @@ class Provider
         }
 
         return null;
+    }
+
+    public function isGpsrAttribute(string $code): bool
+    {
+        foreach (self::ATTRIBUTES as $attribute) {
+            if ($attribute['code'] === $code) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function getAdapter(): \M2E\Core\Model\AttributeMapping\Adapter
+    {
+        /** @psalm-suppress RedundantPropertyInitializationCheck */
+        if (!isset($this->attributeMappingAdapter)) {
+            $this->attributeMappingAdapter = $this->attributeMappingAdapterFactory->create(
+                \M2E\Kaufland\Helper\Module::IDENTIFIER
+            );
+        }
+
+        return $this->attributeMappingAdapter;
     }
 }

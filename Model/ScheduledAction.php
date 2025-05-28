@@ -34,7 +34,7 @@ class ScheduledAction extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         array $data,
         bool $isForce = false,
         array $tags = [],
-        ?\M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Configurator $configurator = null
+        ?Product\Action\Configurator $configurator = null
     ): self {
         $this->validateAction($action);
         $this->validateStatusChanger($statusChanger);
@@ -134,11 +134,11 @@ class ScheduledAction extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         return explode('/', $value);
     }
 
-    public function getConfigurator(): \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Configurator
+    public function getConfigurator(): Product\Action\Configurator
     {
         $data = $this->getAdditionalData();
 
-        return \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Configurator::createWithTypes(
+        return Product\Action\Configurator::createWithTypes(
             $data['configurator']['allowed_data_types'] ?? [],
         );
     }

@@ -21,7 +21,7 @@ class Save extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\AbstractTemplate
         \M2E\Kaufland\Helper\Module\Wizard $wizardHelper,
         \M2E\Core\Helper\Url $urlHelper,
         \M2E\Kaufland\Model\ShippingGroup\Repository $shippingGroupRepository,
-        \M2E\Kaufland\Model\Kaufland\Template\Manager $templateManager
+        \M2E\Kaufland\Model\Template\Manager $templateManager
     ) {
         parent::__construct($templateManager);
 
@@ -106,7 +106,7 @@ class Save extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\AbstractTemplate
             return false;
         }
 
-        if ($templateNick === \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SHIPPING) {
+        if ($templateNick === \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SHIPPING) {
             return $this->isShippingSaveAllowed();
         }
 
@@ -131,19 +131,19 @@ class Save extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\AbstractTemplate
             return null;
         }
 
-        if ($nick === \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SYNCHRONIZATION) {
+        if ($nick === \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SYNCHRONIZATION) {
             return $this->synchronizationSaveService->save($data);
         }
 
-        if ($nick === \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SELLING_FORMAT) {
+        if ($nick === \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SELLING_FORMAT) {
             return $this->sellingFormatSaveService->save($data);
         }
 
-        if ($nick === \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SHIPPING) {
+        if ($nick === \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SHIPPING) {
             return $this->shippingSaveService->save($data);
         }
 
-        if ($nick === \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_DESCRIPTION) {
+        if ($nick === \M2E\Kaufland\Model\Template\Manager::TEMPLATE_DESCRIPTION) {
             return $this->descriptionSaveService->save($data);
         }
 
@@ -152,7 +152,7 @@ class Save extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\AbstractTemplate
 
     private function isShippingSaveAllowed(): bool
     {
-        $data = $this->getRequest()->getPost(\M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SHIPPING);
+        $data = $this->getRequest()->getPost(\M2E\Kaufland\Model\Template\Manager::TEMPLATE_SHIPPING);
 
         if ($data === null) {
             return false;

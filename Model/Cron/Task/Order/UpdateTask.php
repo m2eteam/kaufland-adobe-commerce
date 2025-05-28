@@ -11,7 +11,7 @@ class UpdateTask implements \M2E\Core\Model\Cron\TaskHandlerInterface
     private const MAX_UPDATES_PER_TIME = 50;
 
     private \M2E\Kaufland\Model\Account\Repository $accountRepository;
-    private \M2E\Kaufland\Model\Kaufland\Connector\Order\Units\Ship\Processor $orderShipProcessor;
+    private \M2E\Kaufland\Model\Channel\Order\Units\Ship\Processor $orderShipProcessor;
     /** @var \M2E\Kaufland\Model\Order\Change\Repository */
     private Change\Repository $changeRepository;
     private \M2E\Kaufland\Model\Order\Repository $orderRepository;
@@ -19,10 +19,10 @@ class UpdateTask implements \M2E\Core\Model\Cron\TaskHandlerInterface
     private array $bufferChangesByOrders = [];
 
     public function __construct(
-        \M2E\Kaufland\Model\Kaufland\Connector\Order\Units\Ship\Processor $orderShipProcessor,
-        \M2E\Kaufland\Model\Account\Repository $accountRepository,
-        \M2E\Kaufland\Model\Order\Repository $orderRepository,
-        \M2E\Kaufland\Model\Order\Change\Repository $changeRepository
+        \M2E\Kaufland\Model\Channel\Order\Units\Ship\Processor $orderShipProcessor,
+        \M2E\Kaufland\Model\Account\Repository                 $accountRepository,
+        \M2E\Kaufland\Model\Order\Repository                   $orderRepository,
+        \M2E\Kaufland\Model\Order\Change\Repository            $changeRepository
     ) {
         $this->accountRepository = $accountRepository;
         $this->orderShipProcessor = $orderShipProcessor;
@@ -125,7 +125,7 @@ class UpdateTask implements \M2E\Core\Model\Cron\TaskHandlerInterface
 
                 $ordersByKauflandOrderId[$orderItem->getKauflandOrderItemId()] = $order;
 
-                $packages[] = new \M2E\Kaufland\Model\Kaufland\Connector\Order\Units\Ship\Unit(
+                $packages[] = new \M2E\Kaufland\Model\Channel\Order\Units\Ship\Unit(
                     (int)$orderItem->getKauflandOrderItemId(),
                     $item['carrier_code'],
                     $item['tracking_number'],

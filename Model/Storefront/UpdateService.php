@@ -19,7 +19,7 @@ class UpdateService
 
     /**
      * @param \M2E\Kaufland\Model\Account $account
-     * @param \M2E\Kaufland\Model\Kaufland\Connector\Account\Storefront[] $kauflandStorefronts
+     * @param \M2E\Kaufland\Model\Channel\Storefront\Item[] $kauflandStorefronts
      *
      * @return void
      * @throws \M2E\Kaufland\Model\Exception\Logic

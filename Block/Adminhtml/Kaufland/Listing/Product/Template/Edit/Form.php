@@ -3,7 +3,7 @@
 namespace M2E\Kaufland\Block\Adminhtml\Kaufland\Listing\Product\Template\Edit;
 
 use M2E\Kaufland\Model\ResourceModel\Template\SellingFormat\CollectionFactory as SellingFormatCollectionFactory;
-use M2E\Kaufland\Model\Kaufland\Template\Manager as TemplateManager;
+use M2E\Kaufland\Model\Template\Manager as TemplateManager;
 
 class Form extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractForm
 {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace M2E\Kaufland\Model\Template\Shipping;
 
-class ChangeProcessor extends \M2E\Kaufland\Model\Kaufland\Template\ChangeProcessor\ChangeProcessorAbstract
+class ChangeProcessor extends \M2E\Kaufland\Model\Template\ChangeProcessor\ChangeProcessorAbstract
 {
     public const INSTRUCTION_INITIATOR = 'template_shipping_change_processor';
 

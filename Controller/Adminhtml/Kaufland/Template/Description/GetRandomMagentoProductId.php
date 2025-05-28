@@ -13,7 +13,7 @@ class GetRandomMagentoProductId extends AbstractDescription
     public function __construct(
         \Magento\Framework\HTTP\PhpEnvironment\Request $phpEnvironmentRequest,
         \Magento\Catalog\Model\Product $productModel,
-        \M2E\Kaufland\Model\Kaufland\Template\Manager $templateManager,
+        \M2E\Kaufland\Model\Template\Manager $templateManager,
         \M2E\Kaufland\Model\Product\Repository $productRepository
     ) {
         parent::__construct(

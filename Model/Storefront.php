@@ -16,6 +16,16 @@ class Storefront extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
     public const STOREFRONT_IT = 'Italy';
     public const STOREFRONT_FR = 'France';
 
+    public const STOREFRONT_CURRENCIES_MAP = [
+        'de' => \M2E\Kaufland\Model\Currency::CURRENCY_EUR,
+        'cz' => \M2E\Kaufland\Model\Currency::CURRENCY_KC,
+        'sk' => \M2E\Kaufland\Model\Currency::CURRENCY_EUR,
+        'pl' => \M2E\Kaufland\Model\Currency::CURRENCY_PLZ,
+        'at' => \M2E\Kaufland\Model\Currency::CURRENCY_EUR,
+        'it' => \M2E\Kaufland\Model\Currency::CURRENCY_EUR,
+        'fr' => \M2E\Kaufland\Model\Currency::CURRENCY_EUR,
+    ];
+
     private Account\Repository $accountRepository;
 
     private \M2E\Kaufland\Model\Account $account;
@@ -153,22 +163,12 @@ class Storefront extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
     public function getCurrencyCode(): string
     {
         $storefrontCode = $this->getStorefrontCode();
-        $map = [
-            'de' => \M2E\Kaufland\Model\Currency::CURRENCY_EUR,
-            'cz' => \M2E\Kaufland\Model\Currency::CURRENCY_KC,
-            'sk' => \M2E\Kaufland\Model\Currency::CURRENCY_EUR,
-            'pl' => \M2E\Kaufland\Model\Currency::CURRENCY_PLZ,
-            'at' => \M2E\Kaufland\Model\Currency::CURRENCY_EUR,
-            'it' => \M2E\Kaufland\Model\Currency::CURRENCY_EUR,
-            'fr' => \M2E\Kaufland\Model\Currency::CURRENCY_EUR,
-        ];
-
-        if (!isset($map[$storefrontCode])) {
+        if (!isset(self::STOREFRONT_CURRENCIES_MAP[$storefrontCode])) {
             throw new \M2E\Kaufland\Model\Exception\Logic(
                 (string)__('Currency for %code storefront not defined.', ['code' => $storefrontCode]),
             );
         }
 
-        return $map[$storefrontCode];
+        return self::STOREFRONT_CURRENCIES_MAP[$storefrontCode];
     }
 }

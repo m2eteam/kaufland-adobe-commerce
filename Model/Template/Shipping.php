@@ -46,7 +46,7 @@ class Shipping extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel implements
 
     public function getNick(): string
     {
-        return \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SHIPPING;
+        return \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SHIPPING;
     }
 
     public function getTitle(): string

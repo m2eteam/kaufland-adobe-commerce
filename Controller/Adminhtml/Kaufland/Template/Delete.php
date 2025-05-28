@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace M2E\Kaufland\Controller\Adminhtml\Kaufland\Template;
 
-use M2E\Kaufland\Model\Kaufland\Template\Manager;
+use M2E\Kaufland\Model\Template\Manager;
 
 class Delete extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\AbstractTemplate
 {

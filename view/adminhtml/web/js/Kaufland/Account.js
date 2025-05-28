@@ -3,7 +3,6 @@ define([
     'mage/translate',
     'M2ECore/Plugin/Messages',
     'Kaufland/Common',
-    'extjs/ext-tree-checkbox',
     'mage/adminhtml/form',
 ], function (modal, $t, MessageObj) {
 

@@ -2,7 +2,7 @@
 
 namespace M2E\Kaufland\Block\Adminhtml\Kaufland\Listing\View\Settings\Grid\Column\Filter;
 
-use M2E\Kaufland\Model\Kaufland\Template\Manager;
+use M2E\Kaufland\Model\Template\Manager;
 
 /**
  * Class \M2E\Kaufland\Block\Adminhtml\Kaufland\Listing\View\Settings\Grid\Column\Filter\Category

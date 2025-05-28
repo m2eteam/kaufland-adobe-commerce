@@ -1,0 +1,29 @@
+<?php
+
+namespace M2E\Kaufland\Model\Product\Action\Type\ReviseUnit\Checker;
+
+class Result
+{
+    /** @var \M2E\Kaufland\Model\Product\Action\Configurator */
+    private $configurator;
+    /** @var array */
+    private $tags;
+
+    public function __construct(
+        \M2E\Kaufland\Model\Product\Action\Configurator $configurator,
+        array $tags
+    ) {
+        $this->configurator = $configurator;
+        $this->tags = $tags;
+    }
+
+    public function getConfigurator(): \M2E\Kaufland\Model\Product\Action\Configurator
+    {
+        return $this->configurator;
+    }
+
+    public function getTags(): array
+    {
+        return $this->tags;
+    }
+}

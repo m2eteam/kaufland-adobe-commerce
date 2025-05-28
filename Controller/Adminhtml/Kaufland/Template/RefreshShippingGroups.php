@@ -14,7 +14,7 @@ class RefreshShippingGroups extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\
     public function __construct(
         \M2E\Kaufland\Model\Account\Repository $accountRepository,
         \M2E\Kaufland\Model\ShippingGroup\SynchronizeService $shippingGroupSynchronizeService,
-        \M2E\Kaufland\Model\Kaufland\Template\Manager $templateManager,
+        \M2E\Kaufland\Model\Template\Manager $templateManager,
         \M2E\Kaufland\Model\ShippingGroup\Repository $shippingGroupRepository,
         \M2E\Kaufland\Model\Storefront\Repository $storefrontRepository
     ) {

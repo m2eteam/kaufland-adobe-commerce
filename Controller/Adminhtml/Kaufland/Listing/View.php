@@ -11,7 +11,7 @@ class View extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\AbstractListing
     private \M2E\Kaufland\Model\Listing\Repository $listingRepository;
     private \M2E\Kaufland\Model\Listing\Ui\RuntimeStorage $uiListingRuntimeStorage;
     private \M2E\Kaufland\Model\Listing\Wizard\Repository $wizardRepository;
-    private \M2E\Kaufland\Model\Kaufland\Magento\Product\RuleFactory $productRuleFactory;
+    private \M2E\Kaufland\Model\Channel\Magento\Product\RuleFactory $productRuleFactory;
 
     public function __construct(
         \M2E\Kaufland\Model\Listing\Repository $listingRepository,
@@ -19,7 +19,7 @@ class View extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\AbstractListing
         \M2E\Kaufland\Helper\Data\GlobalData $globalData,
         \M2E\Kaufland\Helper\Data\Session $sessionHelper,
         \M2E\Kaufland\Model\Listing\Wizard\Repository $wizardRepository,
-        \M2E\Kaufland\Model\Kaufland\Magento\Product\RuleFactory $productRuleFactory
+        \M2E\Kaufland\Model\Channel\Magento\Product\RuleFactory $productRuleFactory
     ) {
         parent::__construct();
 

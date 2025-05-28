@@ -6,7 +6,7 @@ namespace M2E\Kaufland\Model\Template\Synchronization;
 
 use M2E\Kaufland\Model\Template\Synchronization;
 
-class Builder extends \M2E\Kaufland\Model\Kaufland\Template\AbstractBuilder
+class Builder extends \M2E\Kaufland\Model\Template\AbstractBuilder
 {
     private \Magento\Framework\App\RequestInterface $request;
     private \M2E\Kaufland\Model\Magento\Product\RuleFactory $ruleFactory;

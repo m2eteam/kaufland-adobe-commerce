@@ -25,7 +25,7 @@ abstract class AbstractAction extends \M2E\Kaufland\Controller\Adminhtml\Kauflan
     }
 
     protected function processRealtime(
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Manual\Realtime\AbstractRealtime $processor,
+        \M2E\Kaufland\Model\Product\Action\Manual\Realtime\AbstractRealtime $processor,
         array $params = []
     ) {
         if (!$listingsProductsIds = $this->getRequest()->getParam('selected_products')) {
@@ -61,7 +61,7 @@ abstract class AbstractAction extends \M2E\Kaufland\Controller\Adminhtml\Kauflan
     }
 
     protected function createScheduleAction(
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Manual\Schedule\AbstractSchedule $processor,
+        \M2E\Kaufland\Model\Product\Action\Manual\Schedule\AbstractSchedule $processor,
         array $params = []
     ) {
         if (!$listingsProductsIds = $this->getRequest()->getParam('selected_products')) {

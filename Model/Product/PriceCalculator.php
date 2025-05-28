@@ -12,7 +12,7 @@ use M2E\Kaufland\Model\Magento\Product\Cache;
 use M2E\Kaufland\Model\Product as ListingProduct;
 use M2E\Kaufland\Model\Template\SellingFormat;
 
-abstract class PriceCalculator
+class PriceCalculator
 {
     public const MODE_NONE = 0;
     public const MODE_PRODUCT = 1;
@@ -74,7 +74,7 @@ abstract class PriceCalculator
     /**
      * @param array $source
      *
-     * @return PriceCalculator
+     * @return \M2E\Kaufland\Model\Product\PriceCalculator
      */
     public function setSource(array $source)
     {
@@ -89,7 +89,7 @@ abstract class PriceCalculator
      * @return array|mixed
      * @throws Logic
      */
-    protected function getSource($key = null)
+    private function getSource($key = null)
     {
         if (empty($this->source)) {
             throw new Logic('Initialize all parameters first.');
@@ -111,7 +111,7 @@ abstract class PriceCalculator
         return $this;
     }
 
-    protected function getSourceMode()
+    private function getSourceMode()
     {
         if (!in_array($this->getSource('mode'), $this->sourceModeMapping)) {
             throw new \M2E\Kaufland\Model\Exception\Logic('Unknown source mode.');
@@ -164,7 +164,7 @@ abstract class PriceCalculator
     /**
      * @return string
      */
-    protected function getCoefficient()
+    private function getCoefficient()
     {
         return $this->coefficient;
     }
@@ -184,7 +184,7 @@ abstract class PriceCalculator
     /**
      * @return array
      */
-    protected function getModifier(): array
+    private function getModifier(): array
     {
         return $this->modifier;
     }
@@ -221,14 +221,14 @@ abstract class PriceCalculator
     /**
      * @return float|null
      */
-    protected function getVatPercent()
+    private function getVatPercent()
     {
         return $this->vatPercent;
     }
 
     //########################################
 
-    protected function getListing(): Listing
+    private function getListing(): Listing
     {
         return $this->getProduct()->getListing();
     }
@@ -236,7 +236,7 @@ abstract class PriceCalculator
     /**
      * @return Cache
      */
-    protected function getMagentoProduct()
+    private function getMagentoProduct()
     {
         return $this->getProduct()->getMagentoProduct();
     }
@@ -255,7 +255,7 @@ abstract class PriceCalculator
         return $this->prepareFinalValue($value);
     }
 
-    protected function getProductBaseValue()
+    private function getProductBaseValue()
     {
         if ($this->productValueCache !== null) {
             return $this->productValueCache;
@@ -372,7 +372,7 @@ abstract class PriceCalculator
         return $this->productValueCache = !is_array($value) ? (float)$value : $value;
     }
 
-    protected function getExistedProductSpecialValue(Product $product)
+    private function getExistedProductSpecialValue(Product $product)
     {
         $value = (float)$product->getSpecialPrice();
 
@@ -383,7 +383,7 @@ abstract class PriceCalculator
         return $this->convertValueFromStoreToStorefront($value);
     }
 
-    protected function getExistedProductTierValue(Product $product)
+    private function getExistedProductTierValue(Product $product)
     {
         $tierPrice = $product->getTierPrice(
             $this->getSource('tier_website_id'),
@@ -399,7 +399,7 @@ abstract class PriceCalculator
 
     // ---------------------------------------
 
-    protected function getConfigurableProductValue(Product $product)
+    private function getConfigurableProductValue(Product $product)
     {
         $value = 0;
 
@@ -428,7 +428,7 @@ abstract class PriceCalculator
      * @throws \M2E\Kaufland\Model\Exception
      * @throws \M2E\Kaufland\Model\Exception\Logic
      */
-    protected function getGroupedProductValue(Product $product)
+    private function getGroupedProductValue(Product $product)
     {
         $value = 0;
         foreach ($product->getTypeInstance()->getAssociatedProducts($product->getProduct()) as $childProduct) {
@@ -441,7 +441,7 @@ abstract class PriceCalculator
         return $value;
     }
 
-    protected function getBundleProductDynamicValue(Product $product)
+    private function getBundleProductDynamicValue(Product $product)
     {
         $value = 0;
 
@@ -468,7 +468,7 @@ abstract class PriceCalculator
         return $value;
     }
 
-    protected function getBundleProductDynamicSpecialValue(Product $product)
+    private function getBundleProductDynamicSpecialValue(Product $product)
     {
         $value = $this->getBundleProductDynamicValue($product);
 
@@ -481,7 +481,7 @@ abstract class PriceCalculator
         return round((($value * $percent) / 100), 2);
     }
 
-    protected function getGroupedTierValue(\M2E\Kaufland\Model\Magento\Product $product)
+    private function getGroupedTierValue(\M2E\Kaufland\Model\Magento\Product $product)
     {
         /** @var \Magento\GroupedProduct\Model\Product\Type\Grouped $productTypeInstance */
         $productTypeInstance = $product->getTypeInstance();
@@ -509,19 +509,19 @@ abstract class PriceCalculator
         return $this->getExistedProductTierValue($resultChildProduct);
     }
 
-    protected function getBundleTierFixedValue(\M2E\Kaufland\Model\Magento\Product $product)
+    private function getBundleTierFixedValue(\M2E\Kaufland\Model\Magento\Product $product)
     {
         return $this->calculateBundleTierValue($product, $product->getPrice());
     }
 
-    protected function getBundleTierDynamicValue(\M2E\Kaufland\Model\Magento\Product $product)
+    private function getBundleTierDynamicValue(\M2E\Kaufland\Model\Magento\Product $product)
     {
         return $this->calculateBundleTierValue($product, $this->getBundleProductDynamicValue($product));
     }
 
     //########################################
 
-    protected function prepareFinalValue($value)
+    private function prepareFinalValue($value)
     {
         if ($this->getCoefficient() !== null) {
             if (!$this->isSourceModeTier()) {
@@ -568,7 +568,7 @@ abstract class PriceCalculator
 
     // ---------------------------------------
 
-    protected function modifyValueByCoefficient($value)
+    private function modifyValueByCoefficient($value)
     {
         if ($value <= 0) {
             return $value;
@@ -606,7 +606,7 @@ abstract class PriceCalculator
      *
      * @return float
      */
-    protected function modifyValueByModifier($value)
+    private function modifyValueByModifier($value)
     {
         if ($value <= 0) {
             return $value;
@@ -645,7 +645,7 @@ abstract class PriceCalculator
         return $result;
     }
 
-    protected function increaseValueByVatPercent($value)
+    private function increaseValueByVatPercent($value)
     {
         return $value + (($this->getVatPercent() * $value) / 100);
     }
@@ -684,39 +684,27 @@ abstract class PriceCalculator
 
     // ---------------------------------------
 
-    protected function prepareOptionTitles($optionTitles)
-    {
-        return $optionTitles;
-    }
-
-    protected function prepareAttributeTitles($attributeTitles)
-    {
-        return $attributeTitles;
-    }
-
-    //########################################
-
-    protected function isSourceModeNone()
+    private function isSourceModeNone()
     {
         return $this->getSourceMode() == self::MODE_NONE;
     }
 
-    protected function isSourceModeProduct()
+    private function isSourceModeProduct()
     {
         return $this->getSourceMode() == self::MODE_PRODUCT;
     }
 
-    protected function isSourceModeSpecial()
+    private function isSourceModeSpecial()
     {
         return $this->getSourceMode() == self::MODE_SPECIAL;
     }
 
-    protected function isSourceModeAttribute()
+    private function isSourceModeAttribute()
     {
         return $this->getSourceMode() == self::MODE_ATTRIBUTE;
     }
 
-    protected function isSourceModeTier()
+    private function isSourceModeTier()
     {
         return $this->getSourceMode() == self::MODE_TIER;
     }

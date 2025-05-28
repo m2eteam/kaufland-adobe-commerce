@@ -281,7 +281,7 @@ class Data extends AbstractForm
             \M2E\Kaufland\Helper\Data::getClassConstants(SellingFormat::class)
         );
         $this->jsPhp->addConstants(
-            \M2E\Kaufland\Helper\Data::getClassConstants(\M2E\Kaufland\Model\Kaufland\Template\Manager::class)
+            \M2E\Kaufland\Helper\Data::getClassConstants(\M2E\Kaufland\Model\Template\Manager::class)
         );
         $this->jsPhp->addConstants(
             \M2E\Kaufland\Helper\Data::getClassConstants(\M2E\Kaufland\Helper\Component\Kaufland::class)

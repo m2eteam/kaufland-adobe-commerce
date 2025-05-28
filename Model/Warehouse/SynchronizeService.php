@@ -23,7 +23,7 @@ class SynchronizeService
 
     /**
      * @param \M2E\Kaufland\Model\Account $account
-     * @param \M2E\Kaufland\Model\Kaufland\Connector\Account\Warehouse[] $warehouses
+     * @param \M2E\Kaufland\Model\Channel\Warehouse\Item[] $warehouses
      *
      * @return void
      * @throws \M2E\Kaufland\Model\Exception\Logic

@@ -54,7 +54,6 @@ class Tables
     public const TABLE_NAME_CATEGORY_TREE = self::PREFIX . 'category_tree';
     public const TABLE_NAME_CATEGORY_DICTIONARY = self::PREFIX . 'category_dictionary';
     public const TABLE_NAME_CATEGORY_ATTRIBUTES = self::PREFIX . 'category_attributes';
-    public const TABLE_NAME_ATTRIBUTE_MAPPING = self::PREFIX . 'attribute_mapping';
     public const TABLE_NAME_EXTERNAL_CHANGE = self::PREFIX . 'external_change';
 
     private \Magento\Framework\App\ResourceConnection $resourceConnection;
@@ -189,8 +188,6 @@ class Tables
             self::TABLE_NAME_CATEGORY_TREE => \M2E\Kaufland\Model\ResourceModel\Category\Tree::class,
             self::TABLE_NAME_CATEGORY_DICTIONARY => \M2E\Kaufland\Model\ResourceModel\Category\Dictionary::class,
             self::TABLE_NAME_CATEGORY_ATTRIBUTES => \M2E\Kaufland\Model\ResourceModel\Category\Attribute::class,
-
-            self::TABLE_NAME_ATTRIBUTE_MAPPING => \M2E\Kaufland\Model\ResourceModel\AttributeMapping\Pair::class,
         ];
     }
 
@@ -253,8 +250,6 @@ class Tables
             self::TABLE_NAME_CATEGORY_TREE => \M2E\Kaufland\Model\Category\Tree::class,
             self::TABLE_NAME_CATEGORY_DICTIONARY => \M2E\Kaufland\Model\Category\Dictionary::class,
             self::TABLE_NAME_CATEGORY_ATTRIBUTES => \M2E\Kaufland\Model\Category\Attribute::class,
-
-            self::TABLE_NAME_ATTRIBUTE_MAPPING => \M2E\Kaufland\Model\AttributeMapping\Pair::class,
         ];
     }
 

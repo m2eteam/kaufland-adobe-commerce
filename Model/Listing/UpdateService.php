@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace M2E\Kaufland\Model\Listing;
 
 use M2E\Kaufland\Model\ResourceModel\Listing as ListingResource;
-use M2E\Kaufland\Model\Template\SellingFormat;
-use M2E\Kaufland\Model\Template\Synchronization;
-use M2E\Kaufland\Model\Template\Shipping;
 use M2E\Kaufland\Model\Template\Description;
+use M2E\Kaufland\Model\Template\SellingFormat;
+use M2E\Kaufland\Model\Template\Shipping;
+use M2E\Kaufland\Model\Template\Synchronization;
 
 class UpdateService
 {
-    private \M2E\Kaufland\Model\Kaufland\Listing\SnapshotBuilderFactory $listingSnapshotBuilderFactory;
+    private \M2E\Kaufland\Model\Listing\SnapshotBuilderFactory $listingSnapshotBuilderFactory;
     private \M2E\Kaufland\Model\Listing\Repository $listingRepository;
-    private \M2E\Kaufland\Model\Kaufland\Listing\AffectedListingsProductsFactory $affectedListingsProductsFactory;
+    private \M2E\Kaufland\Model\Listing\AffectedListingsProductsFactory $affectedListingsProductsFactory;
     private SellingFormat\Repository $sellingFormatTemplateRepository;
     private SellingFormat\SnapshotBuilderFactory $sellingFormatSnapshotBuilderFactory;
     private SellingFormat\DiffFactory $sellingFormatDiffFactory;
@@ -52,8 +52,8 @@ class UpdateService
     public function __construct(
         \M2E\Kaufland\Model\Product\Repository $productRepository,
         \M2E\Kaufland\Model\Listing\Repository $listingRepository,
-        \M2E\Kaufland\Model\Kaufland\Listing\SnapshotBuilderFactory $listingSnapshotBuilderFactory,
-        \M2E\Kaufland\Model\Kaufland\Listing\AffectedListingsProductsFactory $affectedListingsProductsFactory,
+        \M2E\Kaufland\Model\Listing\SnapshotBuilderFactory $listingSnapshotBuilderFactory,
+        \M2E\Kaufland\Model\Listing\AffectedListingsProductsFactory $affectedListingsProductsFactory,
         SellingFormat\Repository $sellingFormatTemplateRepository,
         SellingFormat\SnapshotBuilderFactory $sellingFormatSnapshotBuilderFactory,
         SellingFormat\DiffFactory $sellingFormatDiffFactory,
@@ -247,7 +247,7 @@ class UpdateService
     private function processChangeSellingFormatTemplate(
         int $oldId,
         int $newId,
-        \M2E\Kaufland\Model\Kaufland\Listing\AffectedListingsProducts $affectedListingsProducts
+        \M2E\Kaufland\Model\Listing\AffectedListingsProducts $affectedListingsProducts
     ) {
         $oldTemplate = $this->sellingFormatTemplateRepository->get($oldId);
         $newTemplate = $this->sellingFormatTemplateRepository->get($newId);
@@ -263,7 +263,7 @@ class UpdateService
 
         $affectedProducts = $affectedListingsProducts->getObjectsData(
             ['id', 'status'],
-            ['template' => \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SELLING_FORMAT]
+            ['template' => \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SELLING_FORMAT]
         );
         $changeProcessor->process($diff, $affectedProducts);
     }
@@ -282,7 +282,7 @@ class UpdateService
     private function processChangeSynchronizationTemplate(
         int $oldId,
         int $newId,
-        \M2E\Kaufland\Model\Kaufland\Listing\AffectedListingsProducts $affectedListingsProducts
+        \M2E\Kaufland\Model\Listing\AffectedListingsProducts $affectedListingsProducts
     ) {
         $oldTemplate = $this->synchronizationTemplateRepository->get($oldId);
         $newTemplate = $this->synchronizationTemplateRepository->get($newId);
@@ -298,7 +298,7 @@ class UpdateService
 
         $affectedProducts = $affectedListingsProducts->getObjectsData(
             ['id', 'status'],
-            ['template' => \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SYNCHRONIZATION]
+            ['template' => \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SYNCHRONIZATION]
         );
         $changeProcessor->process($diff, $affectedProducts);
     }
@@ -306,7 +306,7 @@ class UpdateService
     private function processChangeShippingTemplate(
         int $oldId,
         int $newId,
-        \M2E\Kaufland\Model\Kaufland\Listing\AffectedListingsProducts $affectedListingsProducts
+        \M2E\Kaufland\Model\Listing\AffectedListingsProducts $affectedListingsProducts
     ) {
         $oldTemplate = $this->shippingTemplateRepository->find($oldId);
         $newTemplate = $this->shippingTemplateRepository->get($newId);
@@ -327,7 +327,7 @@ class UpdateService
 
         $affectedProducts = $affectedListingsProducts->getObjectsData(
             ['id', 'status'],
-            ['template' => \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SHIPPING]
+            ['template' => \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SHIPPING]
         );
         $changeProcessor->process($diff, $affectedProducts);
     }
@@ -335,7 +335,7 @@ class UpdateService
     private function processChangeDescriptionTemplate(
         int $oldId,
         int $newId,
-        \M2E\Kaufland\Model\Kaufland\Listing\AffectedListingsProducts $affectedListingsProducts
+        \M2E\Kaufland\Model\Listing\AffectedListingsProducts $affectedListingsProducts
     ) {
         $oldTemplate = $this->descriptionTemplateRepository->find($oldId);
         $newTemplate = $this->descriptionTemplateRepository->get($newId);
@@ -356,7 +356,7 @@ class UpdateService
 
         $affectedProducts = $affectedListingsProducts->getObjectsData(
             ['id', 'status'],
-            ['template' => \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_DESCRIPTION]
+            ['template' => \M2E\Kaufland\Model\Template\Manager::TEMPLATE_DESCRIPTION]
         );
         $changeProcessor->process($diff, $affectedProducts);
     }

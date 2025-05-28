@@ -6,12 +6,12 @@ namespace M2E\Kaufland\Controller\Adminhtml\Kaufland\Listing;
 
 class RunStopProducts extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\Listing\AbstractAction
 {
-    private \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Manual\Realtime\StopAction $realtimeStopAction;
-    private \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Manual\Schedule\StopAction $scheduledStopAction;
+    private \M2E\Kaufland\Model\Product\Action\Manual\Realtime\StopAction $realtimeStopAction;
+    private \M2E\Kaufland\Model\Product\Action\Manual\Schedule\StopAction $scheduledStopAction;
 
     public function __construct(
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Manual\Realtime\StopAction $realtimeStopAction,
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Manual\Schedule\StopAction $scheduledStopAction,
+        \M2E\Kaufland\Model\Product\Action\Manual\Realtime\StopAction $realtimeStopAction,
+        \M2E\Kaufland\Model\Product\Action\Manual\Schedule\StopAction $scheduledStopAction,
         \M2E\Kaufland\Model\ResourceModel\Product\CollectionFactory $listingProductCollectionFactory,
         \M2E\Kaufland\Model\Listing\LogService $listingLogService
     ) {

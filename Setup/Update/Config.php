@@ -85,6 +85,9 @@ class Config implements \M2E\Core\Model\Setup\Upgrade\Entity\ConfigInterface
                 \M2E\Kaufland\Setup\Update\y25_m03\AddAccountIdToShippingPolicy::class,
                 \M2E\Kaufland\Setup\Update\y25_m03\AddStatusChangerColumnToScheduledAction::class,
             ],
+            'y25_m04' => [
+                \M2E\Kaufland\Setup\Update\y25_m04\MigrateAttributeMappingToCore::class,
+            ],
         ];
     }
 }

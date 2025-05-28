@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace M2E\Kaufland\Setup\Update\y24_m11;
 
-use M2E\Kaufland\Helper\Module\Database\Tables;
-use M2E\Kaufland\Model\ResourceModel\AttributeMapping\Pair as PairResource;
 use Magento\Framework\DB\Ddl\Table;
 
 class AddAttributeMapping extends \M2E\Core\Model\Setup\Upgrade\Entity\AbstractFeature
@@ -14,10 +12,10 @@ class AddAttributeMapping extends \M2E\Core\Model\Setup\Upgrade\Entity\AbstractF
     {
         $newTable = $this
             ->getConnection()
-            ->newTable($this->getFullTableName(Tables::TABLE_NAME_ATTRIBUTE_MAPPING));
+            ->newTable($this->getFullTableName('m2e_kaufland_attribute_mapping'));
 
         $newTable->addColumn(
-                PairResource::COLUMN_ID,
+                'id',
                 Table::TYPE_INTEGER,
                 null,
                 [
@@ -28,43 +26,43 @@ class AddAttributeMapping extends \M2E\Core\Model\Setup\Upgrade\Entity\AbstractF
                 ]
         );
         $newTable->addColumn(
-            PairResource::COLUMN_TYPE,
+            'type',
             Table::TYPE_TEXT,
             100,
             ['nullable' => false]
         );
         $newTable->addColumn(
-            PairResource::COLUMN_CHANNEL_ATTRIBUTE_TITLE,
+            'channel_attribute_title',
             Table::TYPE_TEXT,
             255,
             ['nullable' => false]
         );
         $newTable->addColumn(
-            PairResource::COLUMN_CHANNEL_ATTRIBUTE_CODE,
+            'channel_attribute_code',
             Table::TYPE_TEXT,
             255,
             ['nullable' => false]
         );
         $newTable->addColumn(
-            PairResource::COLUMN_MAGENTO_ATTRIBUTE_CODE,
+            'magento_attribute_code',
             Table::TYPE_TEXT,
             255,
             ['nullable' => false]
         );
         $newTable->addColumn(
-            PairResource::COLUMN_UPDATE_DATE,
+            'update_date',
             Table::TYPE_DATETIME,
             null,
             ['default' => null]
         );
         $newTable->addColumn(
-            PairResource::COLUMN_CREATE_DATE,
+            'create_date',
             Table::TYPE_DATETIME,
             null,
             ['default' => null]
         );
-        $newTable->addIndex('type', PairResource::COLUMN_TYPE);
-        $newTable->addIndex('create_date', PairResource::COLUMN_CREATE_DATE);
+        $newTable->addIndex('type', 'type');
+        $newTable->addIndex('create_date', 'create_date');
 
         $newTable
             ->setOption('type', 'INNODB')

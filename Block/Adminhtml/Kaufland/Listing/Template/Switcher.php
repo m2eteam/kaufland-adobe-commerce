@@ -43,10 +43,10 @@ class Switcher extends AbstractBlock
         $title = '';
 
         switch ($this->getTemplateNick()) {
-            case \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SELLING_FORMAT:
+            case \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SELLING_FORMAT:
                 $title = __('Selling');
                 break;
-            case \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SYNCHRONIZATION:
+            case \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SYNCHRONIZATION:
                 $title = __('Synchronization');
                 break;
         }
@@ -59,11 +59,11 @@ class Switcher extends AbstractBlock
     public function getHeaderWidth()
     {
         switch ($this->getTemplateNick()) {
-            case \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SELLING_FORMAT:
+            case \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SELLING_FORMAT:
                 $width = 250;
                 break;
 
-            case \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SYNCHRONIZATION:
+            case \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SYNCHRONIZATION:
                 $width = 170;
                 break;
 
@@ -133,17 +133,17 @@ class Switcher extends AbstractBlock
 
     public function isTemplateModeParent()
     {
-        return $this->getTemplateMode() == \M2E\Kaufland\Model\Kaufland\Template\Manager::MODE_PARENT;
+        return $this->getTemplateMode() == \M2E\Kaufland\Model\Template\Manager::MODE_PARENT;
     }
 
     public function isTemplateModeCustom()
     {
-        return $this->getTemplateMode() == \M2E\Kaufland\Model\Kaufland\Template\Manager::MODE_CUSTOM;
+        return $this->getTemplateMode() == \M2E\Kaufland\Model\Template\Manager::MODE_CUSTOM;
     }
 
     public function isTemplateModeTemplate()
     {
-        return $this->getTemplateMode() == \M2E\Kaufland\Model\Kaufland\Template\Manager::MODE_TEMPLATE;
+        return $this->getTemplateMode() == \M2E\Kaufland\Model\Template\Manager::MODE_TEMPLATE;
     }
 
     //########################################
@@ -153,16 +153,16 @@ class Switcher extends AbstractBlock
         $blockName = null;
 
         switch ($this->getTemplateNick()) {
-            case \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SELLING_FORMAT:
+            case \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SELLING_FORMAT:
                 $blockName = \M2E\Kaufland\Block\Adminhtml\Kaufland\Template\SellingFormat\Edit\Form\Data::class;
                 break;
-            case \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SYNCHRONIZATION:
+            case \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SYNCHRONIZATION:
                 $blockName = \M2E\Kaufland\Block\Adminhtml\Kaufland\Template\Synchronization\Edit\Form\Data::class;
                 break;
-            case \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SHIPPING:
+            case \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SHIPPING:
                 $blockName = \M2E\Kaufland\Block\Adminhtml\Kaufland\Template\Shipping\Edit\Form\Data::class;
                 break;
-            case \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_DESCRIPTION:
+            case \M2E\Kaufland\Model\Template\Manager::TEMPLATE_DESCRIPTION:
                 $blockName = \M2E\Kaufland\Block\Adminhtml\Kaufland\Template\Description\Edit\Form\Data::class;
                 break;
         }

@@ -6,7 +6,7 @@ namespace M2E\Kaufland\Model\Template\Description;
 
 use M2E\Kaufland\Model\Template\Description as DescriptionAlias;
 
-class Builder extends \M2E\Kaufland\Model\Kaufland\Template\AbstractBuilder
+class Builder extends \M2E\Kaufland\Model\Template\AbstractBuilder
 {
     /**
      * @throws \M2E\Kaufland\Model\Exception\Logic

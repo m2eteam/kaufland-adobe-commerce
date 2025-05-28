@@ -18,7 +18,7 @@ class Stub extends \M2E\Kaufland\Model\ScheduledAction
         array $data,
         bool $isForce = false,
         array $tags = [],
-        ?\M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Configurator $configurator = null
+        ?\M2E\Kaufland\Model\Product\Action\Configurator $configurator = null
     ): \M2E\Kaufland\Model\ScheduledAction {
         throw new \M2E\Kaufland\Model\Exception\Logic('Unable init stub object');
     }

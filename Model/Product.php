@@ -8,8 +8,8 @@ use M2E\Kaufland\Model\ResourceModel\Product as ProductResource;
 
 /**
  * @method \M2E\Kaufland\Model\ResourceModel\Product getResource()
- * @method \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Configurator getActionConfigurator()
- * @method setActionConfigurator(\M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Configurator $configurator)
+ * @method Product\Action\Configurator getActionConfigurator()
+ * @method setActionConfigurator(Product\Action\Configurator $configurator)
  */
 class Product extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
 {
@@ -62,21 +62,21 @@ class Product extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
     private ?\M2E\Kaufland\Model\Template\Synchronization $synchronizationTemplateModel = null;
     private ?\M2E\Kaufland\Model\Template\Description $descriptionTemplateModel = null;
     private ?Category\Dictionary $categoryDictionary = null;
-    private \M2E\Kaufland\Model\Kaufland\Listing\Product\PriceCalculatorFactory $priceCalculatorFactory;
+    private Product\PriceCalculatorFactory $priceCalculatorFactory;
     private \M2E\Kaufland\Model\Magento\Product\CacheFactory $magentoProductFactory;
     private \M2E\Kaufland\Model\Template\SellingFormat\Repository $sellingFormatTemplateRepository;
     private \M2E\Kaufland\Model\Template\Synchronization\Repository $synchronizationTemplateRepository;
-    /** @var \M2E\Kaufland\Model\Kaufland\Listing\Product\QtyCalculatorFactory */
-    private Kaufland\Listing\Product\QtyCalculatorFactory $qtyCalculatorFactory;
+    /** @var \M2E\Kaufland\Model\Product\QtyCalculatorFactory */
+    private Product\QtyCalculatorFactory $qtyCalculatorFactory;
 
     /** @var \M2E\Kaufland\Model\Storefront\Repository */
     private Storefront\Repository $storefrontRepository;
     /** @var \M2E\Kaufland\Model\Listing\LogService */
     private Listing\LogService $listingLogService;
     /**
-     * @var \M2E\Kaufland\Model\Kaufland\Listing\Product\Description\RendererFactory
+     * @var \M2E\Kaufland\Model\Product\Description\RendererFactory
      */
-    private Kaufland\Listing\Product\Description\RendererFactory $descriptionRendererFactory;
+    private Product\Description\RendererFactory $descriptionRendererFactory;
     /**
      * @var \M2E\Kaufland\Model\Template\Description\Repository
      */
@@ -94,14 +94,14 @@ class Product extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         \M2E\Kaufland\Model\Template\Description\Repository $descriptionTemplateRepository,
         \M2E\Kaufland\Model\Listing\Repository $listingRepository,
         \M2E\Kaufland\Model\Magento\Product\CacheFactory $magentoProductFactory,
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\PriceCalculatorFactory $priceCalculatorFactory,
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\QtyCalculatorFactory $qtyCalculatorFactory,
+        Product\PriceCalculatorFactory $priceCalculatorFactory,
+        Product\QtyCalculatorFactory $qtyCalculatorFactory,
         \M2E\Kaufland\Model\Policy\ShippingDataProviderFactory $shippingDataProviderFactory,
         \M2E\Kaufland\Model\Product\SkuGeneratorFactory $skuGeneratorFactory,
         \M2E\Kaufland\Model\Factory $modelFactory,
         \M2E\Kaufland\Model\ActiveRecord\Factory $activeRecordFactory,
         \M2E\Kaufland\Model\Storefront\Repository $storefrontRepository,
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Description\RendererFactory $descriptionRendererFactory,
+        Product\Description\RendererFactory $descriptionRendererFactory,
         \M2E\Kaufland\Model\Category\Dictionary\Repository $categoryDictionaryRepository,
         \Magento\Framework\Model\Context $context,
         \Magento\Framework\Registry $registry,

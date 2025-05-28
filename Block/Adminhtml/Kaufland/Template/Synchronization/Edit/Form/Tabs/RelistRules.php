@@ -8,16 +8,16 @@ class RelistRules extends AbstractTab
 {
     /** @var \M2E\Kaufland\Model\Template\Synchronization\Builder */
     private TemplateSynchronization\Builder $synchronizationBuilder;
-    private \M2E\Kaufland\Model\Kaufland\Magento\Product\RuleFactory $productRuleFactory;
+    private \M2E\Kaufland\Model\Channel\Magento\Product\RuleFactory $productRuleFactory;
 
     public function __construct(
-        \M2E\Kaufland\Model\Kaufland\Magento\Product\RuleFactory $productRuleFactory,
-        \M2E\Kaufland\Model\Template\Synchronization\Builder $synchronizationBuilder,
-        \M2E\Kaufland\Helper\Data\GlobalData $globalDataHelper,
+        \M2E\Kaufland\Model\Channel\Magento\Product\RuleFactory        $productRuleFactory,
+        \M2E\Kaufland\Model\Template\Synchronization\Builder   $synchronizationBuilder,
+        \M2E\Kaufland\Helper\Data\GlobalData                   $globalDataHelper,
         \M2E\Kaufland\Block\Adminhtml\Magento\Context\Template $context,
-        \Magento\Framework\Registry $registry,
-        \Magento\Framework\Data\FormFactory $formFactory,
-        array $data = []
+        \Magento\Framework\Registry                            $registry,
+        \Magento\Framework\Data\FormFactory                    $formFactory,
+        array                                                  $data = []
     ) {
         parent::__construct(
             $globalDataHelper,

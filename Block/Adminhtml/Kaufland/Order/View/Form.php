@@ -89,7 +89,7 @@ class Form extends AbstractContainer
 
         // Shipping data
         // ---------------------------------------
-        /** @var \M2E\Kaufland\Model\Kaufland\Order\ShippingAddress $shippingAddress */
+        /** @var \M2E\Kaufland\Model\Order\ShippingAddress $shippingAddress */
         $shippingAddress = $this->order->getShippingAddress();
 
         $this->shippingAddress = $shippingAddress->getData();

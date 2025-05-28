@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace M2E\Kaufland\Model\ScheduledAction;
 
+use M2E\Kaufland\Model\Product\Action\Configurator;
 use M2E\Kaufland\Model\ResourceModel\ScheduledAction\Collection as ScheduledActionCollection;
 use M2E\Kaufland\Model\ResourceModel\ScheduledAction\CollectionFactory as ScheduledActionCollectionFactory;
-use M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Configurator;
 
 class Processor
 {
@@ -22,25 +22,25 @@ class Processor
     private const REVISE_IMAGES_PRIORITY = 50;
     private const REVISE_CATEGORIES_PRIORITY = 50;
 
-    private \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\ConfiguratorFactory $configuratorFactory;
+    private \M2E\Kaufland\Model\Product\Action\ConfiguratorFactory $configuratorFactory;
     private \M2E\Kaufland\Model\Config\Manager $config;
     private \Magento\Framework\App\ResourceConnection $resourceConnection;
     private ScheduledActionCollectionFactory $scheduledActionCollectionFactory;
     private \M2E\Kaufland\Helper\Module\Exception $exceptionHelper;
-    private \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Dispatcher $actionDispatcher;
+    private \M2E\Kaufland\Model\Product\Action\Dispatcher $actionDispatcher;
     /** @var \M2E\Kaufland\Model\ScheduledAction\Repository */
     private Repository $scheduledActionRepository;
-    private \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Async\DispatcherAsync $actionDispatcherAsync;
+    private \M2E\Kaufland\Model\Product\Action\Async\DispatcherAsync $actionDispatcherAsync;
 
     public function __construct(
         \M2E\Kaufland\Model\ScheduledAction\Repository $scheduledActionRepository,
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\ConfiguratorFactory $configuratorFactory,
+        \M2E\Kaufland\Model\Product\Action\ConfiguratorFactory $configuratorFactory,
         \M2E\Kaufland\Model\Config\Manager $config,
         \Magento\Framework\App\ResourceConnection $resourceConnection,
         ScheduledActionCollectionFactory $scheduledActionCollectionFactory,
         \M2E\Kaufland\Helper\Module\Exception $exceptionHelper,
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Dispatcher $actionDispatcher,
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Async\DispatcherAsync $actionDispatcherAsync
+        \M2E\Kaufland\Model\Product\Action\Dispatcher $actionDispatcher,
+        \M2E\Kaufland\Model\Product\Action\Async\DispatcherAsync $actionDispatcherAsync
     ) {
         $this->configuratorFactory = $configuratorFactory;
         $this->config = $config;
@@ -79,7 +79,7 @@ class Processor
 
             $params = $additionalData['params'] ?? [];
 
-            $packageCollection = new \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\PackageCollection();
+            $packageCollection = new \M2E\Kaufland\Model\Product\Action\PackageCollection();
             $packageCollection->add($listingProduct, $scheduledAction->getConfigurator());
 
             if ($scheduledAction->getActionType() === \M2E\Kaufland\Model\Product::ACTION_LIST_PRODUCT) {

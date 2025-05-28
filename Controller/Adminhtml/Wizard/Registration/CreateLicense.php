@@ -6,7 +6,7 @@ namespace M2E\Kaufland\Controller\Adminhtml\Wizard\Registration;
 
 class CreateLicense extends \M2E\Kaufland\Controller\Adminhtml\Wizard\AbstractRegistration
 {
-    private \M2E\Kaufland\Model\Kaufland\Connector\License\Add\Processor $connectionProcessor;
+    private \M2E\Kaufland\Model\Connector\License\Add\Processor $connectionProcessor;
     private \M2E\Core\Helper\Client $clientHelper;
     private \M2E\Kaufland\Helper\Module\Exception $exceptionHelper;
     private \M2E\Kaufland\Model\Servicing\Dispatcher $servicing;
@@ -15,7 +15,7 @@ class CreateLicense extends \M2E\Kaufland\Controller\Adminhtml\Wizard\AbstractRe
 
     public function __construct(
         \M2E\Core\Model\RegistrationService $registrationService,
-        \M2E\Kaufland\Model\Kaufland\Connector\License\Add\Processor $connectionProcessor,
+        \M2E\Kaufland\Model\Connector\License\Add\Processor $connectionProcessor,
         \M2E\Core\Helper\Client $clientHelper,
         \M2E\Kaufland\Helper\Module\Exception $exceptionHelper,
         \M2E\Kaufland\Model\Servicing\Dispatcher $servicing,
@@ -82,7 +82,7 @@ class CreateLicense extends \M2E\Kaufland\Controller\Adminhtml\Wizard\AbstractRe
         }
 
         try {
-            $request = new \M2E\Kaufland\Model\Kaufland\Connector\License\Add\Request(
+            $request = new \M2E\Kaufland\Model\Connector\License\Add\Request(
                 $this->clientHelper->getDomain(),
                 $this->clientHelper->getBaseDirectory(),
                 $userInfo->getEmail(),

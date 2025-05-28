@@ -6,7 +6,6 @@ namespace M2E\Kaufland\Setup\InstallHandler;
 
 use M2E\Core\Model\ResourceModel\Setup;
 use M2E\Kaufland\Helper\Module\Database\Tables as TablesHelper;
-use M2E\Kaufland\Model\ResourceModel\AttributeMapping\Pair as PairResource;
 use M2E\Kaufland\Model\ResourceModel\Category\Attribute as CategoryAttributeResource;
 use M2E\Kaufland\Model\ResourceModel\Category\Dictionary as CategoryDictionaryResource;
 use M2E\Kaufland\Model\ResourceModel\Category\Tree as CategoryTreeResource;
@@ -22,7 +21,6 @@ class CategoryHandler implements \M2E\Core\Model\Setup\InstallHandlerInterface
         $this->installCategoryTreeTable($setup);
         $this->installCategoryDictionaryTable($setup);
         $this->installCategoryAttributesTable($setup);
-        $this->installCategoryAttributesMappingTable($setup);
     }
 
     private function installCategoryTreeTable(\Magento\Framework\Setup\SetupInterface $setup): void
@@ -230,70 +228,6 @@ class CategoryHandler implements \M2E\Core\Model\Setup\InstallHandlerInterface
         );
 
         $setup->getConnection()->createTable($categoryAttributesTable);
-    }
-
-    private function installCategoryAttributesMappingTable(\Magento\Framework\Setup\SetupInterface $setup): void
-    {
-        $tableName = $this->getFullTableName(TablesHelper::TABLE_NAME_ATTRIBUTE_MAPPING);
-
-        $attributeMappingTable = $setup->getConnection()->newTable($tableName);
-        $attributeMappingTable
-            ->addColumn(
-                PairResource::COLUMN_ID,
-                Table::TYPE_INTEGER,
-                null,
-                [
-                    'unsigned' => true,
-                    'primary' => true,
-                    'nullable' => false,
-                    'auto_increment' => true,
-                ]
-            );
-            $attributeMappingTable->addColumn(
-                PairResource::COLUMN_TYPE,
-                Table::TYPE_TEXT,
-                100,
-                ['nullable' => false]
-            );
-            $attributeMappingTable->addColumn(
-                PairResource::COLUMN_CHANNEL_ATTRIBUTE_TITLE,
-                Table::TYPE_TEXT,
-                255,
-                ['nullable' => false]
-            );
-            $attributeMappingTable->addColumn(
-                PairResource::COLUMN_CHANNEL_ATTRIBUTE_CODE,
-                Table::TYPE_TEXT,
-                255,
-                ['nullable' => false]
-            );
-            $attributeMappingTable->addColumn(
-                PairResource::COLUMN_MAGENTO_ATTRIBUTE_CODE,
-                Table::TYPE_TEXT,
-                255,
-                ['nullable' => false]
-            );
-            $attributeMappingTable->addColumn(
-                PairResource::COLUMN_UPDATE_DATE,
-                Table::TYPE_DATETIME,
-                null,
-                ['default' => null]
-            );
-            $attributeMappingTable->addColumn(
-                PairResource::COLUMN_CREATE_DATE,
-                Table::TYPE_DATETIME,
-                null,
-                ['default' => null]
-            );
-            $attributeMappingTable
-                ->addIndex('type', PairResource::COLUMN_TYPE)
-                ->addIndex('create_date', PairResource::COLUMN_CREATE_DATE)
-                ->setOption('type', 'INNODB')
-                ->setOption('charset', 'utf8')
-                ->setOption('collate', 'utf8_general_ci')
-                ->setOption('row_format', 'dynamic');
-
-        $setup->getConnection()->createTable($attributeMappingTable);;
     }
 
     public function installData(\Magento\Framework\Setup\SetupInterface $setup): void

@@ -4,37 +4,36 @@ declare(strict_types=1);
 
 namespace M2E\Kaufland\Controller\Adminhtml\Product\Action;
 
-use M2E\Kaufland\Model\Kaufland\Listing\Product\Action;
 use M2E\Kaufland\Model\Listing\LogService;
-use M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Manual\Realtime\AbstractRealtime;
-use M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Manual\Schedule\AbstractSchedule;
+use M2E\Kaufland\Model\Product\Action\Manual\Realtime\AbstractRealtime;
+use M2E\Kaufland\Model\Product\Action\Manual\Schedule\AbstractSchedule;
 
 class ActionService
 {
     private LogService $listingLogService;
-    private Action\Manual\Realtime\ListAction $realtimeListAction;
-    private Action\Manual\Schedule\ListAction $scheduledListAction;
-    private Action\Manual\Realtime\RelistAction $realtimeRelistAction;
-    private Action\Manual\Schedule\RelistAction $scheduledRelistAction;
-    private Action\Manual\Realtime\ReviseAction $realtimeReviseAction;
-    private Action\Manual\Schedule\ReviseAction $scheduledReviseAction;
-    private Action\Manual\Realtime\StopAction $realtimeStopAction;
-    private Action\Manual\Schedule\StopAction $scheduledStopAction;
-    private Action\Manual\Realtime\StopAndRemoveAction $realtimeStopAndRemoveAction;
-    private Action\Manual\Schedule\StopAndRemoveAction $scheduledStopAndRemoveAction;
+    private \M2E\Kaufland\Model\Product\Action\Manual\Realtime\ListAction $realtimeListAction;
+    private \M2E\Kaufland\Model\Product\Action\Manual\Schedule\ListAction $scheduledListAction;
+    private \M2E\Kaufland\Model\Product\Action\Manual\Realtime\RelistAction $realtimeRelistAction;
+    private \M2E\Kaufland\Model\Product\Action\Manual\Schedule\RelistAction $scheduledRelistAction;
+    private \M2E\Kaufland\Model\Product\Action\Manual\Realtime\ReviseAction $realtimeReviseAction;
+    private \M2E\Kaufland\Model\Product\Action\Manual\Schedule\ReviseAction $scheduledReviseAction;
+    private \M2E\Kaufland\Model\Product\Action\Manual\Realtime\StopAction $realtimeStopAction;
+    private \M2E\Kaufland\Model\Product\Action\Manual\Schedule\StopAction $scheduledStopAction;
+    private \M2E\Kaufland\Model\Product\Action\Manual\Realtime\StopAndRemoveAction $realtimeStopAndRemoveAction;
+    private \M2E\Kaufland\Model\Product\Action\Manual\Schedule\StopAndRemoveAction $scheduledStopAndRemoveAction;
 
     public function __construct(
         LogService $listingLogService,
-        Action\Manual\Realtime\ListAction $realtimeListAction,
-        Action\Manual\Schedule\ListAction $scheduledListAction,
-        Action\Manual\Realtime\RelistAction $realtimeRelistAction,
-        Action\Manual\Schedule\RelistAction $scheduledRelistAction,
-        Action\Manual\Realtime\ReviseAction $realtimeReviseAction,
-        Action\Manual\Schedule\ReviseAction $scheduledReviseAction,
-        Action\Manual\Realtime\StopAction $realtimeStopAction,
-        Action\Manual\Schedule\StopAction $scheduledStopAction,
-        Action\Manual\Realtime\StopAndRemoveAction $realtimeStopAndRemoveAction,
-        Action\Manual\Schedule\StopAndRemoveAction $scheduledStopAndRemoveAction
+        \M2E\Kaufland\Model\Product\Action\Manual\Realtime\ListAction $realtimeListAction,
+        \M2E\Kaufland\Model\Product\Action\Manual\Schedule\ListAction $scheduledListAction,
+        \M2E\Kaufland\Model\Product\Action\Manual\Realtime\RelistAction $realtimeRelistAction,
+        \M2E\Kaufland\Model\Product\Action\Manual\Schedule\RelistAction $scheduledRelistAction,
+        \M2E\Kaufland\Model\Product\Action\Manual\Realtime\ReviseAction $realtimeReviseAction,
+        \M2E\Kaufland\Model\Product\Action\Manual\Schedule\ReviseAction $scheduledReviseAction,
+        \M2E\Kaufland\Model\Product\Action\Manual\Realtime\StopAction $realtimeStopAction,
+        \M2E\Kaufland\Model\Product\Action\Manual\Schedule\StopAction $scheduledStopAction,
+        \M2E\Kaufland\Model\Product\Action\Manual\Realtime\StopAndRemoveAction $realtimeStopAndRemoveAction,
+        \M2E\Kaufland\Model\Product\Action\Manual\Schedule\StopAndRemoveAction $scheduledStopAndRemoveAction
     ) {
         $this->listingLogService = $listingLogService;
         $this->realtimeListAction = $realtimeListAction;
@@ -113,7 +112,7 @@ class ActionService
 
     /**
      * @param \M2E\Kaufland\Model\Product[] $products
-     * @param \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Manual\Realtime\AbstractRealtime $processor
+     * @param \M2E\Kaufland\Model\Product\Action\Manual\Realtime\AbstractRealtime $processor
      * @param array $params
      *
      * @return array
@@ -143,7 +142,7 @@ class ActionService
 
     /**
      * @param \M2E\Kaufland\Model\Product[] $products
-     * @param \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Manual\Schedule\AbstractSchedule $processor
+     * @param \M2E\Kaufland\Model\Product\Action\Manual\Schedule\AbstractSchedule $processor
      * @param array $params
      *
      * @return array

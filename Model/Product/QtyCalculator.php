@@ -1,10 +1,13 @@
 <?php
 
-declare(strict_types=1);
-
 namespace M2E\Kaufland\Model\Product;
 
-abstract class QtyCalculator extends \M2E\Kaufland\Model\AbstractModel
+/**
+ * @method \M2E\Kaufland\Model\Listing getComponentListing()
+ * @method \M2E\Kaufland\Model\Template\SellingFormat getComponentSellingFormatTemplate()
+ * @method \M2E\Kaufland\Model\Product getComponentProduct()
+ */
+class QtyCalculator
 {
     /**
      * @var null|array
@@ -20,13 +23,17 @@ abstract class QtyCalculator extends \M2E\Kaufland\Model\AbstractModel
     /** @var \M2E\Kaufland\Helper\Module\Configuration */
     private $moduleConfiguration;
 
+    /**
+     * @var bool
+     */
+    private $isMagentoMode = false;
+
+    //########################################
+
     public function __construct(
         \M2E\Kaufland\Model\Product $product,
-        \M2E\Kaufland\Helper\Module\Configuration $moduleConfiguration,
-        array $data = []
+        \M2E\Kaufland\Helper\Module\Configuration $moduleConfiguration
     ) {
-        parent::__construct($data);
-
         $this->moduleConfiguration = $moduleConfiguration;
         $this->product = $product;
     }
@@ -45,7 +52,7 @@ abstract class QtyCalculator extends \M2E\Kaufland\Model\AbstractModel
         return $this->getProduct()->getListing();
     }
 
-    protected function getSellingFormatTemplate(): \M2E\Kaufland\Model\Template\SellingFormat
+    private function getSellingFormatTemplate(): \M2E\Kaufland\Model\Template\SellingFormat
     {
         return $this->getProduct()->getSellingFormatTemplate();
     }
@@ -57,7 +64,7 @@ abstract class QtyCalculator extends \M2E\Kaufland\Model\AbstractModel
      *
      * @return array|mixed
      */
-    protected function getSource($key = null)
+    private function getSource($key = null)
     {
         if ($this->source === null) {
             $this->source = $this->getSellingFormatTemplate()->getQtySource();
@@ -67,7 +74,7 @@ abstract class QtyCalculator extends \M2E\Kaufland\Model\AbstractModel
             $this->source[$key] : $this->source;
     }
 
-    protected function getMagentoProduct(): \M2E\Kaufland\Model\Magento\Product\Cache
+    private function getMagentoProduct(): \M2E\Kaufland\Model\Magento\Product\Cache
     {
         return $this->getProduct()->getMagentoProduct();
     }
@@ -88,7 +95,7 @@ abstract class QtyCalculator extends \M2E\Kaufland\Model\AbstractModel
         return $this->productValueCache = (int)floor($value);
     }
 
-    protected function getClearProductValue()
+    private function getClearProductValue()
     {
         switch ($this->getSource('mode')) {
             case \M2E\Kaufland\Model\Template\SellingFormat::QTY_MODE_NUMBER:
@@ -114,7 +121,7 @@ abstract class QtyCalculator extends \M2E\Kaufland\Model\AbstractModel
         return $value;
     }
 
-    protected function applySellingFormatTemplateModifications($value)
+    private function applySellingFormatTemplateModifications($value)
     {
         $mode = $this->getSource('mode');
 
@@ -134,7 +141,7 @@ abstract class QtyCalculator extends \M2E\Kaufland\Model\AbstractModel
 
     // ---------------------------------------
 
-    protected function applyValuePercentageModifications($value)
+    private function applyValuePercentageModifications($value)
     {
         $percents = $this->getSource('qty_percentage');
 
@@ -147,7 +154,7 @@ abstract class QtyCalculator extends \M2E\Kaufland\Model\AbstractModel
         return (int)$roundingFunction(($value / 100) * $percents);
     }
 
-    protected function applyValueMinMaxModifications($value)
+    private function applyValueMinMaxModifications($value)
     {
         if ($value <= 0 || !$this->getSource('qty_modification_mode')) {
             return $value;
@@ -160,5 +167,25 @@ abstract class QtyCalculator extends \M2E\Kaufland\Model\AbstractModel
         $value > $maxValue && $value = $maxValue;
 
         return $value;
+    }
+
+    /**
+     * @param $value
+     *
+     * @return $this
+     */
+    public function setIsMagentoMode($value)
+    {
+        $this->isMagentoMode = (bool)$value;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function getIsMagentoMode()
+    {
+        return $this->isMagentoMode;
     }
 }

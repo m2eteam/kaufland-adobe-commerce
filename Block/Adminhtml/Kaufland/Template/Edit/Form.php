@@ -66,7 +66,7 @@ class Form extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractForm
             ]
         );
 
-        if ($templateNick === \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SHIPPING) {
+        if ($templateNick === \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SHIPPING) {
             if ($this->getRequest()->getParam('account_id', false) !== false) {
                 $fieldset->addField(
                     'account_id_hidden',
@@ -153,7 +153,7 @@ class Form extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractForm
                     'account_id' => null,
                     'id' => $this->getTemplateId(),
                     'nick' => $nick,
-                    'mode' => \M2E\Kaufland\Model\Kaufland\Template\Manager::MODE_TEMPLATE,
+                    'mode' => \M2E\Kaufland\Model\Template\Manager::MODE_TEMPLATE,
                     'data_force' => true,
                     'storefront_id' => $this->getRequest()->getParam('storefront_id'),
                 ]
@@ -182,7 +182,7 @@ class Form extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractForm
 
         $this->jsPhp->addConstants(
             [
-                '\M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SYNCHRONIZATION' => \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SYNCHRONIZATION,
+                '\M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SYNCHRONIZATION' => \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SYNCHRONIZATION,
             ]
         );
 

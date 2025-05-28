@@ -14,7 +14,7 @@ class IsTitleUnique extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\Abstract
         \M2E\Kaufland\Model\ResourceModel\Template\SellingFormat\CollectionFactory $sellingCollectionFactory,
         \M2E\Kaufland\Model\ResourceModel\Template\Shipping\CollectionFactory $shippingCollectionFactory,
         \M2E\Kaufland\Model\ResourceModel\Template\Description\CollectionFactory $descriptionCollectionFactory,
-        \M2E\Kaufland\Model\Kaufland\Template\Manager $templateManager,
+        \M2E\Kaufland\Model\Template\Manager $templateManager,
         \M2E\Kaufland\Controller\Adminhtml\Context $context
     ) {
         parent::__construct($templateManager);
@@ -36,19 +36,19 @@ class IsTitleUnique extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\Abstract
             return $this->getResult();
         }
 
-        if ($nick === \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SYNCHRONIZATION) {
+        if ($nick === \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SYNCHRONIZATION) {
             return $this->isUniqueTitleSynchronizationTemplate($ignoreId, $title);
         }
 
-        if ($nick === \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SELLING_FORMAT) {
+        if ($nick === \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SELLING_FORMAT) {
             return $this->isUniqueTitleSellingFormatTemplate($ignoreId, $title);
         }
 
-        if ($nick === \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SHIPPING) {
+        if ($nick === \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SHIPPING) {
             return $this->isUniqueTitleShippingTemplate($ignoreId, $title);
         }
 
-        if ($nick === \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_DESCRIPTION) {
+        if ($nick === \M2E\Kaufland\Model\Template\Manager::TEMPLATE_DESCRIPTION) {
             return $this->isUniqueTitleDescriptionTemplate($ignoreId, $title);
         }
 

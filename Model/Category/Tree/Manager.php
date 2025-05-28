@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace M2E\Kaufland\Model\Category\Tree;
 
-use M2E\Kaufland\Model\Category\Tree;
-use M2E\Kaufland\Model\Kaufland\Connector\Category\Category as ResponseCategory;
-
 class Manager
 {
     private Repository $categoryTreeRepository;
-    private \M2E\Kaufland\Model\Kaufland\Connector\Category\Get\Processor $connectionProcessor;
+    private \M2E\Kaufland\Model\Channel\Category\Retriever $connectionProcessor;
     private \M2E\Kaufland\Model\Category\TreeFactory $categoryFactory;
     private \M2E\Kaufland\Model\Registry\Manager $registry;
     private \M2E\Kaufland\Model\Category\Tree\DeleteService $categoryTreeDeleteService;
@@ -19,7 +16,7 @@ class Manager
         \M2E\Kaufland\Model\Category\Tree\Repository $treeRepository,
         \M2E\Kaufland\Model\Registry\Manager $registry,
         \M2E\Kaufland\Model\Category\TreeFactory $categoryFactory,
-        \M2E\Kaufland\Model\Kaufland\Connector\Category\Get\Processor $connectionProcessor,
+        \M2E\Kaufland\Model\Channel\Category\Retriever $connectionProcessor,
         \M2E\Kaufland\Model\Category\Tree\DeleteService $categoryTreeDeleteService
     ) {
         $this->categoryTreeRepository = $treeRepository;

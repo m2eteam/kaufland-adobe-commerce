@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace M2E\Kaufland\Model\Instruction\SynchronizationTemplate\Checker;
 
 use M2E\Kaufland\Model\Product;
+use M2E\Kaufland\Model\Template\ChangeProcessor\ChangeProcessorAbstract;
 use M2E\Kaufland\Model\Template\Synchronization\ChangeProcessorAbstract as SyncChangeProcessorAbstract;
-use M2E\Kaufland\Model\Kaufland\Template\ChangeProcessor\ChangeProcessorAbstract;
 
 class UnitInactive extends \M2E\Kaufland\Model\Instruction\SynchronizationTemplate\Checker\AbstractChecker
 {

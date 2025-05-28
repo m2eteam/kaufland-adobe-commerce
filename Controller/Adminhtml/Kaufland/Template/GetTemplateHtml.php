@@ -9,7 +9,7 @@ class GetTemplateHtml extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\Abstra
 
     public function __construct(
         \M2E\Kaufland\Helper\Component\Kaufland\Template\Switcher\DataLoader $componentKauflandTemplateSwitcherDataLoader,
-        \M2E\Kaufland\Model\Kaufland\Template\Manager $templateManager
+        \M2E\Kaufland\Model\Template\Manager $templateManager
     ) {
         parent::__construct($templateManager);
 

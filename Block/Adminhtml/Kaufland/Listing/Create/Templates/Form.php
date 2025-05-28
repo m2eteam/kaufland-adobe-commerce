@@ -2,8 +2,8 @@
 
 namespace M2E\Kaufland\Block\Adminhtml\Kaufland\Listing\Create\Templates;
 
-use M2E\Kaufland\Model\Kaufland\Template\Manager as TemplateManager;
 use M2E\Kaufland\Model\Listing;
+use M2E\Kaufland\Model\Template\Manager as TemplateManager;
 
 class Form extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractForm
 {

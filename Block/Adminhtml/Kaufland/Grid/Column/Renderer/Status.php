@@ -119,25 +119,25 @@ HTML;
         }
 
         switch ($productLock->getInitiator()) {
-            case \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\DefinitionsCollection::ACTION_UNIT_LIST:
-            case \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\DefinitionsCollection::ACTION_PRODUCT_LIST:
+            case Product\Action\DefinitionsCollection::ACTION_UNIT_LIST:
+            case Product\Action\DefinitionsCollection::ACTION_PRODUCT_LIST:
                 $html .= '<br/><span style="color: #605fff">[List is in progress...]</span>';
                 break;
 
-            case \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\DefinitionsCollection::ACTION_UNIT_RELIST:
+            case Product\Action\DefinitionsCollection::ACTION_UNIT_RELIST:
                 $html .= '<br/><span style="color: #605fff">[Relist is in progress...]</span>';
                 break;
 
-            case \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\DefinitionsCollection::ACTION_UNIT_REVISE:
-            case \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\DefinitionsCollection::ACTION_PRODUCT_REVISE:
+            case Product\Action\DefinitionsCollection::ACTION_UNIT_REVISE:
+            case Product\Action\DefinitionsCollection::ACTION_PRODUCT_REVISE:
                 $html .= '<br/><span style="color: #605fff">[Revise is in progress...]</span>';
                 break;
 
-            case \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\DefinitionsCollection::ACTION_UNIT_STOP:
+            case Product\Action\DefinitionsCollection::ACTION_UNIT_STOP:
                 $html .= '<br/><span style="color: #605fff">[Stop is in progress...]</span>';
                 break;
 
-            case \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\DefinitionsCollection::ACTION_UNIT_DELETE:
+            case Product\Action\DefinitionsCollection::ACTION_UNIT_DELETE:
                 $html .= '<br/><span style="color: #605fff">[Delete is in progress...]</span>';
                 break;
 

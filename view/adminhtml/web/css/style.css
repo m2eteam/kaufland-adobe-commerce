@@ -575,3 +575,7 @@ button.action * {
     width: auto !important;
     margin-left: -2.6rem !important;
 }
+
+.kaufland_channel_attribute {
+    width: 45%;
+}

@@ -72,10 +72,10 @@ class Edit extends AbstractAccount
     private function addLicenseMessage(\M2E\Kaufland\Model\Account $account): void
     {
         try {
-            $command = new \M2E\Kaufland\Model\Kaufland\Connector\Account\Get\InfoCommand(
+            $command = new \M2E\Kaufland\Model\Channel\Connector\Account\Get\InfoCommand(
                 $account->getServerHash(),
             );
-            /** @var \M2E\Kaufland\Model\Kaufland\Connector\Account\Get\Status $status */
+            /** @var \M2E\Kaufland\Model\Channel\Account\Get\Status $status */
             $status = $this->serverClient->process($command);
         } catch (\Throwable $e) {
             return;

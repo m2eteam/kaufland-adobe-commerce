@@ -9,19 +9,21 @@ class Manager
     private \M2E\Kaufland\Model\Category\Dictionary\Repository $categoryDictionaryRepository;
     private \M2E\Kaufland\Model\Category\Attribute\Repository $categoryAttributeRepository;
     private \Magento\Framework\App\ResourceConnection $resource;
-    private \M2E\Kaufland\Model\Kaufland\Template\Category\SnapshotBuilderFactory $snapshotBuilderFactory;
-    private \M2E\Kaufland\Model\Kaufland\Template\Category\DiffFactory $diffFactory;
-    private \M2E\Kaufland\Model\Kaufland\Template\Category\ChangeProcessorFactory $changeProcessorFactory;
-    private \M2E\Kaufland\Model\Kaufland\Template\Category\AffectedListingsProductsFactory $affectedListingsProductsFactory;
+    private \M2E\Kaufland\Model\Template\Category\SnapshotBuilderFactory $snapshotBuilderFactory;
+    private \M2E\Kaufland\Model\Template\Category\DiffFactory $diffFactory;
+    private \M2E\Kaufland\Model\Template\Category\ChangeProcessorFactory $changeProcessorFactory;
+    private \M2E\Kaufland\Model\Template\Category\AffectedListingsProductsFactory $affectedListingsProductsFactory;
+    private \M2E\Kaufland\Model\AttributeMapping\GeneralService $attributeMappingGeneralService;
 
     public function __construct(
         \M2E\Kaufland\Model\Category\Dictionary\Repository $categoryDictionaryRepository,
         \M2E\Kaufland\Model\Category\Attribute\Repository $categoryAttributeRepository,
         \Magento\Framework\App\ResourceConnection $resource,
-        \M2E\Kaufland\Model\Kaufland\Template\Category\SnapshotBuilderFactory $snapshotBuilderFactory,
-        \M2E\Kaufland\Model\Kaufland\Template\Category\DiffFactory $diffFactory,
-        \M2E\Kaufland\Model\Kaufland\Template\Category\ChangeProcessorFactory $changeProcessorFactory,
-        \M2E\Kaufland\Model\Kaufland\Template\Category\AffectedListingsProductsFactory $affectedListingsProductsFactory
+        \M2E\Kaufland\Model\Template\Category\SnapshotBuilderFactory $snapshotBuilderFactory,
+        \M2E\Kaufland\Model\Template\Category\DiffFactory $diffFactory,
+        \M2E\Kaufland\Model\Template\Category\ChangeProcessorFactory $changeProcessorFactory,
+        \M2E\Kaufland\Model\Template\Category\AffectedListingsProductsFactory $affectedListingsProductsFactory,
+        \M2E\Kaufland\Model\AttributeMapping\GeneralService $attributeMappingGeneralService
     ) {
         $this->categoryDictionaryRepository = $categoryDictionaryRepository;
         $this->categoryAttributeRepository = $categoryAttributeRepository;
@@ -30,6 +32,7 @@ class Manager
         $this->diffFactory = $diffFactory;
         $this->changeProcessorFactory = $changeProcessorFactory;
         $this->affectedListingsProductsFactory = $affectedListingsProductsFactory;
+        $this->attributeMappingGeneralService = $attributeMappingGeneralService;
     }
 
     /**
@@ -85,6 +88,8 @@ class Manager
             $dictionary->setUsedProductAttributes($countOfUsedAttributes);
             $dictionary->installStateSaved();
             $this->categoryDictionaryRepository->save($dictionary);
+
+            $this->attributeMappingGeneralService->create($dictionary->getRelatedAttributes());
         } catch (\Throwable $exception) {
             $transaction->rollBack();
             throw $exception;

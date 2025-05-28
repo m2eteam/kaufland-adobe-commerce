@@ -8,7 +8,7 @@ use M2E\Kaufland\Model\Listing;
 
 class Index extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\AbstractListing
 {
-    private \M2E\Kaufland\Model\Kaufland\Listing\Transferring $transferring;
+    private Listing\Transferring $transferring;
     private \M2E\Kaufland\Model\Listing\LogService $listingLogService;
     private \M2E\Kaufland\Helper\Data\Session $sessionHelper;
     private \M2E\Kaufland\Model\ListingFactory $listingFactory;
@@ -21,7 +21,7 @@ class Index extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\AbstractListing
         \M2E\Kaufland\Model\ListingFactory $listingFactory,
         \M2E\Kaufland\Helper\Data\Session $sessionHelper,
         \M2E\Kaufland\Model\Listing\LogService $listingLogService,
-        \M2E\Kaufland\Model\Kaufland\Listing\Transferring $transferring,
+        Listing\Transferring $transferring,
         \M2E\Kaufland\Helper\Module\Wizard $wizardHelper,
         \M2E\Kaufland\Model\Listing\Wizard\Create $createModel
     ) {

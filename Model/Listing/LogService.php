@@ -56,6 +56,23 @@ class LogService
         $this->repository->create($log);
     }
 
+    public function addRecordToListing(
+        Log\Record $record,
+        \M2E\Kaufland\Model\Listing $listing,
+        int $initiator,
+        int $action,
+        ?int $actionId
+    ): void {
+        $this->addListing(
+            $listing,
+            $initiator,
+            $action,
+            $actionId,
+            $record->getMessage(),
+            $record->getType(),
+        );
+    }
+
     public function addListing(
         \M2E\Kaufland\Model\Listing $listing,
         int $initiator,

@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace M2E\Kaufland\Model\ControlPanel\Module\Integration;
 
-use M2E\Kaufland\Model\Kaufland\Listing\Product\Action;
-use M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Type;
-
 class RequestData
 {
     private const PARAM_PRODUCT_MAGENTO_SKU = 'listing_product_magento_sku';
@@ -14,27 +11,27 @@ class RequestData
     private const PARAM_PRINT = 'print';
 
     private \M2E\Kaufland\Model\Product\Repository $productRepository;
-    private \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Type\Relist\RequestFactory $relistRequestFactory;
-    private \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Type\Stop\RequestFactory $stopRequestFactory;
+    private \M2E\Kaufland\Model\Product\Action\Type\Relist\RequestFactory $relistRequestFactory;
+    private \M2E\Kaufland\Model\Product\Action\Type\Stop\RequestFactory $stopRequestFactory;
     private \M2E\Kaufland\Model\Product\ActionCalculator $actionCalculator;
     private \Magento\Framework\Data\Form\FormKey $formKey;
     private \Magento\Framework\UrlInterface $url;
     private \Magento\Framework\Escaper $escaper;
-    private \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\LogBufferFactory $logBufferFactory;
-    private Type\ListProduct\RequestFactory $listProductRequestFactory;
-    private Type\ListUnit\RequestFactory $listUnitRequestFactory;
-    private Type\ReviseUnit\RequestFactory $reviseUnitRequestFactory;
-    private Type\ReviseProduct\RequestFactory $reviseProductRequestFactory;
+    private \M2E\Kaufland\Model\Product\Action\LogBufferFactory $logBufferFactory;
+    private \M2E\Kaufland\Model\Product\Action\Type\ListProduct\RequestFactory $listProductRequestFactory;
+    private \M2E\Kaufland\Model\Product\Action\Type\ListUnit\RequestFactory $listUnitRequestFactory;
+    private \M2E\Kaufland\Model\Product\Action\Type\ReviseUnit\RequestFactory $reviseUnitRequestFactory;
+    private \M2E\Kaufland\Model\Product\Action\Type\ReviseProduct\RequestFactory $reviseProductRequestFactory;
 
     public function __construct(
         \M2E\Kaufland\Model\Product\Repository $productRepository,
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Type\Relist\RequestFactory $relistRequestFactory,
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Type\Stop\RequestFactory $stopRequestFactory,
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Type\ListProduct\RequestFactory $listProductRequestFactory,
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Type\ListUnit\RequestFactory $listUnitRequestFactory,
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Type\ReviseUnit\RequestFactory $reviseUnitRequestFactory,
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\Type\ReviseProduct\RequestFactory $reviseProductRequestFactory,
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Action\LogBufferFactory $logBufferFactory,
+        \M2E\Kaufland\Model\Product\Action\Type\Relist\RequestFactory $relistRequestFactory,
+        \M2E\Kaufland\Model\Product\Action\Type\Stop\RequestFactory $stopRequestFactory,
+        \M2E\Kaufland\Model\Product\Action\Type\ListProduct\RequestFactory $listProductRequestFactory,
+        \M2E\Kaufland\Model\Product\Action\Type\ListUnit\RequestFactory $listUnitRequestFactory,
+        \M2E\Kaufland\Model\Product\Action\Type\ReviseUnit\RequestFactory $reviseUnitRequestFactory,
+        \M2E\Kaufland\Model\Product\Action\Type\ReviseProduct\RequestFactory $reviseProductRequestFactory,
+        \M2E\Kaufland\Model\Product\Action\LogBufferFactory $logBufferFactory,
         \M2E\Kaufland\Model\Product\ActionCalculator $actionCalculator,
         \Magento\Framework\Data\Form\FormKey $formKey,
         \Magento\Framework\UrlInterface $url,
@@ -73,22 +70,22 @@ class RequestData
                     if ($calculatorAction === 'list') {
                         $action = \M2E\Kaufland\Model\Product\Action::createList(
                             $listingProduct,
-                            (new Action\Configurator())->enableAll()
+                            (new \M2E\Kaufland\Model\Product\Action\Configurator())->enableAll()
                         );
                     } elseif ($calculatorAction === 'revise_product') {
                         $action = \M2E\Kaufland\Model\Product\Action::createReviseProduct(
                             $listingProduct,
-                            (new Action\Configurator())->enableAll()
+                            (new \M2E\Kaufland\Model\Product\Action\Configurator())->enableAll()
                         );
                     } elseif ($calculatorAction === 'revise_unit') {
                         $action = \M2E\Kaufland\Model\Product\Action::createReviseUnit(
                             $listingProduct,
-                            (new Action\Configurator())->enableAll()
+                            (new \M2E\Kaufland\Model\Product\Action\Configurator())->enableAll()
                         );
                     } elseif ($calculatorAction === 'relist') {
                         $action = \M2E\Kaufland\Model\Product\Action::createRelist(
                             $listingProduct,
-                            (new Action\Configurator())->enableAll()
+                            (new \M2E\Kaufland\Model\Product\Action\Configurator())->enableAll()
                         );
                     } elseif ($calculatorAction === 'stop') {
                         $action = \M2E\Kaufland\Model\Product\Action::createStop(

@@ -24,7 +24,7 @@ class Edit extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\AbstractTemplate
         \M2E\Kaufland\Model\Template\Description\Repository $descriptionRepository,
         \M2E\Kaufland\Model\Template\DescriptionFactory $descriptionFactory,
         \M2E\Kaufland\Helper\Component\Kaufland\Template\Switcher\DataLoader $dataLoader,
-        \M2E\Kaufland\Model\Kaufland\Template\Manager $templateManager
+        \M2E\Kaufland\Model\Template\Manager $templateManager
     ) {
         parent::__construct($templateManager);
 
@@ -46,19 +46,19 @@ class Edit extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\AbstractTemplate
         $nick = $this->getRequest()->getParam('nick');
         // ---------------------------------------
 
-        if ($nick === \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SYNCHRONIZATION) {
+        if ($nick === \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SYNCHRONIZATION) {
             return $this->executeSynchronizationTemplate($id);
         }
 
-        if ($nick === \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SELLING_FORMAT) {
+        if ($nick === \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SELLING_FORMAT) {
             return $this->executeSellingFormatTemplate($id);
         }
 
-        if ($nick === \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SHIPPING) {
+        if ($nick === \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SHIPPING) {
             return $this->executeShippingTemplate($id);
         }
 
-        if ($nick === \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_DESCRIPTION) {
+        if ($nick === \M2E\Kaufland\Model\Template\Manager::TEMPLATE_DESCRIPTION) {
             return $this->executeDescriptionTemplate($id);
         }
 
@@ -102,7 +102,7 @@ class Edit extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\AbstractTemplate
             '',
             [
                 'data' => [
-                    'template_nick' => \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SYNCHRONIZATION,
+                    'template_nick' => \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SYNCHRONIZATION,
                 ],
             ]
         );
@@ -152,7 +152,7 @@ class Edit extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\AbstractTemplate
             '',
             [
                 'data' => [
-                    'template_nick' => \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SELLING_FORMAT,
+                    'template_nick' => \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SELLING_FORMAT,
                 ],
             ]
         );
@@ -200,7 +200,7 @@ class Edit extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\AbstractTemplate
             '',
             [
                 'data' => [
-                    'template_nick' => \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SHIPPING,
+                    'template_nick' => \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SHIPPING,
                 ],
             ]
         );
@@ -250,7 +250,7 @@ class Edit extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\AbstractTemplate
             '',
             [
                 'data' => [
-                    'template_nick' => \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_DESCRIPTION,
+                    'template_nick' => \M2E\Kaufland\Model\Template\Manager::TEMPLATE_DESCRIPTION,
                 ],
             ]
         );

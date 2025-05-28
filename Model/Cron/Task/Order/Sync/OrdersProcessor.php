@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace M2E\Kaufland\Model\Cron\Task\Order\Sync;
 
-use M2E\Kaufland\Model\Kaufland\Connector\Order\Receive\ItemsByUpdateDate\Processor as ItemsByUpdateDateProcessor;
+use M2E\Kaufland\Model\Channel\Order\Receive\ItemsByUpdateDate\Processor as ItemsByUpdateDateProcessor;
 
 class OrdersProcessor
 {

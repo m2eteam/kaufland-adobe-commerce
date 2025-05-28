@@ -14,12 +14,12 @@ class Source
     private ?\M2E\Kaufland\Model\Template\Description $descriptionTemplateModel = null;
     private ?\M2E\Kaufland\Model\Magento\Product\Image\Set $imagesSet = null;
 
-    private \M2E\Kaufland\Model\Kaufland\Listing\Product\Description\TemplateParser $templateParser;
+    private \M2E\Kaufland\Model\Product\Description\TemplateParser $templateParser;
     private \Magento\Email\Model\Template\Filter $emailTemplateFilter;
     private \M2E\Kaufland\Model\Magento\Product\ImageFactory $magentoProductImageFactory;
 
     public function __construct(
-        \M2E\Kaufland\Model\Kaufland\Listing\Product\Description\TemplateParser $templateParser,
+        \M2E\Kaufland\Model\Product\Description\TemplateParser $templateParser,
         \Magento\Email\Model\Template\Filter $emailTemplateFilter,
         \M2E\Kaufland\Model\Magento\Product\ImageFactory $magentoProductImageFactory
     ) {

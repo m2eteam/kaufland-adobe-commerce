@@ -12,7 +12,7 @@ class EditListingProductsPolicy extends \M2E\Kaufland\Controller\Adminhtml\Kaufl
         \M2E\Kaufland\Model\ResourceModel\Product\CollectionFactory $listingProductCollectionFactory,
         \M2E\Kaufland\Helper\Data\GlobalData $helperDataGlobal,
         \M2E\Kaufland\Helper\Component\Kaufland\Template\Switcher\DataLoader $templateSwitcherDataLoader,
-        \M2E\Kaufland\Model\Kaufland\Template\Manager $templateManager
+        \M2E\Kaufland\Model\Template\Manager $templateManager
     ) {
         parent::__construct($templateManager);
 

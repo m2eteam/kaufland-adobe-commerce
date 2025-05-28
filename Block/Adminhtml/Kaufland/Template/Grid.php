@@ -3,8 +3,8 @@
 namespace M2E\Kaufland\Block\Adminhtml\Kaufland\Template;
 
 use M2E\Kaufland\Block\Adminhtml\Magento\Grid\AbstractGrid;
-use Magento\Framework\DB\Select;
 use M2E\Kaufland\Model\ResourceModel\Account as AccountResource;
+use Magento\Framework\DB\Select;
 
 class Grid extends AbstractGrid
 {
@@ -75,7 +75,7 @@ class Grid extends AbstractGrid
                 'id as template_id',
                 'title',
                 new \Zend_Db_Expr(
-                    '\'' . \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SELLING_FORMAT . '\' as `nick`'
+                    '\'' . \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SELLING_FORMAT . '\' as `nick`'
                 ),
                 new \Zend_Db_Expr('NULL as `account_title`'),
                 new \Zend_Db_Expr('\'0\' as `account_id`'),
@@ -96,7 +96,7 @@ class Grid extends AbstractGrid
                 'id as template_id',
                 'title',
                 new \Zend_Db_Expr(
-                    '\'' . \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SYNCHRONIZATION . '\' as `nick`'
+                    '\'' . \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SYNCHRONIZATION . '\' as `nick`'
                 ),
                 new \Zend_Db_Expr('NULL as `account_title`'),
                 new \Zend_Db_Expr('\'0\' as `account_id`'),
@@ -124,7 +124,7 @@ class Grid extends AbstractGrid
                 'id as template_id',
                 'title',
                 new \Zend_Db_Expr(
-                    '\'' . \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SHIPPING . '\' as `nick`'
+                    '\'' . \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SHIPPING . '\' as `nick`'
                 ),
                 new \Zend_Db_Expr('account.title as `account_title`'),
                 new \Zend_Db_Expr('account.id as `account_id`'),
@@ -142,7 +142,7 @@ class Grid extends AbstractGrid
                 'id as template_id',
                 'title',
                 new \Zend_Db_Expr(
-                    '\'' . \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_DESCRIPTION . '\' as `nick`'
+                    '\'' . \M2E\Kaufland\Model\Template\Manager::TEMPLATE_DESCRIPTION . '\' as `nick`'
                 ),
                 new \Zend_Db_Expr('NULL as `account_title`'),
                 new \Zend_Db_Expr('\'0\' as `account_id`'),
@@ -200,10 +200,10 @@ class Grid extends AbstractGrid
         ]);
 
         $options = [
-            \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SELLING_FORMAT => __('Selling'),
-            \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SYNCHRONIZATION => __('Synchronization'),
-            \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_SHIPPING => __('Shipping'),
-            \M2E\Kaufland\Model\Kaufland\Template\Manager::TEMPLATE_DESCRIPTION => __('Description'),
+            \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SELLING_FORMAT => __('Selling'),
+            \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SYNCHRONIZATION => __('Synchronization'),
+            \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SHIPPING => __('Shipping'),
+            \M2E\Kaufland\Model\Template\Manager::TEMPLATE_DESCRIPTION => __('Description'),
         ];
         $this->addColumn('nick', [
             'header' => __('Type'),
