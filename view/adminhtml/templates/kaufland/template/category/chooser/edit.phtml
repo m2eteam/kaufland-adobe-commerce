@@ -136,18 +136,18 @@ $selectedCategory = $block->getSelectedCategory();
         <tr>
             <td style="vertical-align: middle;">
                 <strong id="category_title_container">
-                    <?= __('Category'); ?>
+                    <?= /* @noEscape */ __('Category'); ?>
                 </strong>
 
                 <span id="selected_category_path" style="vertical-align: middle; padding-left: 5px">
                     <?php
-                    echo $block->getSelectedCategoryPathHtml(); ?>
+                    /* @noEscape */ echo $block->getSelectedCategoryPathHtml(); ?>
                 </span>
 
                 <a href="javascript:void(0)" id="category_reset_link" <?php
                 if (empty($selectedCategory)) : ?>style="display: none"<?php
                 endif; ?>
-                   onclick="KauflandCategoryChooserObj.unSelectCategory()"><?= __('Reset') ?></a>
+                   onclick="KauflandCategoryChooserObj.unSelectCategory()"><?= /* @noEscape */ __('Reset') ?></a>
             </td>
 
         </tr>

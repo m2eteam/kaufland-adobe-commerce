@@ -13,6 +13,7 @@ use M2E\Kaufland\Model\ResourceModel\Order\Note as OrderNoteResource;
 class OrderHandler implements \M2E\Core\Model\Setup\InstallHandlerInterface
 {
     use \M2E\Kaufland\Setup\InstallHandlerTrait;
+
     public function installSchema(\Magento\Framework\Setup\SetupInterface $setup): void
     {
         $this->installOrderTable($setup);

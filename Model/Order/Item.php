@@ -44,15 +44,15 @@ class Item extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         \Magento\Framework\Registry $registry,
         \M2E\Kaufland\Model\Product\Repository $kauflandProductRepository,
         \M2E\Kaufland\Model\Listing\Other\Repository $otherRepository,
-        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
-        \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
+        ?\Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
+        ?\Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
         array $data = []
     ) {
         parent::__construct(
-            $modelFactory,
-            $activeRecordFactory,
             $context,
             $registry,
+            $modelFactory,
+            $activeRecordFactory,
             $resource,
             $resourceCollection,
             $data

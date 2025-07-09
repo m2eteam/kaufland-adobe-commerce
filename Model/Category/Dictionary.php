@@ -34,19 +34,19 @@ class Dictionary extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         \M2E\Kaufland\Model\Storefront\Repository $storefrontRepository,
         \M2E\Kaufland\Model\Category\Attribute\Repository $attributeRepository,
         \M2E\Kaufland\Model\Category\Dictionary\Attribute\Serializer $attributeSerializer,
-        \M2E\Kaufland\Model\Factory $modelFactory = null,
-        \M2E\Kaufland\Model\ActiveRecord\Factory $activeRecordFactory = null,
         \Magento\Framework\Model\Context $context,
         \Magento\Framework\Registry $registry,
-        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
-        \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
+        ?\M2E\Kaufland\Model\Factory $modelFactory = null,
+        ?\M2E\Kaufland\Model\ActiveRecord\Factory $activeRecordFactory = null,
+        ?\Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
+        ?\Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
         array $data = []
     ) {
         parent::__construct(
-            $modelFactory,
-            $activeRecordFactory,
             $context,
             $registry,
+            $modelFactory,
+            $activeRecordFactory,
             $resource,
             $resourceCollection,
             $data

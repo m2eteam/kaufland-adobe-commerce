@@ -14,7 +14,6 @@ use M2E\Kaufland\Model\ResourceModel\Warehouse as WarehouseResource;
 
 class FixTablesStructure extends \M2E\Core\Model\Setup\Upgrade\Entity\AbstractFeature
 {
-
     public function execute(): void
     {
         $modifier = $this->createTableModifier(Tables::TABLE_NAME_LISTING);

@@ -35,6 +35,9 @@ class Listing extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
     private ?\M2E\Kaufland\Model\Account $account = null;
     private ?\M2E\Kaufland\Model\Storefront $storefront = null;
 
+    private \M2E\Kaufland\Model\Template\SellingFormat $templateSellingFormat;
+    private \M2E\Kaufland\Model\Template\Synchronization $templateSynchronization;
+    private \M2E\Kaufland\Model\Template\Description $templateDescription;
     private \M2E\Kaufland\Model\Account\Repository $accountRepository;
     private \M2E\Kaufland\Model\Storefront\Repository $storefrontRepository;
     private Product\Repository $listingProductRepository;
@@ -47,6 +50,7 @@ class Listing extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
     /** @var \M2E\Kaufland\Model\StopQueue\CreateService */
     private StopQueue\CreateService $stopQueueCreateService;
     private \M2E\Kaufland\Model\Listing\Settings\Sku $skuSettings;
+    private \M2E\Kaufland\Model\Template\Description\Repository $descriptionTemplateRepository;
 
     public function __construct(
         \M2E\Kaufland\Model\Account\Repository $accountRepository,
@@ -54,6 +58,7 @@ class Listing extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         Product\Repository $listingProductRepository,
         \M2E\Kaufland\Model\Template\SellingFormat\Repository $sellingFormatTemplateRepository,
         \M2E\Kaufland\Model\Template\Synchronization\Repository $synchronizationTemplateRepository,
+        \M2E\Kaufland\Model\Template\Description\Repository $descriptionTemplateRepository,
         \M2E\Kaufland\Model\Template\Shipping\Repository $shippingTemplateRepository,
         Product\DeleteService $productDeleteService,
         \M2E\Kaufland\Model\Listing\LogService $listingLogService,
@@ -62,15 +67,15 @@ class Listing extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         \M2E\Kaufland\Model\ActiveRecord\Factory $activeRecordFactory,
         \Magento\Framework\Model\Context $context,
         \Magento\Framework\Registry $registry,
-        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
-        \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
+        ?\Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
+        ?\Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
         array $data = []
     ) {
         parent::__construct(
-            $modelFactory,
-            $activeRecordFactory,
             $context,
             $registry,
+            $modelFactory,
+            $activeRecordFactory,
             $resource,
             $resourceCollection,
             $data
@@ -85,6 +90,7 @@ class Listing extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         $this->listingLogService = $listingLogService;
         $this->shippingTemplateRepository = $shippingTemplateRepository;
         $this->stopQueueCreateService = $stopQueueCreateService;
+        $this->descriptionTemplateRepository = $descriptionTemplateRepository;
     }
 
     // ----------------------------------------
@@ -149,8 +155,13 @@ class Listing extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
      */
     public function getTemplateSellingFormat(): Template\SellingFormat
     {
-        return $this->sellingFormatTemplateRepository
-            ->get($this->getTemplateSellingFormatId());
+        /** @psalm-suppress RedundantPropertyInitializationCheck */
+        if (!isset($this->templateSellingFormat)) {
+            $this->templateSellingFormat = $this->sellingFormatTemplateRepository
+                ->get($this->getTemplateSellingFormatId());
+        }
+
+        return $this->templateSellingFormat;
     }
 
     /**
@@ -158,8 +169,27 @@ class Listing extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
      */
     public function getTemplateSynchronization(): Template\Synchronization
     {
-        return $this->synchronizationTemplateRepository
-            ->get($this->getTemplateSynchronizationId());
+        /** @psalm-suppress RedundantPropertyInitializationCheck */
+        if (!isset($this->templateSynchronization)) {
+            $this->templateSynchronization = $this->synchronizationTemplateRepository
+                ->get($this->getTemplateSynchronizationId());
+        }
+
+        return $this->templateSynchronization;
+    }
+
+    /**
+     * @throws \M2E\Kaufland\Model\Exception\Logic
+     */
+    public function getTemplateDescription(): Template\Description
+    {
+        /** @psalm-suppress RedundantPropertyInitializationCheck */
+        if (!isset($this->templateDescription)) {
+            $this->templateDescription = $this->descriptionTemplateRepository
+                ->get($this->getTemplateDescriptionId());
+        }
+
+        return $this->templateDescription;
     }
 
     /**

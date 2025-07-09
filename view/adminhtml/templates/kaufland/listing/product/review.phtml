@@ -2,7 +2,8 @@
 
 /** @var \M2E\Kaufland\Block\Adminhtml\Kaufland\Listing\Product\Add\Review $block */
 
-$buttons = sprintf("<div>%s&nbsp;%s&nbsp;%s",
+$buttons = sprintf(
+    "<div>%s&nbsp;%s&nbsp;%s",
     $block->getChildHtml('review'),
     __('or'),
     $block->getChildHtml('preview')
@@ -43,6 +44,6 @@ $buttons .= '</div>';
         ]
     );
 
-    echo $help->toHtml(); ?>
+    /* @noEscape */ echo $help->toHtml(); ?>
 
 </div>

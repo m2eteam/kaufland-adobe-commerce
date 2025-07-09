@@ -15,15 +15,15 @@ class AddAttributeMapping extends \M2E\Core\Model\Setup\Upgrade\Entity\AbstractF
             ->newTable($this->getFullTableName('m2e_kaufland_attribute_mapping'));
 
         $newTable->addColumn(
-                'id',
-                Table::TYPE_INTEGER,
-                null,
-                [
-                    'unsigned' => true,
-                    'primary' => true,
-                    'nullable' => false,
-                    'auto_increment' => true,
-                ]
+            'id',
+            Table::TYPE_INTEGER,
+            null,
+            [
+                'unsigned' => true,
+                'primary' => true,
+                'nullable' => false,
+                'auto_increment' => true,
+            ]
         );
         $newTable->addColumn(
             'type',

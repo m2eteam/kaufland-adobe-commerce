@@ -84,6 +84,10 @@ class Validator extends \M2E\Kaufland\Model\Product\Action\Type\AbstractValidato
             return false;
         }
 
+        if (!$this->validateQty()) {
+            return false;
+        }
+
         return true;
     }
 

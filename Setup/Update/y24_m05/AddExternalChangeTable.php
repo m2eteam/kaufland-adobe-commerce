@@ -74,5 +74,4 @@ class AddExternalChangeTable extends \M2E\Core\Model\Setup\Upgrade\Entity\Abstra
 
         $this->getConnection()->createTable($externalChangeTable);
     }
-
 }

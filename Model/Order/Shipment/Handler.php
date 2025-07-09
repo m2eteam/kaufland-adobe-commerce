@@ -126,7 +126,7 @@ class Handler extends \M2E\Kaufland\Model\AbstractModel
     protected function processStatusUpdates(
         \M2E\Kaufland\Model\Order $order,
         array $items,
-        \M2E\Kaufland\Model\Order\Shipment\Data\TrackingDetails $trackingDetails = null
+        ?\M2E\Kaufland\Model\Order\Shipment\Data\TrackingDetails $trackingDetails = null
     ): bool {
         if (empty($items)) {
             return false;

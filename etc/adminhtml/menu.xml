@@ -10,6 +10,11 @@
         <add id="M2E_Kaufland::main" title="Kaufland" module="M2E_Kaufland" sortOrder="35"
              dependsOnModule="M2E_Kaufland" resource="M2E_Kaufland::main"/>
 
+        <!-- Dashboard -->
+
+        <add id="M2E_Kaufland::overview" module="M2E_Kaufland" sortOrder="5" parent="M2E_Kaufland::main" title="Overview" resource="M2E_Kaufland::main"/>
+        <add id="M2E_Kaufland::kaufland_dashboard" title="Dashboard" module="M2E_Kaufland" sortOrder="10" parent="M2E_Kaufland::overview" action="m2e_kaufland/dashboard/index" resource="M2E_Kaufland::main"/>
+
         <!-- Listing -->
 
         <add id="M2E_Kaufland::listings" module="M2E_Kaufland" sortOrder="10" parent="M2E_Kaufland::main"

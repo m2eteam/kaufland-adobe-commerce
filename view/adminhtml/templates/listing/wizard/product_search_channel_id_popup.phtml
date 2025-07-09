@@ -5,7 +5,7 @@
 ?>
 <div id="search_ean_new_product_popup">
     <p>
-        <?= __(
+        <?= /* @noEscape */ __(
             'Would you like to create new %channel_title products for your Magento products that were not found
         in the %channel_title catalog based on the provided Product Identifiers (EAN)?',
             ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]

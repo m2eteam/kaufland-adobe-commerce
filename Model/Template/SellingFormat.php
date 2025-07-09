@@ -51,8 +51,6 @@ class SellingFormat extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel imple
         \Magento\Framework\Registry $registry
     ) {
         parent::__construct(
-            null,
-            null,
             $context,
             $registry
         );

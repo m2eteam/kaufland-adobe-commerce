@@ -2,12 +2,8 @@
 
 namespace M2E\Kaufland\Block\Adminhtml\Kaufland\Listing\View\Settings;
 
-use M2E\Kaufland\Block\Adminhtml\Kaufland\Listing\View\Settings\Grid\Column\Filter\PolicySettings as PolicySettingsFilter;
 use M2E\Kaufland\Model\ResourceModel\Category\Dictionary as CategoryDictionaryResource;
 use M2E\Kaufland\Model\ResourceModel\Product as ListingProductResource;
-use M2E\Kaufland\Model\ResourceModel\Template\SellingFormat as SellingFormatResource;
-use M2E\Kaufland\Model\ResourceModel\Template\Synchronization as SynchronizationResource;
-use M2E\Kaufland\Model\Template\Manager;
 
 class Grid extends \M2E\Kaufland\Block\Adminhtml\Listing\View\AbstractGrid
 {
@@ -16,19 +12,9 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Listing\View\AbstractGrid
     private ListingProductResource $listingProductResource;
     private \M2E\Core\Helper\Url $urlHelper;
     private \M2E\Kaufland\Model\Magento\ProductFactory $magentoProductFactory;
-    private SellingFormatResource $sellingFormatResource;
-    private SynchronizationResource $synchronizationResource;
     private CategoryDictionaryResource $categoryDictionaryResource;
-    private \M2E\Kaufland\Model\Template\SellingFormat\Repository $sellingFormatRepository;
-    private \M2E\Kaufland\Model\Template\Synchronization\Repository $synchronizationRepository;
-    private \M2E\Kaufland\Model\Template\Description\Repository $descriptionRepository;
 
     public function __construct(
-        \M2E\Kaufland\Model\Template\SellingFormat\Repository $sellingFormatRepository,
-        \M2E\Kaufland\Model\Template\Synchronization\Repository $synchronizationRepository,
-        \M2E\Kaufland\Model\Template\Description\Repository $descriptionRepository,
-        SellingFormatResource $sellingFormatResource,
-        SynchronizationResource $synchronizationResource,
         CategoryDictionaryResource $categoryDictionaryResource,
         \M2E\Kaufland\Model\Magento\ProductFactory $magentoProductFactory,
         ListingProductResource $listingProductResource,
@@ -46,11 +32,6 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Listing\View\AbstractGrid
         $this->sessionDataHelper = $sessionDataHelper;
         $this->listingProductResource = $listingProductResource;
         $this->magentoProductFactory = $magentoProductFactory;
-        $this->sellingFormatResource = $sellingFormatResource;
-        $this->synchronizationResource = $synchronizationResource;
-        $this->sellingFormatRepository = $sellingFormatRepository;
-        $this->synchronizationRepository = $synchronizationRepository;
-        $this->descriptionRepository = $descriptionRepository;
         $this->categoryDictionaryResource = $categoryDictionaryResource;
 
         parent::__construct(
@@ -101,10 +82,6 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Listing\View\AbstractGrid
                 'available_qty' => ListingProductResource::COLUMN_ONLINE_QTY,
                 'online_current_price' => ListingProductResource::COLUMN_ONLINE_PRICE,
                 'online_title' => ListingProductResource::COLUMN_ONLINE_TITLE,
-                'template_selling_format_mode' => ListingProductResource::COLUMN_TEMPLATE_SELLING_FORMAT_MODE,
-                'template_synchronization_mode' => ListingProductResource::COLUMN_TEMPLATE_SYNCHRONIZATION_MODE,
-                'template_selling_format_id' => ListingProductResource::COLUMN_TEMPLATE_SELLING_FORMAT_ID,
-                'template_synchronization_id' => ListingProductResource::COLUMN_TEMPLATE_SYNCHRONIZATION_ID,
                 'template_category_id' => ListingProductResource::COLUMN_TEMPLATE_CATEGORY_ID,
             ],
             sprintf(
@@ -115,32 +92,16 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Listing\View\AbstractGrid
         );
 
         $categoryDictionaryTableName = $this->categoryDictionaryResource->getMainTable();
-        $templateSellingFormatTableName = $this->sellingFormatResource->getMainTable();
-        $templateSynchronizationTableName = $this->synchronizationResource->getMainTable();
-        $collection
-            ->joinTable(
-                ['tsf' => $templateSellingFormatTableName],
-                sprintf('%s = template_selling_format_id', SellingFormatResource::COLUMN_ID),
-                ['selling_policy_title' => SellingFormatResource::COLUMN_TITLE],
-                null,
-                'left'
-            )
-            ->joinTable(
-                ['ts' => $templateSynchronizationTableName],
-                sprintf('%s = template_synchronization_id', SynchronizationResource::COLUMN_ID),
-                ['synchronization_policy_title' => SynchronizationResource::COLUMN_TITLE],
-                null,
-                'left'
-            )->joinTable(
-                ['cd' => $categoryDictionaryTableName],
-                sprintf('%s = template_category_id', CategoryDictionaryResource::COLUMN_ID),
-                [
-                    'categories_data' => CategoryDictionaryResource::COLUMN_PATH,
-                    'online_category_id' => CategoryDictionaryResource::COLUMN_CATEGORY_ID,
-                ],
-                null,
-                'left'
-            );
+        $collection->joinTable(
+            ['cd' => $categoryDictionaryTableName],
+            sprintf('%s = template_category_id', CategoryDictionaryResource::COLUMN_ID),
+            [
+                'categories_data' => CategoryDictionaryResource::COLUMN_PATH,
+                'online_category_id' => CategoryDictionaryResource::COLUMN_CATEGORY_ID,
+            ],
+            null,
+            'left'
+        );
 
         $this->setCollection($collection);
 
@@ -181,26 +142,14 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Listing\View\AbstractGrid
         $this->addColumn(
             'category',
             [
-                'header' => __('%channel_title Category', ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]),
+                'header' => __(
+                    '%channel_title Category',
+                    ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]
+                ),
                 'align' => 'left',
                 'type' => 'text',
                 'frame_callback' => [$this, 'callbackColumnCategory'],
                 'filter_condition_callback' => [$this, 'callbackFilterCategory'],
-            ]
-        );
-
-        $this->addColumn(
-            'setting',
-            [
-                'index' => 'name',
-                'header' => __('Listing Policies Overrides'),
-                'align' => 'left',
-                'type' => 'text',
-                'sortable' => false,
-                'filter' => PolicySettingsFilter::class,
-                'frame_callback' => [$this, 'callbackColumnSetting'],
-                'filter_condition_callback' => [$this, 'callbackFilterSetting'],
-                'column_css_class' => 'listing-grid-column-setting',
             ]
         );
 
@@ -227,16 +176,13 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Listing\View\AbstractGrid
 
         $this->getMassactionBlock()->setGroups([
             'edit_categories_settings' => $this->__('Edit Category Settings'),
+            'other' => $this->__('Other'),
         ]);
 
         $this->getMassactionBlock()->addItem('editCategorySettings', [
             'label' => $this->__('Categories & Specifics'),
             'url' => '',
         ], 'edit_categories_settings');
-
-        $this->getMassactionBlock()->setGroups([
-            'other' => $this->__('Other'),
-        ]);
 
         $this->getMassactionBlock()->addItem('moving', [
             'label' => $this->__('Move Item(s) to Another Listing'),
@@ -275,69 +221,6 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Listing\View\AbstractGrid
 HTML;
     }
 
-    public function callbackColumnSetting($value, $row, $column, $isExport): string
-    {
-        $templatesNames = [
-            Manager::TEMPLATE_SELLING_FORMAT => __('Selling'),
-            Manager::TEMPLATE_SYNCHRONIZATION => __('Synchronization'),
-            Manager::TEMPLATE_DESCRIPTION => __('Description'),
-        ];
-
-        // ---------------------------------------
-
-        $modes = array_keys($templatesNames);
-        $listingSettings = array_filter($modes, function ($templateNick) use ($row) {
-            $templateMode = $row->getData('template_' . $templateNick . '_mode');
-
-            return $templateMode == Manager::MODE_PARENT;
-        });
-
-        if (count($listingSettings) === count($templatesNames)) {
-            return __('Use from Listing Settings');
-        }
-
-        // ---------------------------------------
-
-        $html = '';
-        foreach ($templatesNames as $templateNick => $templateTitle) {
-            $templateMode = $row->getData('template_' . $templateNick . '_mode');
-
-            if ($templateMode == Manager::MODE_PARENT) {
-                continue;
-            }
-
-            $templateLink = '';
-            if ($templateMode == Manager::MODE_CUSTOM) {
-                $templateLink = '<span>' . __('Custom Settings') . '</span>';
-            } elseif ($templateMode == Manager::MODE_TEMPLATE) {
-                $id = (int)$row->getData('template_' . $templateNick . '_id');
-
-                $url = $this->getUrl('kaufland/kaufland_template/edit', [
-                    'id' => $id,
-                    'nick' => $templateNick,
-                ]);
-
-                $objTitle = '';
-                if ($templateNick === Manager::TEMPLATE_SELLING_FORMAT) {
-                    $objTitle = $this->sellingFormatRepository->get($id)->getTitle();
-                } elseif ($templateNick === Manager::TEMPLATE_DESCRIPTION) {
-                    $objTitle = $this->descriptionRepository->get($id)->getTitle();
-                } else {
-                    $objTitle = $this->synchronizationRepository->get($id)->getTitle();
-                }
-
-                $templateLink = '<a href="' . $url . '" target="_blank">' . $objTitle . '</a>';
-            }
-
-            $html .= "<div style='padding: 2px 0 0 0px'>
-                                    <strong>$templateTitle:</strong>
-                                    <span style='padding: 0 0px 0 5px'>$templateLink</span>
-                               </div>";
-        }
-
-        return $html;
-    }
-
     public function callbackFilterTitle($collection, $column)
     {
         $inputValue = $column->getFilter()->getValue();
@@ -357,61 +240,6 @@ HTML;
         $filter = $column->getFilter();
         if ($value = $filter->getValue()) {
             $collection->getSelect()->where('categories_data LIKE ?', '%' . $value . '%');
-        }
-    }
-
-    public function callbackFilterSetting($collection, $column)
-    {
-        $value = $column->getFilter()->getValue();
-        $inputValue = null;
-
-        if (is_array($value) && isset($value['input'])) {
-            $inputValue = $value['input'];
-        } elseif (is_string($value)) {
-            $inputValue = $value;
-        }
-
-        if ($inputValue !== null) {
-            /** @var \M2E\Kaufland\Model\ResourceModel\Magento\Product\Collection $collection */
-            $collection->addAttributeToFilter(
-                [
-                    ['attribute' => 'selling_policy_title', 'like' => '%' . $inputValue . '%'],
-                    ['attribute' => 'synchronization_policy_title', 'like' => '%' . $inputValue . '%'],
-                ]
-            );
-        }
-
-        if (isset($value['select'])) {
-            switch ($value['select']) {
-                case Manager::MODE_PARENT:
-                    // no policy overrides
-
-                    $collection->addAttributeToFilter(
-                        'template_selling_format_mode',
-                        ['eq' => Manager::MODE_PARENT]
-                    );
-                    $collection->addAttributeToFilter(
-                        'template_synchronization_mode',
-                        ['eq' => Manager::MODE_PARENT]
-                    );
-                    break;
-                case Manager::MODE_TEMPLATE:
-                case Manager::MODE_CUSTOM:
-                    // policy templates and custom settings
-                    $collection->addAttributeToFilter(
-                        [
-                            [
-                                'attribute' => 'template_selling_format_mode',
-                                'eq' => (int)$value['select'],
-                            ],
-                            [
-                                'attribute' => 'template_synchronization_mode',
-                                'eq' => (int)$value['select'],
-                            ],
-                        ]
-                    );
-                    break;
-            }
         }
     }
 
@@ -498,15 +326,6 @@ JS
         $this->jsUrl->add($this->getUrl('*/listing_moving/prepareMoveToListing'), 'prepareData');
         $this->jsUrl->add($this->getUrl('*/listing_moving/moveToListing'), 'moveToListing');
 
-        $this->jsUrl->add(
-            $this->getUrl('*/kaufland_template/editListingProductsPolicy'),
-            'kaufland_template/editListingProductsPolicy'
-        );
-        $this->jsUrl->add(
-            $this->getUrl('*/kaufland_template/saveListingProductsPolicy'),
-            'kaufland_template/saveListingProductsPolicy'
-        );
-
         // ---------------------------------------
 
         $taskCompletedWarningMessage = '"%task_title%" Task has completed with warnings.'
@@ -517,12 +336,7 @@ JS
 
         //------------------------------
         $this->jsTranslator->addTranslations([
-            'Edit Selling Policy Setting' => __('Edit Selling Policy Setting'),
-            'Edit Synchronization Policy Setting' => __('Edit Synchronization Policy Setting'),
-            'Edit Settings' => __('Edit Settings'),
-            'For' => __('For'),
             'Category Settings' => __('Category Settings'),
-            'Specifics' => __('Specifics'),
             'task_completed_message' => __('Task completed. Please wait ...'),
             'task_completed_success_message' => __('"%task_title%" Task has completed.'),
             'sending_data_message' => __(
@@ -532,9 +346,6 @@ JS
                 ]
             ),
             'View Full Product Log.' => __('View Full Product Log.'),
-            'The Listing was locked by another process. Please try again later.' =>
-                __('The Listing was locked by another process. Please try again later.'),
-            'Listing is empty.' => __('Listing is empty.'),
             'Please select Items.' => __('Please select Items.'),
             'Please select Action.' => __('Please select Action.'),
             'popup_title' => __(
@@ -543,7 +354,6 @@ JS
             ),
             'task_completed_warning_message' => __($taskCompletedWarningMessage),
             'task_completed_error_message' => __($taskCompletedErrorMessage),
-            'Add New Listing' => __('Add New Listing'),
         ]);
 
         $temp = $this->sessionDataHelper->getValue('products_ids_for_list', true);

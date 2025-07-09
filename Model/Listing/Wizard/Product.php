@@ -19,19 +19,19 @@ class Product extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
     public function __construct(
         \M2E\Kaufland\Model\Magento\Product\CacheFactory $magentoProductFactory,
         \M2E\Kaufland\Model\Listing\Wizard\Repository $wizardRepository,
-        \M2E\Kaufland\Model\Factory $modelFactory = null,
-        \M2E\Kaufland\Model\ActiveRecord\Factory $activeRecordFactory = null,
         \Magento\Framework\Model\Context $context,
         \Magento\Framework\Registry $registry,
-        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
-        \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
+        ?\M2E\Kaufland\Model\Factory $modelFactory = null,
+        ?\M2E\Kaufland\Model\ActiveRecord\Factory $activeRecordFactory = null,
+        ?\Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
+        ?\Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
         array $data = []
     ) {
         parent::__construct(
-            $modelFactory,
-            $activeRecordFactory,
             $context,
             $registry,
+            $modelFactory,
+            $activeRecordFactory,
             $resource,
             $resourceCollection,
             $data

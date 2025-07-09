@@ -6,7 +6,7 @@ namespace M2E\Kaufland\Setup\Update\y24_m10;
 
 use M2E\Core\Model\ResourceModel\Setup;
 use M2E\Kaufland\Helper\Module\Database\Tables;
-use M2E\Kaufland\Model\ResourceModel\Listing as ListingResource;;
+use M2E\Kaufland\Model\ResourceModel\Listing as ListingResource;
 use Magento\Framework\DB\Ddl\Table;
 
 class AddSkuSettingsToListing extends \M2E\Core\Model\Setup\Upgrade\Entity\AbstractFeature

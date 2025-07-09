@@ -115,5 +115,4 @@ class AddShippingGroupTable extends \M2E\Core\Model\Setup\Upgrade\Entity\Abstrac
 
         $this->getConnection()->createTable($shippingGroupTable);
     }
-
 }

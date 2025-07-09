@@ -10,12 +10,12 @@ abstract class AbstractModel extends \Magento\Framework\Model\AbstractModel
     protected ?\M2E\Kaufland\Model\ActiveRecord\Factory $activeRecordFactory;
 
     public function __construct(
-        \M2E\Kaufland\Model\Factory $modelFactory = null,
-        \M2E\Kaufland\Model\ActiveRecord\Factory $activeRecordFactory = null,
         \Magento\Framework\Model\Context $context,
         \Magento\Framework\Registry $registry,
-        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
-        \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
+        ?\M2E\Kaufland\Model\Factory $modelFactory = null,
+        ?\M2E\Kaufland\Model\ActiveRecord\Factory $activeRecordFactory = null,
+        ?\Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
+        ?\Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
         array $data = []
     ) {
         parent::__construct(

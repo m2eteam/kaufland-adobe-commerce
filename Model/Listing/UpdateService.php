@@ -220,6 +220,7 @@ class UpdateService
     private function createSkuSettings(array $settingsData): \M2E\Kaufland\Model\Listing\Settings\Sku
     {
         $skuSettings = new \M2E\Kaufland\Model\Listing\Settings\Sku();
+
         return $skuSettings
             ->createWithSkuMode((int)$settingsData['sku_mode'])
             ->createWithSkuCustomAttribute($settingsData['sku_custom_attribute'])
@@ -261,10 +262,7 @@ class UpdateService
 
         $changeProcessor = $this->sellingFormatChangeProcessorFactory->create();
 
-        $affectedProducts = $affectedListingsProducts->getObjectsData(
-            ['id', 'status'],
-            ['template' => \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SELLING_FORMAT]
-        );
+        $affectedProducts = $affectedListingsProducts->getObjectsData(['id', 'status']);
         $changeProcessor->process($diff, $affectedProducts);
     }
 
@@ -296,10 +294,7 @@ class UpdateService
 
         $changeProcessor = $this->synchronizationChangeProcessorFactory->create();
 
-        $affectedProducts = $affectedListingsProducts->getObjectsData(
-            ['id', 'status'],
-            ['template' => \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SYNCHRONIZATION]
-        );
+        $affectedProducts = $affectedListingsProducts->getObjectsData(['id', 'status']);
         $changeProcessor->process($diff, $affectedProducts);
     }
 
@@ -325,10 +320,7 @@ class UpdateService
 
         $changeProcessor = $this->shippingChangeProcessorFactory->create();
 
-        $affectedProducts = $affectedListingsProducts->getObjectsData(
-            ['id', 'status'],
-            ['template' => \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SHIPPING]
-        );
+        $affectedProducts = $affectedListingsProducts->getObjectsData(['id', 'status']);
         $changeProcessor->process($diff, $affectedProducts);
     }
 
@@ -354,10 +346,7 @@ class UpdateService
 
         $changeProcessor = $this->descriptionChangeProcessorFactory->create();
 
-        $affectedProducts = $affectedListingsProducts->getObjectsData(
-            ['id', 'status'],
-            ['template' => \M2E\Kaufland\Model\Template\Manager::TEMPLATE_DESCRIPTION]
-        );
+        $affectedProducts = $affectedListingsProducts->getObjectsData(['id', 'status']);
         $changeProcessor->process($diff, $affectedProducts);
     }
 

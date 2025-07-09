@@ -34,10 +34,6 @@ class Product extends \M2E\Kaufland\Model\ResourceModel\ActiveRecord\AbstractMod
     public const COLUMN_ONLINE_IMAGE = 'online_image';
 
     public const COLUMN_TEMPLATE_CATEGORY_ID = 'template_category_id';
-    public const COLUMN_TEMPLATE_SELLING_FORMAT_MODE = 'template_selling_format_mode';
-    public const COLUMN_TEMPLATE_SELLING_FORMAT_ID = 'template_selling_format_id';
-    public const COLUMN_TEMPLATE_SYNCHRONIZATION_MODE = 'template_synchronization_mode';
-    public const COLUMN_TEMPLATE_SYNCHRONIZATION_ID = 'template_synchronization_id';
     public const COLUMN_LAST_BLOCKING_ERROR_DATE = 'last_blocking_error_date';
     public const COLUMN_ADDITIONAL_DATA = 'additional_data';
     public const COLUMN_CHANNEL_PRODUCT_EMPTY_ATTRIBUTES = 'channel_product_empty_attributes';

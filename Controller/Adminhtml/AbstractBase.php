@@ -65,7 +65,7 @@ abstract class AbstractBase extends Action
         return $this->_auth->isLoggedIn();
     }
 
-    protected function isAjax(\Magento\Framework\App\RequestInterface $request = null)
+    protected function isAjax(?\Magento\Framework\App\RequestInterface $request = null)
     {
         if ($request === null) {
             $request = $this->getRequest();

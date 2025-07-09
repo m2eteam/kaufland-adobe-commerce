@@ -85,5 +85,4 @@ class AddWarehouseTable extends \M2E\Core\Model\Setup\Upgrade\Entity\AbstractFea
 
         $this->getConnection()->createTable($warehouseTable);
     }
-
 }

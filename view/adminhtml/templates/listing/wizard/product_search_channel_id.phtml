@@ -5,14 +5,14 @@
  */
 ?>
 
-<div id='<?= $block->getProgressBarElementId(); ?>'></div>
+<div id='<?= /* @noEscape */ $block->getProgressBarElementId(); ?>'></div>
 <script type="text/x-magento-init">
     {
         "*": {
           "Kaufland/Listing/Wizard/Product/Search": {
-            "is_need_search": <?= json_encode($block->isNeedSearch()); ?>,
-            "url_for_search": "<?= $block->getLinkForSearch(); ?>",
-            "progress_bar_el_id": "<?= $block->getProgressBarElementId(); ?>"
+            "is_need_search": <?= /* @noEscape */ json_encode($block->isNeedSearch()); ?>,
+            "url_for_search": "<?= /* @noEscape */ $block->getLinkForSearch(); ?>",
+            "progress_bar_el_id": "<?= /* @noEscape */ $block->getProgressBarElementId(); ?>"
           }
         }
     }

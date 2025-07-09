@@ -43,7 +43,7 @@ class Collection extends \M2E\Kaufland\Model\ResourceModel\Magento\Product\Colle
         \Magento\Customer\Model\Session $customerSession,
         \Magento\Framework\Stdlib\DateTime $dateTime,
         \Magento\Customer\Api\GroupManagementInterface $groupManagement,
-        \Magento\Framework\DB\Adapter\AdapterInterface $connection = null
+        ?\Magento\Framework\DB\Adapter\AdapterInterface $connection = null
     ) {
         parent::__construct(
             $dbStructureHelper,

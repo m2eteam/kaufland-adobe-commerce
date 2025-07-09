@@ -84,5 +84,4 @@ class AddShippingTemplateTable extends \M2E\Core\Model\Setup\Upgrade\Entity\Abst
 
         $this->getConnection()->createTable($shippingTemplateTable);
     }
-
 }

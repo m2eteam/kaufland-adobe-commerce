@@ -9,8 +9,8 @@
         'Kaufland/Category/Chooser'
     ], () => {
         window.KauflandCategoryChooserObj = new KauflandCategoryChooser(
-            <?= $block->getStorefrontId() ?>,
-            <?= $block->getAccountId() ?>
+            <?= /* @noEscape */ $block->getStorefrontId() ?>,
+            <?= /* @noEscape */ $block->getAccountId() ?>
         );
     });
 </script>
@@ -22,8 +22,8 @@
                 "components": {
                     "category_search": {
                         "component": "M2E_Kaufland/js/Category/Chooser/Tabs/Search",
-                        "searchUrl": "<?= $block->getSearchUrl() ?>",
-                        "storefrontId": <?= $block->getStorefrontId() ?>
+                        "searchUrl": "<?= /* @noEscape */ $block->getSearchUrl() ?>",
+                        "storefrontId": <?= /* @noEscape */ $block->getStorefrontId() ?>
                     }
                 }
             }

@@ -27,12 +27,7 @@ class Config extends \M2E\Kaufland\Plugin\AbstractPlugin
 
     protected function canExecute(): bool
     {
-        /** @var \M2E\Kaufland\Helper\Module $helper */
-        $helper = \Magento\Framework\App\ObjectManager::getInstance()->get(
-            \M2E\Kaufland\Helper\Module::class
-        );
-
-        return $helper->areImportantTablesExist();
+        return $this->isModuleTablesExist();
     }
 
     public function aroundGetMenu(\Magento\Backend\Model\Menu\Config $interceptor, \Closure $callback, ...$arguments)

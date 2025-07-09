@@ -191,30 +191,6 @@ class ProductHandler implements \M2E\Core\Model\Setup\InstallHandlerInterface
                 ['unsigned' => true, 'default' => null]
             )
             ->addColumn(
-                ProductResource::COLUMN_TEMPLATE_SELLING_FORMAT_MODE,
-                Table::TYPE_SMALLINT,
-                null,
-                ['unsigned' => true, 'nullable' => false, 'default' => 0]
-            )
-            ->addColumn(
-                ProductResource::COLUMN_TEMPLATE_SELLING_FORMAT_ID,
-                Table::TYPE_INTEGER,
-                null,
-                ['unsigned' => true, 'default' => null]
-            )
-            ->addColumn(
-                ProductResource::COLUMN_TEMPLATE_SYNCHRONIZATION_MODE,
-                Table::TYPE_SMALLINT,
-                null,
-                ['unsigned' => true, 'nullable' => false, 'default' => 0]
-            )
-            ->addColumn(
-                ProductResource::COLUMN_TEMPLATE_SYNCHRONIZATION_ID,
-                Table::TYPE_INTEGER,
-                null,
-                ['unsigned' => true, 'default' => null]
-            )
-            ->addColumn(
                 ProductResource::COLUMN_LAST_BLOCKING_ERROR_DATE,
                 Table::TYPE_DATETIME,
                 null,
@@ -251,10 +227,6 @@ class ProductHandler implements \M2E\Core\Model\Setup\InstallHandlerInterface
             ->addIndex('online_category_id', ProductResource::COLUMN_ONLINE_CATEGORY_ID)
             ->addIndex('online_qty', ProductResource::COLUMN_ONLINE_QTY)
             ->addIndex('online_price', ProductResource::COLUMN_ONLINE_PRICE)
-            ->addIndex('template_selling_format_id', ProductResource::COLUMN_TEMPLATE_SELLING_FORMAT_ID)
-            ->addIndex('template_selling_format_mode', ProductResource::COLUMN_TEMPLATE_SELLING_FORMAT_MODE)
-            ->addIndex('template_synchronization_id', ProductResource::COLUMN_TEMPLATE_SYNCHRONIZATION_ID)
-            ->addIndex('template_synchronization_mode', ProductResource::COLUMN_TEMPLATE_SYNCHRONIZATION_MODE)
             ->setOption('type', 'INNODB')
             ->setOption('charset', 'utf8')
             ->setOption('collate', 'utf8_general_ci')

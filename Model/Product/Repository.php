@@ -376,6 +376,34 @@ class Repository
         return (int)$collection->getSize();
     }
 
+    public function hasListedProducts(): bool
+    {
+        return $this->getCountOfListedProducts() > 0;
+    }
+
+    public function getCountOfListedProducts(): int
+    {
+        $collection = $this->listingProductCollectionFactory->create();
+        $collection->addFieldToFilter(ProductResource::COLUMN_STATUS, \M2E\Kaufland\Model\Product::STATUS_LISTED);
+
+        return (int)$collection->getSize();
+    }
+
+    public function getCountOfNotListedProducts(): int
+    {
+        $collection = $this->listingProductCollectionFactory->create();
+        $collection->addFieldToFilter(ProductResource::COLUMN_STATUS, ['neq' => \M2E\Kaufland\Model\Product::STATUS_LISTED]);
+
+        return (int)$collection->getSize();
+    }
+
+    public function getTotalCountOfListingProducts(): int
+    {
+        $collection = $this->listingProductCollectionFactory->create();
+
+        return (int)$collection->getSize();
+    }
+
     public function getStatisticForSearchChannelId(int $listingId, array $forProductIds): array
     {
         $collection = $this->wizardProductCollectionFactory->create();
@@ -617,8 +645,10 @@ class Repository
      * @return \M2E\Kaufland\Model\ResourceModel\Product\Collection
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    private function getProductCollectionByTemplateId(string $columnTemplateIdName, int $columnTemplateId): ProductResource\Collection
-    {
+    private function getProductCollectionByTemplateId(
+        string $columnTemplateIdName,
+        int $columnTemplateId
+    ): ProductResource\Collection {
         $collection = $this->listingProductCollectionFactory->create();
         $collection->joinInner(
             ['listing' => $this->listingResource->getMainTable()],

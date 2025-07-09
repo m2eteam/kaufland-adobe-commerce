@@ -40,6 +40,10 @@ class Config extends \M2E\Kaufland\Plugin\AbstractPlugin
      */
     protected function canExecute(): bool
     {
+        if (!$this->isModuleTablesExist()) {
+            return false;
+        }
+
         if ($this->moduleMaintenanceHelper->isEnabled()) {
             return false;
         }

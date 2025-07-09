@@ -175,7 +175,7 @@ abstract class AbstractGrid extends Extended
     }
 
     /**
-     * @return \Magento\Backend\Block\Widget\Grid\Massaction
+     * @return \M2E\Kaufland\Block\Adminhtml\Magento\Grid\Massaction
      */
     public function getMassactionBlock()
     {

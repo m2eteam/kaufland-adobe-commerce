@@ -41,10 +41,6 @@ class Product extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
     public const INSTRUCTION_TYPE_CHANNEL_QTY_CHANGED = 'channel_qty_changed';
     public const INSTRUCTION_TYPE_CHANNEL_PRICE_CHANGED = 'channel_price_changed';
 
-    public const TEMPLATE_MODE_PARENT = 0;
-    public const TEMPLATE_MODE_CUSTOM = 1;
-    public const TEMPLATE_MODE_TEMPLATE = 2;
-
     public const SEARCH_STATUS_NONE = 0;
     public const SEARCH_STATUS_COMPLETED = 1;
 
@@ -58,40 +54,16 @@ class Product extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
 
     protected ?\M2E\Kaufland\Model\Magento\Product\Cache $magentoProductModel = null;
     private \M2E\Kaufland\Model\Listing\Repository $listingRepository;
-    private ?\M2E\Kaufland\Model\Template\SellingFormat $sellingFormatTemplateModel = null;
-    private ?\M2E\Kaufland\Model\Template\Synchronization $synchronizationTemplateModel = null;
-    private ?\M2E\Kaufland\Model\Template\Description $descriptionTemplateModel = null;
     private ?Category\Dictionary $categoryDictionary = null;
     private Product\PriceCalculatorFactory $priceCalculatorFactory;
     private \M2E\Kaufland\Model\Magento\Product\CacheFactory $magentoProductFactory;
-    private \M2E\Kaufland\Model\Template\SellingFormat\Repository $sellingFormatTemplateRepository;
-    private \M2E\Kaufland\Model\Template\Synchronization\Repository $synchronizationTemplateRepository;
-    /** @var \M2E\Kaufland\Model\Product\QtyCalculatorFactory */
-    private Product\QtyCalculatorFactory $qtyCalculatorFactory;
-
-    /** @var \M2E\Kaufland\Model\Storefront\Repository */
-    private Storefront\Repository $storefrontRepository;
-    /** @var \M2E\Kaufland\Model\Listing\LogService */
-    private Listing\LogService $listingLogService;
-    /**
-     * @var \M2E\Kaufland\Model\Product\Description\RendererFactory
-     */
-    private Product\Description\RendererFactory $descriptionRendererFactory;
-    /**
-     * @var \M2E\Kaufland\Model\Template\Description\Repository
-     */
-    private Template\Description\Repository $descriptionTemplateRepository;
-    /**
-     * @var \M2E\Kaufland\Model\Category\Dictionary\Repository
-     */
-    private Category\Dictionary\Repository $categoryDictionaryRepository;
+    private \M2E\Kaufland\Model\Product\QtyCalculatorFactory $qtyCalculatorFactory;
+    private \M2E\Kaufland\Model\Product\Description\RendererFactory $descriptionRendererFactory;
+    private \M2E\Kaufland\Model\Category\Dictionary\Repository $categoryDictionaryRepository;
     private \M2E\Kaufland\Model\Policy\ShippingDataProviderFactory $shippingDataProviderFactory;
     private \M2E\Kaufland\Model\Product\SkuGeneratorFactory $skuGeneratorFactory;
 
     public function __construct(
-        \M2E\Kaufland\Model\Template\SellingFormat\Repository $sellingFormatTemplateRepository,
-        \M2E\Kaufland\Model\Template\Synchronization\Repository $synchronizationTemplateRepository,
-        \M2E\Kaufland\Model\Template\Description\Repository $descriptionTemplateRepository,
         \M2E\Kaufland\Model\Listing\Repository $listingRepository,
         \M2E\Kaufland\Model\Magento\Product\CacheFactory $magentoProductFactory,
         Product\PriceCalculatorFactory $priceCalculatorFactory,
@@ -100,33 +72,26 @@ class Product extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         \M2E\Kaufland\Model\Product\SkuGeneratorFactory $skuGeneratorFactory,
         \M2E\Kaufland\Model\Factory $modelFactory,
         \M2E\Kaufland\Model\ActiveRecord\Factory $activeRecordFactory,
-        \M2E\Kaufland\Model\Storefront\Repository $storefrontRepository,
         Product\Description\RendererFactory $descriptionRendererFactory,
         \M2E\Kaufland\Model\Category\Dictionary\Repository $categoryDictionaryRepository,
         \Magento\Framework\Model\Context $context,
         \Magento\Framework\Registry $registry,
-        \M2E\Kaufland\Model\Listing\LogService $listingLogService,
-        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
-        \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null
+        ?\Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
+        ?\Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null
     ) {
         parent::__construct(
-            $modelFactory,
-            $activeRecordFactory,
             $context,
             $registry,
+            $modelFactory,
+            $activeRecordFactory,
             $resource,
             $resourceCollection,
         );
         $this->listingRepository = $listingRepository;
         $this->priceCalculatorFactory = $priceCalculatorFactory;
         $this->magentoProductFactory = $magentoProductFactory;
-        $this->sellingFormatTemplateRepository = $sellingFormatTemplateRepository;
-        $this->synchronizationTemplateRepository = $synchronizationTemplateRepository;
-        $this->storefrontRepository = $storefrontRepository;
-        $this->listingLogService = $listingLogService;
         $this->qtyCalculatorFactory = $qtyCalculatorFactory;
         $this->descriptionRendererFactory = $descriptionRendererFactory;
-        $this->descriptionTemplateRepository = $descriptionTemplateRepository;
         $this->categoryDictionaryRepository = $categoryDictionaryRepository;
         $this->shippingDataProviderFactory = $shippingDataProviderFactory;
         $this->skuGeneratorFactory = $skuGeneratorFactory;
@@ -470,16 +435,7 @@ class Product extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
      */
     public function getSellingFormatTemplate(): \M2E\Kaufland\Model\Template\SellingFormat
     {
-        if ($this->sellingFormatTemplateModel === null) {
-            if ($this->getTemplateSellingFormatMode() === self::TEMPLATE_MODE_PARENT) {
-                $this->sellingFormatTemplateModel = $this->getListing()->getTemplateSellingFormat();
-            } else {
-                $this->sellingFormatTemplateModel = $this->sellingFormatTemplateRepository
-                    ->get($this->getTemplateSellingFormatId());
-            }
-        }
-
-        return $this->sellingFormatTemplateModel;
+        return $this->getListing()->getTemplateSellingFormat();
     }
 
     /**
@@ -487,16 +443,7 @@ class Product extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
      */
     public function getSynchronizationTemplate(): \M2E\Kaufland\Model\Template\Synchronization
     {
-        if ($this->synchronizationTemplateModel === null) {
-            if ($this->getTemplateSynchronizationMode() === self::TEMPLATE_MODE_PARENT) {
-                $this->synchronizationTemplateModel = $this->getListing()->getTemplateSynchronization();
-            } else {
-                $this->synchronizationTemplateModel = $this->synchronizationTemplateRepository
-                    ->get($this->getTemplateSynchronizationId());
-            }
-        }
-
-        return $this->synchronizationTemplateModel;
+        return $this->getListing()->getTemplateSynchronization();
     }
 
     /**
@@ -504,10 +451,7 @@ class Product extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
      */
     public function getDescriptionTemplate(): \M2E\Kaufland\Model\Template\Description
     {
-        $templateDescriptionId = $this->getListing()->getTemplateDescriptionId();
-        $this->descriptionTemplateModel = $this->descriptionTemplateRepository->get($templateDescriptionId);
-
-        return $this->descriptionTemplateModel;
+        return $this->getListing()->getTemplateDescription();
     }
 
     /**
@@ -841,26 +785,6 @@ class Product extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         $this->validateStatusChanger($statusChanger);
 
         $this->setData(ProductResource::COLUMN_STATUS_CHANGER, $statusChanger);
-    }
-
-    public function getTemplateSellingFormatMode(): int
-    {
-        return (int)$this->getData(ProductResource::COLUMN_TEMPLATE_SELLING_FORMAT_MODE);
-    }
-
-    public function getTemplateSellingFormatId(): int
-    {
-        return (int)$this->getData(ProductResource::COLUMN_TEMPLATE_SELLING_FORMAT_ID);
-    }
-
-    public function getTemplateSynchronizationMode(): int
-    {
-        return (int)$this->getData(ProductResource::COLUMN_TEMPLATE_SYNCHRONIZATION_MODE);
-    }
-
-    public function getTemplateSynchronizationId(): int
-    {
-        return (int)$this->getData(ProductResource::COLUMN_TEMPLATE_SYNCHRONIZATION_ID);
     }
 
     // ----------------------------------------

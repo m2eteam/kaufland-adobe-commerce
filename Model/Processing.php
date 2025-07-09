@@ -19,7 +19,7 @@ class Processing extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         \Magento\Framework\Model\Context $context,
         \Magento\Framework\Registry $registry
     ) {
-        parent::__construct(null, null, $context, $registry);
+        parent::__construct($context, $registry);
         $this->repository = $repository;
     }
 

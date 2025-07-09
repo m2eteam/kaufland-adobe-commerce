@@ -10,7 +10,6 @@ use Magento\Framework\DB\Ddl\Table;
 
 class AddProductLockTable extends \M2E\Core\Model\Setup\Upgrade\Entity\AbstractFeature
 {
-
     public function execute(): void
     {
         $productLockTable = $this->getConnection()->newTable(

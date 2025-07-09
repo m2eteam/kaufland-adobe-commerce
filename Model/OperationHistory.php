@@ -20,7 +20,7 @@ class OperationHistory extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         \Magento\Framework\Model\Context $context,
         \Magento\Framework\Registry $registry
     ) {
-        parent::__construct(null, null, $context, $registry);
+        parent::__construct($context, $registry);
 
         $this->exceptionHelper = $exceptionHelper;
         $this->operationHistoryFactory = $operationHistoryFactory;
@@ -59,7 +59,7 @@ class OperationHistory extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         return $this->object;
     }
 
-    public function getParentObject(string $nick = null): ?self
+    public function getParentObject(?string $nick = null): ?self
     {
         if ($this->getObject()->getData('parent_id') === null) {
             return null;

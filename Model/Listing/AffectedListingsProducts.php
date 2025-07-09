@@ -23,24 +23,6 @@ class AffectedListingsProducts extends \M2E\Kaufland\Model\Template\AffectedList
             $this->getModel()->getId()
         );
 
-        if (isset($filters['template'])) {
-            $template = $filters['template'];
-
-            if ($template === \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SELLING_FORMAT) {
-                $collection->addFieldToFilter(
-                    \M2E\Kaufland\Model\ResourceModel\Product::COLUMN_TEMPLATE_SELLING_FORMAT_MODE,
-                    ['eq' => \M2E\Kaufland\Model\Template\Manager::MODE_PARENT]
-                );
-            }
-
-            if ($template === \M2E\Kaufland\Model\Template\Manager::TEMPLATE_SYNCHRONIZATION) {
-                $collection->addFieldToFilter(
-                    \M2E\Kaufland\Model\ResourceModel\Product::COLUMN_TEMPLATE_SYNCHRONIZATION_MODE,
-                    ['eq' => \M2E\Kaufland\Model\Template\Manager::MODE_PARENT]
-                );
-            }
-        }
-
         return $collection;
     }
 }

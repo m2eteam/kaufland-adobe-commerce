@@ -17,19 +17,19 @@ class Shipping extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel implements
     public function __construct(
         \M2E\Kaufland\Model\ShippingGroup\Repository $shippingGroupRepository,
         \M2E\Kaufland\Model\Warehouse\Repository $warehouseGroupRepository,
-        \M2E\Kaufland\Model\Factory $modelFactory = null,
-        \M2E\Kaufland\Model\ActiveRecord\Factory $activeRecordFactory = null,
         \Magento\Framework\Model\Context $context,
         \Magento\Framework\Registry $registry,
-        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
-        \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
+        ?\M2E\Kaufland\Model\Factory $modelFactory = null,
+        ?\M2E\Kaufland\Model\ActiveRecord\Factory $activeRecordFactory = null,
+        ?\Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
+        ?\Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
         array $data = []
     ) {
         parent::__construct(
-            $modelFactory,
-            $activeRecordFactory,
             $context,
             $registry,
+            $modelFactory,
+            $activeRecordFactory,
             $resource,
             $resourceCollection,
             $data

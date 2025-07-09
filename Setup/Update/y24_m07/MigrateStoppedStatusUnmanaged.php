@@ -21,4 +21,3 @@ class MigrateStoppedStatusUnmanaged extends \M2E\Core\Model\Setup\Upgrade\Entity
              );
     }
 }
-

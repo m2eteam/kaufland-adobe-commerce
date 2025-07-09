@@ -31,9 +31,9 @@
         <?php if ($block->isChecked()) :
             ?>checked="checked"<?php
         endif; ?>
-        onclick="setLocation('<?php echo $block->getFilterUrl(); ?>');"
+        onclick="setLocation('<?php /* @noEscape */ echo $block->getFilterUrl(); ?>');"
     >
     <label for="switcher_show_products_others_listings_filter" class="admin__field-label">
-        <span><?php echo __('Show Products presented in other %channel_title Listings', ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]); ?></span>
+        <span><?php /* @noEscape */ echo __('Show Products presented in other %channel_title Listings', ['channel_title' => \M2E\Kaufland\Helper\Module::getChannelTitle()]); ?></span>
     </label>
 </div>
