@@ -769,23 +769,39 @@ JS
         return [
             [
                 'value' => \M2E\Kaufland\Model\Listing::CONDITION_NEW,
-                'label' => $this->__('New'),
+                'label' => __('New'),
             ],
             [
                 'value' => \M2E\Kaufland\Model\Listing::CONDITION_USED_GOOD,
-                'label' => $this->__('Used Good'),
+                'label' => __('Used Good'),
             ],
             [
                 'value' => \M2E\Kaufland\Model\Listing::CONDITION_USED_AS_NEW,
-                'label' => $this->__('Used as New'),
+                'label' => __('Used as New'),
             ],
             [
                 'value' => \M2E\Kaufland\Model\Listing::CONDITION_USED_VERY_GOOD,
-                'label' => $this->__('Used Very Good'),
+                'label' => __('Used Very Good'),
             ],
             [
                 'value' => \M2E\Kaufland\Model\Listing::CONDITION_USED_ACCEPTABLE,
-                'label' => $this->__('Used Acceptable'),
+                'label' => __('Used Acceptable'),
+            ],
+            [
+                'value' => \M2E\Kaufland\Model\Listing::CONDITION_REFURBISHED_VERY_GOOD,
+                'label' => __('Refurbished Very Good'),
+            ],
+            [
+                'value' => \M2E\Kaufland\Model\Listing::CONDITION_REFURBISHED_GOOD,
+                'label' => __('Refurbished Good'),
+            ],
+            [
+                'value' => \M2E\Kaufland\Model\Listing::CONDITION_REFURBISHED_AS_NEW,
+                'label' => __('Refurbished as New'),
+            ],
+            [
+                'value' => \M2E\Kaufland\Model\Listing::CONDITION_REFURBISHED_ACCEPTABLE,
+                'label' => __('Refurbished Acceptable'),
             ],
         ];
     }

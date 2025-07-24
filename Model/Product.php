@@ -121,9 +121,17 @@ class Product extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
     {
         $this->setStatus(self::STATUS_NOT_LISTED, $changer)
              ->setData(ProductResource::COLUMN_OFFER_ID, null)
+             ->setData(ProductResource::COLUMN_ONLINE_TITLE, null)
+             ->setData(ProductResource::COLUMN_ONLINE_DESCRIPTION, null)
+             ->setData(ProductResource::COLUMN_ONLINE_IMAGE, null)
              ->setData(ProductResource::COLUMN_ONLINE_CATEGORIES_DATA, null)
              ->setData(ProductResource::COLUMN_ONLINE_QTY, null)
-             ->setData(ProductResource::COLUMN_ONLINE_CATEGORY_ID, null);
+             ->setData(ProductResource::COLUMN_ONLINE_CATEGORY_ID, null)
+             ->setData(ProductResource::COLUMN_ONLINE_CATEGORIES_ATTRIBUTES_DATA, null);
+
+        if ($this->isIncomplete()) {
+            $this->makeComplete();
+        }
 
         return $this;
     }

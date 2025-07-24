@@ -31,6 +31,10 @@ class Listing extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
     public const CONDITION_USED_AS_NEW = 'USED___AS_NEW';
     public const CONDITION_USED_VERY_GOOD = 'USED___VERY_GOOD';
     public const CONDITION_USED_ACCEPTABLE = 'USED___ACCEPTABLE';
+    public const CONDITION_REFURBISHED_VERY_GOOD = 'REFURBISHED___VERY_GOOD';
+    public const CONDITION_REFURBISHED_GOOD = 'REFURBISHED___GOOD';
+    public const CONDITION_REFURBISHED_AS_NEW = 'REFURBISHED___AS_NEW';
+    public const CONDITION_REFURBISHED_ACCEPTABLE = 'REFURBISHED___ACCEPTABLE';
 
     private ?\M2E\Kaufland\Model\Account $account = null;
     private ?\M2E\Kaufland\Model\Storefront $storefront = null;
