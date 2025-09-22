@@ -6,6 +6,7 @@ namespace M2E\Kaufland\Model\Listing\Wizard;
 
 class CompleteProcessor
 {
+    private \M2E\Kaufland\Model\Product\Category\Attribute\ValidateManager $productAttributeValidateManager;
     private \M2E\Kaufland\Model\Listing\AddProductsService $addProductsService;
     private \M2E\Kaufland\Model\Category\Dictionary\Repository $categoryDictionary;
     /** @var \M2E\Kaufland\Model\Listing\Wizard\Repository */
@@ -21,13 +22,15 @@ class CompleteProcessor
         \M2E\Kaufland\Model\Listing\AddProductsService $addProductsService,
         \M2E\Kaufland\Model\Category\Dictionary\Repository $categoryDictionary,
         \M2E\Kaufland\Model\Listing\Other\Repository $listingOtherRepository,
-        \M2E\Kaufland\Model\Magento\Product\CacheFactory $magentoProductFactory
+        \M2E\Kaufland\Model\Magento\Product\CacheFactory $magentoProductFactory,
+        \M2E\Kaufland\Model\Product\Category\Attribute\ValidateManager $productAttributeValidateManager
     ) {
         $this->magentoProductFactory = $magentoProductFactory;
         $this->addProductsService = $addProductsService;
         $this->categoryDictionary = $categoryDictionary;
         $this->wizardRepository = $wizardRepository;
         $this->listingOtherRepository = $listingOtherRepository;
+        $this->productAttributeValidateManager = $productAttributeValidateManager;
     }
 
     public function process(Manager $wizardManager): array
@@ -90,6 +93,15 @@ class CompleteProcessor
                 if ($listingProduct === null) {
                     continue;
                 }
+            }
+
+            if ($wizardProduct->isInvalidCategoryAttributes()) {
+                $this->productAttributeValidateManager->markProductAsNotValid(
+                    $listingProduct,
+                    $wizardProduct->getCategoryAttributesErrors()
+                );
+            } else {
+                $this->productAttributeValidateManager->markProductAsValid($listingProduct);
             }
 
             $listingProducts[] = $listingProduct;

@@ -91,6 +91,9 @@ class Config implements \M2E\Core\Model\Setup\Upgrade\Entity\ConfigInterface
             'y25_m06' => [
                 \M2E\Kaufland\Setup\Update\y25_m06\RemoveReferencesOfPolicyFromProduct::class,
             ],
+            'y25_m09' => [
+                \M2E\Kaufland\Setup\Update\y25_m09\AddValidationAttributesColumns::class,
+            ],
         ];
     }
 }

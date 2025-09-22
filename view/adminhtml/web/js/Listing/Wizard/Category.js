@@ -69,7 +69,10 @@ define([
                     template_category_id: selectedCategory.dictionary_id,
                 },
                 onSuccess: function (transport) {
-                    self.cancelCategorySettings();
+                    window.KauflandCategoryAttributeValidationPopup.closePopupCallback = function () {
+                        self.cancelCategorySettings()
+                    }
+                    window.KauflandCategoryAttributeValidationPopup.open(selectedCategory.dictionary_id);
                 }.bind(this)
             });
         },

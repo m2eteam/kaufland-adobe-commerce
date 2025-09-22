@@ -712,4 +712,52 @@ class Repository
 
         return array_map('intval', $collection->getColumnValues('id'));
     }
+
+    /**
+     * @param int $templateCategoryId
+     *
+     * @return int
+     */
+    public function getCountProductsByCategoryId(int $templateCategoryId): int
+    {
+        $collection = $this->createCollectionByCategoryTemplate($templateCategoryId);
+
+        return (int)$collection->getSize();
+    }
+
+    /**
+     * @param int $templateCategoryId
+     * @param int|null $limit
+     *
+     * @return \M2E\Kaufland\Model\Product[]
+     */
+    public function findProductsForValidateCategoryAttributes(
+        int $templateCategoryId,
+        int $limit
+    ): array {
+        $collection = $this->listingProductCollectionFactory->create();
+        $collection->addFieldToFilter(ProductResource::COLUMN_TEMPLATE_CATEGORY_ID, $templateCategoryId);
+        $collection->addFieldToFilter(ProductResource::COLUMN_IS_VALID_CATEGORY_ATTRIBUTES, ['null' => true]);
+        $collection->addFieldToFilter(ProductResource::COLUMN_STATUS, \M2E\Kaufland\Model\Product::STATUS_NOT_LISTED);
+
+        $collection->getSelect()->limit($limit);
+
+        return array_values($collection->getItems());
+    }
+
+    public function resetCategoryAttributesValidationData(int $categoryId): void
+    {
+        $this->listingProductResource
+            ->getConnection()
+            ->update(
+                $this->listingProductResource->getMainTable(),
+                [
+                    ProductResource::COLUMN_IS_VALID_CATEGORY_ATTRIBUTES => null,
+                    ProductResource::COLUMN_CATEGORY_ATTRIBUTES_ERRORS => null,
+                ],
+                [
+                    sprintf('%s = %d', ProductResource::COLUMN_TEMPLATE_CATEGORY_ID, $categoryId),
+                ],
+            );
+    }
 }

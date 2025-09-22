@@ -14,6 +14,7 @@ class StepDeclarationCollectionFactory
     public const STEP_DESCRIPTION_POLICY = 'description-policy';
     public const STEP_GENERAL_SELECT_CATEGORY_MODE = 'category-mode';
     public const STEP_GENERAL_SELECT_CATEGORY_STEP = 'select-category';
+    public const STEP_CATEGORY_VALIDATION = 'category-validation';
     public const STEP_REVIEW = 'review';
 
     private static array $steps = [
@@ -49,6 +50,11 @@ class StepDeclarationCollectionFactory
                 'back_handler' => null,
             ],
             [
+                'nick' => self::STEP_CATEGORY_VALIDATION,
+                'route' => '*/listing_wizard_categoryValidation/view',
+                'back_handler' => \M2E\Kaufland\Model\Listing\Wizard\Step\BackHandler\CategoryValidation::class,
+            ],
+            [
                 'nick' => self::STEP_REVIEW,
                 'route' => '*/listing_wizard_review/view',
                 'back_handler' => null,
@@ -64,6 +70,11 @@ class StepDeclarationCollectionFactory
                 'nick' => self::STEP_GENERAL_SELECT_CATEGORY_STEP,
                 'route' => '*/listing_wizard_category/view',
                 'back_handler' => null,
+            ],
+            [
+                'nick' => self::STEP_CATEGORY_VALIDATION,
+                'route' => '*/listing_wizard_categoryValidation/view',
+                'back_handler' => \M2E\Kaufland\Model\Listing\Wizard\Step\BackHandler\CategoryValidation::class,
             ],
             [
                 'nick' => self::STEP_REVIEW,

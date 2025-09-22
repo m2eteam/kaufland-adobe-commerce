@@ -15,6 +15,8 @@ class Product extends \M2E\Kaufland\Model\ResourceModel\ActiveRecord\AbstractMod
     public const COLUMN_CATEGORY_ID = 'category_id';
     public const COLUMN_CATEGORY_TITLE = 'category_title';
     public const COLUMN_IS_PROCESSED = 'is_processed';
+    public const COLUMN_IS_VALID_CATEGORY_ATTRIBUTES = 'is_valid_category_attributes';
+    public const COLUMN_CATEGORY_ATTRIBUTES_ERRORS = 'category_attributes_errors';
 
     protected function _construct(): void
     {

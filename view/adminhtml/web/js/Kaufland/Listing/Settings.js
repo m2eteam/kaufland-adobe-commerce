@@ -151,17 +151,15 @@ define([
         // ---------------------------------------
 
         checkSellingFormatMessages: function () {
-            var storeId = $('store_id').value;
-            var storefrontId = $('storefront_id').value;
+            const storeId = $('store_id').value;
+            const storefrontId = $('storefront_id').value;
 
             if (storeId.empty() || storeId < 0 || storefrontId.empty() || storefrontId < 0) {
                 return;
             }
 
-            var id = $('template_selling_format_id').value,
+            const id = $('template_selling_format_id').value,
                     nick = 'selling_format',
-                    storeId = storeId,
-                    storefrontId = storefrontId,
                     container = 'template_selling_format_messages',
                     callback = function () {
                         var refresh = $(container).down('a.refresh-messages');

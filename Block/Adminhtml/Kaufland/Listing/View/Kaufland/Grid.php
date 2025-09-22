@@ -96,6 +96,7 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Listing\View\AbstractGrid
                 'channel_product_empty_attributes' => ListingProductResource::COLUMN_CHANNEL_PRODUCT_EMPTY_ATTRIBUTES,
                 'is_incomplete' => ListingProductResource::COLUMN_IS_INCOMPLETE,
                 'template_category_id' => ListingProductResource::COLUMN_TEMPLATE_CATEGORY_ID,
+                'is_valid_category_attributes' => ListingProductResource::COLUMN_IS_VALID_CATEGORY_ATTRIBUTES,
             ],
             '{{table}}.listing_id=' . (int)$listingData['id']
         );

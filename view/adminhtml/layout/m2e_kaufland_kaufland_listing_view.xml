@@ -5,6 +5,7 @@
     <body>
         <referenceContainer name="content">
             <block class="M2E\Kaufland\Block\Adminhtml\Category\Chooser\Prepare"/>
+            <block class="M2E\Kaufland\Block\Adminhtml\Category\Attributes\Validation\Popup"/>
 
             <container name="m2e.kaufland.listing.header">
                 <block class="M2E\Kaufland\Block\Adminhtml\Listing\View\Header">

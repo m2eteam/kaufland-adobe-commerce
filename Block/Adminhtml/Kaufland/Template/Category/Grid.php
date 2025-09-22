@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace M2E\Kaufland\Block\Adminhtml\Kaufland\Template\Category;
 
 use M2E\Kaufland\Model\Category\Dictionary;
@@ -10,8 +12,12 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Magento\Grid\AbstractGrid
     private \M2E\Kaufland\Model\ResourceModel\Storefront $storefrontResource;
     private DictionaryCollectionFactory $categoryDictionaryCollectionFactory;
     private \M2E\Kaufland\Model\ResourceModel\Storefront\CollectionFactory $storefrontCollectionFactory;
+    private \M2E\Kaufland\Model\ResourceModel\Product $productResource;
+    private \M2E\Core\Ui\AppliedFilters\Manager $appliedFiltersManager;
 
     public function __construct(
+        \M2E\Kaufland\Model\ResourceModel\Product $productResource,
+        \M2E\Core\Ui\AppliedFilters\Manager $appliedFiltersManager,
         \M2E\Kaufland\Model\ResourceModel\Storefront $storefrontResource,
         DictionaryCollectionFactory $categoryDictionaryCollectionFactory,
         \M2E\Kaufland\Model\ResourceModel\Storefront\CollectionFactory $storefrontCollectionFactory,
@@ -24,6 +30,8 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Magento\Grid\AbstractGrid
         $this->storefrontCollectionFactory = $storefrontCollectionFactory;
 
         parent::__construct($context, $backendHelper, $data);
+        $this->productResource = $productResource;
+        $this->appliedFiltersManager = $appliedFiltersManager;
     }
 
     public function _construct()
@@ -54,6 +62,13 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Magento\Grid\AbstractGrid
         );
 
         $collection->getSelect()->columns('storefront.storefront_code');
+
+        $collection->joinLeft(
+            ['products' => $this->createProductCountJoinTable()],
+            'template_category_id = main_table.id',
+            ['product_count' => 'count']
+        );
+
         $this->setCollection($collection);
 
         return parent::_prepareCollection();
@@ -94,6 +109,18 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Magento\Grid\AbstractGrid
                 'frame_callback' => [$this, 'callbackColumnStorefrontTitle'],
                 'filter_condition_callback' => [$this, 'callbackFilterStorefront'],
                 'options' => $this->getStorefrontIdOptions(),
+            ]
+        );
+
+        $this->addColumn(
+            'product_count',
+            [
+                'header' => __('Products'),
+                'align' => 'center',
+                'type' => 'number',
+                'index' => 'product_count',
+                'filter_index' => 'products.count',
+                'frame_callback' => [$this, 'callbackColumnProductCount'],
             ]
         );
 
@@ -196,6 +223,23 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Magento\Grid\AbstractGrid
         return $title;
     }
 
+    public function callbackColumnProductCount($value, $row, $column, $isExport): string
+    {
+        if (empty($value)) {
+            return '0';
+        }
+
+        $appliedFiltersBuilder = new \M2E\Core\Ui\AppliedFilters\Builder();
+        $appliedFiltersBuilder->addSelectFilter('product_template_category_id', [$row->getId()]);
+
+        $url = $this->appliedFiltersManager->createUrlWithAppliedFilters(
+            '*/product_grid/allItems',
+            $appliedFiltersBuilder->build()
+        );
+
+        return sprintf('<a href="%s" target="_blank">%s</a>', $url, $value);
+    }
+
     protected function callbackFilterStorefront($collection, $column): void
     {
         $value = $column->getFilter()->getValue();
@@ -214,5 +258,20 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Magento\Grid\AbstractGrid
     public function getRowUrl($item)
     {
         return false;
+    }
+
+    private function createProductCountJoinTable(): \Magento\Framework\DB\Select
+    {
+        return $this->productResource
+            ->getConnection()
+            ->select()
+            ->from(
+                ['temp' => $this->productResource->getMainTable()],
+                [
+                    'template_category_id' => $this->productResource::COLUMN_TEMPLATE_CATEGORY_ID,
+                    'count' => new \Zend_Db_Expr('COUNT(*)'),
+                ]
+            )
+            ->group($this->productResource::COLUMN_TEMPLATE_CATEGORY_ID);
     }
 }

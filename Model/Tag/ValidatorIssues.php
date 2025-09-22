@@ -23,6 +23,7 @@ class ValidatorIssues
     public const ERROR_DUPLICATE_SKU_IN_LISTING = '0011-m2e';
     public const ERROR_HANDLING_TIME_INVALID = '0012-m2e';
     public const ERROR_HANDLING_TIME_OUT_OF_RANGE = '0013-m2e';
+    public const ERROR_CATEGORY_ATTRIBUTE_MISSING = '0014-m2e';
 
     public function mapByCode(string $code): ?ValidatorMessage
     {
@@ -43,6 +44,7 @@ class ValidatorIssues
             self::ERROR_DUPLICATE_SKU_IN_LISTING => (string)__('Product with the same SKU already exists in another Listing.'),
             self::ERROR_HANDLING_TIME_INVALID => (string)__('Handling Time is missing or invalid.'),
             self::ERROR_HANDLING_TIME_OUT_OF_RANGE => (string)__('Handling Time must be a positive whole number less than 100.'),
+            self::ERROR_CATEGORY_ATTRIBUTE_MISSING => (string)__('Unable to List Product Due to missing Item Attribute(s)'),
         ];
 
         if (!isset($map[$code])) {

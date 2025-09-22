@@ -3,14 +3,6 @@ define([
 ], function () {
 
     window.TemplateManager = Class.create(Common, {
-
-        // ---------------------------------------
-
-        initialize: function () {
-        },
-
-        // ---------------------------------------
-
         checkMessages: function (id, nick, data, storeId, container, callback, storefrontId = null) {
             var parameters = '';
 
@@ -42,8 +34,6 @@ define([
                 }.bind(this)
             });
         }
-
-        // ---------------------------------------
     });
 
 });

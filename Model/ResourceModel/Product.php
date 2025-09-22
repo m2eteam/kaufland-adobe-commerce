@@ -34,6 +34,8 @@ class Product extends \M2E\Kaufland\Model\ResourceModel\ActiveRecord\AbstractMod
     public const COLUMN_ONLINE_IMAGE = 'online_image';
 
     public const COLUMN_TEMPLATE_CATEGORY_ID = 'template_category_id';
+    public const COLUMN_IS_VALID_CATEGORY_ATTRIBUTES = 'is_valid_category_attributes';
+    public const COLUMN_CATEGORY_ATTRIBUTES_ERRORS = 'category_attributes_errors';
     public const COLUMN_LAST_BLOCKING_ERROR_DATE = 'last_blocking_error_date';
     public const COLUMN_ADDITIONAL_DATA = 'additional_data';
     public const COLUMN_CHANNEL_PRODUCT_EMPTY_ATTRIBUTES = 'channel_product_empty_attributes';

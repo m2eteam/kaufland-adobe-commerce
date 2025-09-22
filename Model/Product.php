@@ -733,6 +733,7 @@ class Product extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
     public function setTemplateCategoryId(int $categoryId): void
     {
         $this->setData(ProductResource::COLUMN_TEMPLATE_CATEGORY_ID, $categoryId);
+        $this->resetValidationData();
     }
 
     public function getTemplateCategoryId(): ?int
@@ -872,5 +873,50 @@ class Product extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         if (!in_array($changer, $allowed)) {
             throw new \M2E\Kaufland\Model\Exception\Logic(sprintf('Status changer %s not valid.', $changer));
         }
+    }
+
+    public function isInvalidCategoryAttributes(): bool
+    {
+        $value = $this->getData(ProductResource::COLUMN_IS_VALID_CATEGORY_ATTRIBUTES);
+
+        return $value === null ? false : !$value;
+    }
+
+    public function markCategoryAttributesAsValid(): void
+    {
+        $this->setCategoryAttributesValid(true);
+        $this->setCategoryAttributesErrors([]);
+    }
+
+    /**
+     * @param string[] $errors
+     *
+     * @return void
+     */
+    public function markCategoryAttributesAsInvalid(array $errors): void
+    {
+        $this->setCategoryAttributesValid(false);
+        $this->setCategoryAttributesErrors($errors);
+    }
+
+    private function setCategoryAttributesValid(bool $isValid): void
+    {
+        $this->setData(ProductResource::COLUMN_IS_VALID_CATEGORY_ATTRIBUTES, $isValid);
+    }
+
+    private function setCategoryAttributesErrors(array $errors): void
+    {
+        $value = null;
+        if (!empty($errors)) {
+            $value = json_encode($errors);
+        }
+
+        $this->setData(ProductResource::COLUMN_CATEGORY_ATTRIBUTES_ERRORS, $value);
+    }
+
+    private function resetValidationData(): void
+    {
+        $this->setData(ProductResource::COLUMN_IS_VALID_CATEGORY_ATTRIBUTES, null);
+        $this->setData(ProductResource::COLUMN_CATEGORY_ATTRIBUTES_ERRORS, null);
     }
 }

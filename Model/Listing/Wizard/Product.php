@@ -15,10 +15,12 @@ class Product extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
     private \M2E\Kaufland\Model\Magento\Product\CacheFactory $magentoProductFactory;
     private \M2E\Kaufland\Model\Listing\Wizard\Repository $wizardRepository;
     private \M2E\Kaufland\Model\Listing\Wizard $wizard;
+    private \M2E\Kaufland\Model\Category\Dictionary\Repository $dictionaryRepository;
 
     public function __construct(
         \M2E\Kaufland\Model\Magento\Product\CacheFactory $magentoProductFactory,
         \M2E\Kaufland\Model\Listing\Wizard\Repository $wizardRepository,
+        \M2E\Kaufland\Model\Category\Dictionary\Repository $dictionaryRepository,
         \Magento\Framework\Model\Context $context,
         \Magento\Framework\Registry $registry,
         ?\M2E\Kaufland\Model\Factory $modelFactory = null,
@@ -38,6 +40,7 @@ class Product extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         );
         $this->magentoProductFactory = $magentoProductFactory;
         $this->wizardRepository = $wizardRepository;
+        $this->dictionaryRepository = $dictionaryRepository;
     }
 
     public function _construct(): void
@@ -143,6 +146,16 @@ class Product extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         return (int)$value;
     }
 
+    public function getCategoryDictionary(): ?\M2E\Kaufland\Model\Category\Dictionary
+    {
+        $dictionaryId = $this->getCategoryDictionaryId();
+        if ($dictionaryId === null) {
+            return null;
+        }
+
+        return $this->dictionaryRepository->get($dictionaryId);
+    }
+
     public function getCategoryTitle(): ?string
     {
         $value = $this->getData(WizardProductResource::COLUMN_CATEGORY_TITLE);
@@ -185,5 +198,57 @@ class Product extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         $instance->setStatisticId($this->getId());
 
         return $instance;
+    }
+
+    public function markCategoryAttributesAsValid(): void
+    {
+        $this->setCategoryAttributesValid(true);
+        $this->setCategoryAttributesErrors([]);
+    }
+
+    /**
+     * @param string[] $errors
+     *
+     * @return void
+     */
+    public function markCategoryAttributesAsInvalid(array $errors): void
+    {
+        $this->setCategoryAttributesValid(false);
+        $this->setCategoryAttributesErrors($errors);
+    }
+
+    public function isInvalidCategoryAttributes(): bool
+    {
+        $value = $this->getData(WizardProductResource::COLUMN_IS_VALID_CATEGORY_ATTRIBUTES);
+
+        return $value === null ? false : !$value;
+    }
+
+    private function setCategoryAttributesValid(bool $isValid): void
+    {
+        $this->setData(WizardProductResource::COLUMN_IS_VALID_CATEGORY_ATTRIBUTES, $isValid);
+    }
+
+    private function setCategoryAttributesErrors(array $errors): void
+    {
+        $value = null;
+        if (!empty($errors)) {
+            $value = json_encode($errors);
+        }
+
+        $this->setData(WizardProductResource::COLUMN_CATEGORY_ATTRIBUTES_ERRORS, $value);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getCategoryAttributesErrors(): array
+    {
+        $value = $this->getData(WizardProductResource::COLUMN_CATEGORY_ATTRIBUTES_ERRORS);
+        if (empty($value)) {
+            return [];
+        }
+
+        return (array)json_decode($value, true);
     }
 }

@@ -101,4 +101,25 @@ class Repository
 
         return $result;
     }
+
+    /**
+     * @param int $dictionaryId
+     *
+     * @return Attribute[]
+     */
+    public function getAttributesWithCustomValue(int $dictionaryId): array
+    {
+        $collection = $this->attributeCollectionFactory->create();
+        $collection->addFieldToFilter(
+            AttributeResource::COLUMN_CATEGORY_DICTIONARY_ID,
+            ['eq' => $dictionaryId]
+        );
+
+        $collection->addFieldToFilter(
+            AttributeResource::COLUMN_VALUE_MODE,
+            \M2E\Kaufland\Model\Category\Attribute::VALUE_MODE_CUSTOM_ATTRIBUTE
+        );
+
+        return array_values($collection->getItems());
+    }
 }

@@ -73,6 +73,7 @@ HTML;
 
         $html .= $this->getScheduledTag($row);
         $html .= $this->getProgressTag($row);
+        $html .= $this->getItemAttributeValidationWarning($row);
 
         return $html;
     }
@@ -214,6 +215,25 @@ HTML;
             'The product is not valid on the channel. To restore it, please revise the following
         fields that are currently incomplete or missing: %attributes.',
             ['attributes' => $attributesList]
+        );
+    }
+
+    private function getItemAttributeValidationWarning(\Magento\Framework\DataObject $row)
+    {
+        if ((int)$row->getData('status') !== Product::STATUS_NOT_LISTED) {
+            return '';
+        }
+
+        $isValid = $row->getData(ProductResource::COLUMN_IS_VALID_CATEGORY_ATTRIBUTES);
+        if ($isValid || $isValid === null) {
+            return '';
+        }
+
+        $warningMessage = (string)__('Unable to List Product Due to missing Item Attribute(s)');
+
+        return sprintf(
+            '<span class="fix-magento-tooltip m2e-tooltip-grid-warning" style="float:right;">%s</span>',
+            $this->getTooltipHtml($warningMessage)
         );
     }
 }

@@ -21,7 +21,7 @@ class RequiredCategoryAttributesExist implements \M2E\Kaufland\Model\Product\Act
         $productCategoryDictionary = $product->getCategoryDictionary();
         $magentoProduct = $product->getMagentoProduct();
 
-        if (!$productCategoryDictionary->getHasRequiredProductAttributes()) {
+        if (!$productCategoryDictionary->hasRequiredProductAttributes()) {
             return null;
         }
 

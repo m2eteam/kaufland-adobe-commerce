@@ -29,7 +29,12 @@ class NotListed extends \M2E\Kaufland\Model\Instruction\SynchronizationTemplate\
             return false;
         }
 
-        return $this->input->getListingProduct()->isListable();
+        $listingProduct = $this->input->getListingProduct();
+        if ($listingProduct->isInvalidCategoryAttributes()) {
+            return false;
+        }
+
+        return $listingProduct->isListable();
     }
 
     public function process(): void
