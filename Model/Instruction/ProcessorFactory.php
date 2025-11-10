@@ -13,8 +13,13 @@ class ProcessorFactory
         $this->objectManager = $objectManager;
     }
 
-    public function create(): Processor
+    /**
+     * @param \M2E\Kaufland\Model\Instruction\Handler\HandlerInterface[] $handlers
+     */
+    public function create(array $handlers): Processor
     {
-        return $this->objectManager->create(Processor::class);
+        return $this->objectManager->create(Processor::class, [
+            'handlers' => $handlers
+        ]);
     }
 }

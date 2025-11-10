@@ -94,6 +94,9 @@ class Config implements \M2E\Core\Model\Setup\Upgrade\Entity\ConfigInterface
             'y25_m09' => [
                 \M2E\Kaufland\Setup\Update\y25_m09\AddValidationAttributesColumns::class,
             ],
+            'y25_m11' => [
+                \M2E\Kaufland\Setup\Update\y25_m11\AddListingAutoAction::class,
+            ]
         ];
     }
 }

@@ -1,0 +1,103 @@
+<?php
+
+// @codingStandardsIgnoreFile
+
+/** @var \M2E\Kaufland\Block\Adminhtml\Listing\Category\Tree $block */
+
+$selectedCategories = $block->getSelectedCategories();
+$callback = $block->getCallback();
+
+?>
+
+<div class="tree-actions" style="margin-bottom: 5px;">
+    <a href="#" id="collapse-all"><?php
+        /* @noEscape */
+
+        echo __('Collapse All'); ?></a>
+    <span class="separator">|</span>
+    <a href="#" id="expand-all"><?php
+        /* @noEscape */
+
+        echo __('Expand All'); ?></a>
+</div>
+<div class="categories-side-col">
+    <div class="tree-holder">
+        <div id="tree-div-auto-action" style="width: 100%; overflow: auto;" class="admin__scope-old"></div>
+    </div>
+</div>
+
+<script>
+    require([
+        'jquery',
+        'Kaufland/External/jstree/jstree.min'
+    ], function ($) {
+        window.categories_selected_items = [];
+        window.initTreeSelectedNodes = [];
+        window.initTreeHighlightedNodes = [];
+
+        window.ignoreTreeCallback = false;
+        window.lastCallbackParams = [];
+
+        <?php foreach ($selectedCategories as $category) { ?>
+        categories_selected_items.push('<?php /* @noEscape */ echo $category; ?>');
+        initTreeSelectedNodes[initTreeSelectedNodes.length] = [];
+        initTreeSelectedNodes[initTreeSelectedNodes.length - 1][0] = '<?php /* @noEscape */ echo $category; ?>';
+        initTreeSelectedNodes[initTreeSelectedNodes.length - 1][1] = null;
+        <?php } ?>
+
+        function init() {
+            const jsTreeContainer = $('#tree-div-auto-action');
+
+            if (jsTreeContainer.length) {
+                jsTreeContainer.jstree({
+                    'core': {
+                        'themes': {
+                            'responsive': false
+                        },
+                        'data': <?php /* @noEscape */ echo $block->getTreeJson(); ?>,
+                    },
+                    'multiple': true,
+                    'plugins': ['checkbox'],
+                    'checkbox': {
+                        'three_state': false,
+                        'whole_node': true,
+                        'tie_selection': true,
+                    }
+                });
+
+                window.tree = jsTreeContainer.jstree(true);
+
+                jsTreeContainer.on('ready.jstree', function () {
+                    jsTreeContainer.on('click', '#expand-all', () => tree.open_all());
+                    jsTreeContainer.on('click', '#collapse-all', () => tree.close_all());
+
+                    for (let i = 0; i < initTreeSelectedNodes.length; i++) {
+                        tree.select_node(initTreeSelectedNodes[i][0]);
+                    }
+                });
+
+                jsTreeContainer.on('select_node.jstree', function (e, data) {
+                    if (!categories_selected_items.includes(data.node.id)) {
+                        categories_selected_items.push(data.node.id);
+                    }
+
+                    <?php if (!empty($callback)) : ?>
+                    if (!ignoreTreeCallback) {
+                        (<?php /* @noEscape */ echo $callback ?>)([data.node.id]);
+                    }
+                    <?php endif; ?>
+                });
+
+                jsTreeContainer.on('deselect_node.jstree', function (e, data) {
+                    categories_selected_items = categories_selected_items.filter(function (id) {
+                        return id !== data.node.id;
+                    });
+                });
+            }
+        }
+
+        $(document).ready(function () {
+            init();
+        });
+    });
+</script>

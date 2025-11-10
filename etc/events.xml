@@ -34,6 +34,14 @@
                   shared="false"/>
     </event>
 
+    <!-- categories -->
+
+    <event name="catalog_category_change_products">
+        <observer name="kauflnd_observer_category"
+                  instance="M2E\Kaufland\Observer\Category"
+                  shared="false" />
+    </event>
+
     <!-- stock items -->
 
     <event name="cataloginventory_stock_item_save_before">

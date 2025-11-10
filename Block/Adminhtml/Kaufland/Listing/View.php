@@ -146,6 +146,7 @@ class View extends \M2E\Kaufland\Block\Adminhtml\Magento\Grid\AbstractContainer
         // ---------------------------------------
 
         $this->addGrid();
+
         return parent::_prepareLayout();
     }
 
@@ -174,7 +175,6 @@ class View extends \M2E\Kaufland\Block\Adminhtml\Magento\Grid\AbstractContainer
 
     protected function _toHtml()
     {
-
         return '<div id="listing_view_progress_bar"></div>' .
             '<div id="listing_container_errors_summary" class="errors_summary" style="display: none;"></div>' .
             '<div id="listing_view_content_container">' .
@@ -197,15 +197,21 @@ class View extends \M2E\Kaufland\Block\Adminhtml\Magento\Grid\AbstractContainer
             )
         );
 
-        $path = 'kaufland_listing/transferring/index';
+        $this->jsUrl->addUrls(
+            $helper->getControllerActions(
+                'Kaufland\Listing\AutoAction',
+                ['_current' => true]
+            )
+        );
+
         $this->jsUrl->add(
             $this->getUrl(
-                '*/' . $path,
+                '*/kaufland_listing/transferring/index',
                 [
                     'listing_id' => $this->listing->getId(),
                 ]
             ),
-            $path
+            'kaufland_listing/transferring/index'
         );
 
         $this->jsUrl->add(
@@ -218,10 +224,15 @@ class View extends \M2E\Kaufland\Block\Adminhtml\Magento\Grid\AbstractContainer
             ),
             'mapProductPopupHtml'
         );
-        $this->jsUrl->add($this->getUrl('*/listing_mapping/remap'), 'listing_mapping/remap');
+        $this->jsUrl->add(
+            $this->getUrl('*/listing_mapping/remap'),
+            'listing_mapping/remap'
+        );
 
-        $path = 'kaufland_listing_transferring/getListings';
-        $this->jsUrl->add($this->getUrl('*/' . $path), $path);
+        $this->jsUrl->add(
+            $this->getUrl('*/kaufland_listing_transferring/getListings'),
+            'kaufland_listing_transferring/getListings'
+        );
 
         $this->jsTranslator->addTranslations(
             [
@@ -237,6 +248,19 @@ class View extends \M2E\Kaufland\Block\Adminhtml\Magento\Grid\AbstractContainer
                 'Linking Product' => __('Linking Product'),
             ]
         );
+
+        if (!$this->getRequest()->isXmlHttpRequest()) {
+            $this->js->add(
+                <<<JS
+    require([
+        'Kaufland/Kaufland/Listing/AutoAction',
+        'Kaufland/External/jstree/jstree.min'
+    ], function(){
+        window.ListingAutoActionObj = new KauflandListingAutoAction();
+    });
+JS
+            );
+        }
 
         return parent::getGridHtml();
     }
@@ -261,6 +285,11 @@ class View extends \M2E\Kaufland\Block\Adminhtml\Magento\Grid\AbstractContainer
             'label' => __('Configuration'),
             'onclick' => 'window.open(\'' . $url . '\',\'_blank\');',
             'default' => true,
+        ];
+
+        $items[] = [
+            'onclick' => 'ListingAutoActionObj.loadAutoActionHtml();',
+            'label' => $this->__('Auto Add/Remove Rules'),
         ];
 
         return $items;

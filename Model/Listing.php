@@ -36,6 +36,22 @@ class Listing extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
     public const CONDITION_REFURBISHED_AS_NEW = 'REFURBISHED___AS_NEW';
     public const CONDITION_REFURBISHED_ACCEPTABLE = 'REFURBISHED___ACCEPTABLE';
 
+    public const AUTO_MODE_NONE = 0;
+    public const AUTO_MODE_GLOBAL = 1;
+    public const AUTO_MODE_WEBSITE = 2;
+    public const AUTO_MODE_CATEGORY = 3;
+
+    public const ADDING_MODE_NONE = 0;
+    public const ADDING_MODE_ADD = 1;
+    public const ADDING_MODE_ADD_AND_ASSIGN_CATEGORY = 2;
+
+    public const AUTO_ADDING_ADD_NOT_VISIBLE_NO = 0;
+    public const AUTO_ADDING_ADD_NOT_VISIBLE_YES = 1;
+
+    public const DELETING_MODE_NONE = 0;
+    public const DELETING_MODE_STOP = 1;
+    public const DELETING_MODE_STOP_REMOVE = 2;
+
     private ?\M2E\Kaufland\Model\Account $account = null;
     private ?\M2E\Kaufland\Model\Storefront $storefront = null;
 
@@ -475,5 +491,116 @@ class Listing extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         unset($this->account);
 
         return parent::delete();
+    }
+
+    // ----------------------------------------
+
+    public function resetAutoAction()
+    {
+        $this->setData(ListingResource::COLUMN_AUTO_MODE, self::AUTO_MODE_NONE);
+
+        $this->setData(ListingResource::COLUMN_AUTO_GLOBAL_ADDING_MODE, self::AUTO_MODE_NONE);
+        $this->setData(
+            ListingResource::COLUMN_AUTO_GLOBAL_ADDING_ADD_NOT_VISIBLE,
+            self::AUTO_ADDING_ADD_NOT_VISIBLE_YES
+        );
+        $this->setData(ListingResource::COLUMN_AUTO_GLOBAL_ADDING_TEMPLATE_CATEGORY_ID, null);
+
+        $this->setData(ListingResource::COLUMN_AUTO_WEBSITE_ADDING_MODE, self::ADDING_MODE_NONE);
+        $this->setData(
+            ListingResource::COLUMN_AUTO_WEBSITE_ADDING_ADD_NOT_VISIBLE,
+            self::AUTO_ADDING_ADD_NOT_VISIBLE_YES
+        );
+        $this->setData(ListingResource::COLUMN_AUTO_WEBSITE_ADDING_TEMPLATE_CATEGORY_ID, null);
+        $this->setData(ListingResource::COLUMN_AUTO_WEBSITE_DELETING_MODE, self::DELETING_MODE_NONE);
+    }
+
+    public function setGlobalAutoAction(
+        int $addingMode,
+        int $addNotVisible,
+        int $templateCategoryId
+    ): void {
+        $this->resetAutoAction();
+
+        $this->setData(ListingResource::COLUMN_AUTO_MODE, self::AUTO_MODE_GLOBAL);
+        $this->setData(ListingResource::COLUMN_AUTO_GLOBAL_ADDING_MODE, $addingMode);
+
+        if ($addingMode == self::ADDING_MODE_ADD_AND_ASSIGN_CATEGORY) {
+            $this->setData(ListingResource::COLUMN_AUTO_GLOBAL_ADDING_TEMPLATE_CATEGORY_ID, $templateCategoryId);
+        }
+
+        if ($addingMode != Listing::ADDING_MODE_NONE) {
+            $this->setData(ListingResource::COLUMN_AUTO_GLOBAL_ADDING_ADD_NOT_VISIBLE, $addNotVisible);
+        }
+    }
+
+    public function setWebsiteAutoAction(
+        int $addingMode,
+        int $deletingMode,
+        int $addNotVisible,
+        int $templateCategoryId
+    ): void {
+        $this->resetAutoAction();
+
+        $this->setData(ListingResource::COLUMN_AUTO_MODE, self::AUTO_MODE_WEBSITE);
+        $this->setData(ListingResource::COLUMN_AUTO_WEBSITE_ADDING_MODE, $addingMode);
+        $this->setData(ListingResource::COLUMN_AUTO_WEBSITE_DELETING_MODE, $deletingMode);
+
+        if ($addingMode === self::ADDING_MODE_ADD_AND_ASSIGN_CATEGORY) {
+            $this->setData(ListingResource::COLUMN_AUTO_WEBSITE_ADDING_TEMPLATE_CATEGORY_ID, $templateCategoryId);
+        }
+
+        if ($addingMode !== Listing::ADDING_MODE_NONE) {
+            $this->setData(ListingResource::COLUMN_AUTO_WEBSITE_ADDING_ADD_NOT_VISIBLE, $addNotVisible);
+        }
+    }
+
+    public function setCategoryAutoAction(): void
+    {
+        $this->resetAutoAction();
+
+        $this->setData(ListingResource::COLUMN_AUTO_MODE, self::AUTO_MODE_CATEGORY);
+    }
+
+    public function isAutoModeGlobal(): bool
+    {
+        return (int)$this->getData(ListingResource::COLUMN_AUTO_MODE) === self::AUTO_MODE_GLOBAL;
+    }
+
+    public function isAutoModeWebsite(): bool
+    {
+        return (int)$this->getData(ListingResource::COLUMN_AUTO_MODE) === self::AUTO_MODE_WEBSITE;
+    }
+
+    public function isAutoModeCategory(): bool
+    {
+        return (int)$this->getData(ListingResource::COLUMN_AUTO_MODE) === self::AUTO_MODE_CATEGORY;
+    }
+
+    public function getAutoGlobalAddingTemplateCategoryId(): int
+    {
+        return (int)$this->getData(ListingResource::COLUMN_AUTO_GLOBAL_ADDING_TEMPLATE_CATEGORY_ID);
+    }
+
+    public function getAutoWebsiteAddingTemplateCategoryId(): int
+    {
+        return (int)$this->getData(ListingResource::COLUMN_AUTO_WEBSITE_ADDING_TEMPLATE_CATEGORY_ID);
+    }
+
+    public function isAutoWebsiteAddingAddNotVisibleYes(): bool
+    {
+        return (int)$this->getData(ListingResource::COLUMN_AUTO_WEBSITE_ADDING_ADD_NOT_VISIBLE)
+            === self::AUTO_ADDING_ADD_NOT_VISIBLE_YES;
+    }
+
+    public function getAutoWebsiteDeletingMode(): int
+    {
+        return (int)$this->getData(ListingResource::COLUMN_AUTO_WEBSITE_DELETING_MODE);
+    }
+
+    public function isAutoGlobalAddingAddNotVisibleYes(): bool
+    {
+        return (int)$this->getData(ListingResource::COLUMN_AUTO_GLOBAL_ADDING_ADD_NOT_VISIBLE)
+            === self::AUTO_ADDING_ADD_NOT_VISIBLE_YES;
     }
 }

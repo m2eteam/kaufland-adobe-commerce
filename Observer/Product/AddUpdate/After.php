@@ -8,6 +8,7 @@ use Magento\Catalog\Model\Product\Attribute\Source\Status;
 
 class After extends AbstractAddUpdate
 {
+    private \M2E\Kaufland\Model\Listing\Auto\Actions\Mode\Factory $listingAutoActionsModeFactory;
     private \Magento\Eav\Model\Config $eavConfig;
     private \Magento\Store\Model\StoreManager $storeManager;
     private \Magento\Framework\ObjectManagerInterface $objectManager;
@@ -18,6 +19,7 @@ class After extends AbstractAddUpdate
     private array $attributeAffectOnStoreIdCache = [];
 
     public function __construct(
+        \M2E\Kaufland\Model\Listing\Auto\Actions\Mode\Factory $listingAutoActionsModeFactory,
         \M2E\Kaufland\Model\Product\Repository $listingProductRepository,
         \M2E\Kaufland\Model\Listing\Log\Repository $listingLogRepository,
         \M2E\Kaufland\Model\Listing\LogService $listingLogService,
@@ -36,6 +38,7 @@ class After extends AbstractAddUpdate
             $modelFactory
         );
 
+        $this->listingAutoActionsModeFactory = $listingAutoActionsModeFactory;
         $this->eavConfig = $eavConfig;
         $this->storeManager = $storeManager;
         $this->objectManager = $objectManager;
@@ -63,21 +66,24 @@ class After extends AbstractAddUpdate
 
     protected function process(): void
     {
-        if ($this->isAddingProductProcess()) {
-            return;
+        if (!$this->isAddingProductProcess()) {
+            $this->updateProductsNamesInLogs();
+
+            if ($this->areThereAffectedItems()) {
+                $this->performStatusChanges();
+                $this->performPriceChanges();
+                $this->performSpecialPriceChanges();
+                $this->performSpecialPriceFromDateChanges();
+                $this->performSpecialPriceToDateChanges();
+
+                $this->addListingProductInstructions();
+            }
+        } else {
+            $this->performGlobalAutoActions();
         }
 
-        $this->updateProductsNamesInLogs();
-
-        if ($this->areThereAffectedItems()) {
-            $this->performStatusChanges();
-            $this->performPriceChanges();
-            $this->performSpecialPriceChanges();
-            $this->performSpecialPriceFromDateChanges();
-            $this->performSpecialPriceToDateChanges();
-
-            $this->addListingProductInstructions();
-        }
+        $this->performWebsiteAutoActions();
+        $this->performCategoryAutoActions();
     }
 
     private function updateProductsNamesInLogs()
@@ -353,5 +359,88 @@ class After extends AbstractAddUpdate
             ),
             \M2E\Kaufland\Model\Log\AbstractModel::TYPE_INFO,
         );
+    }
+
+    protected function performGlobalAutoActions()
+    {
+        $object = $this->listingAutoActionsModeFactory->createGlobalMode($this->getProduct());
+        $object->synch();
+    }
+
+    protected function performWebsiteAutoActions()
+    {
+        $object = $this->listingAutoActionsModeFactory->createWebsiteMode($this->getProduct());
+
+        $websiteIdsOld = $this->getProxy()->getWebsiteIds();
+        $websiteIdsNew = $this->getProduct()->getWebsiteIds();
+
+        // website for admin values
+        if ($this->isAddingProductProcess()) {
+            $websiteIdsNew[] = 0;
+        }
+
+        $addedWebsiteIds = array_diff($websiteIdsNew, $websiteIdsOld);
+        foreach ($addedWebsiteIds as $websiteId) {
+            $object->synchWithAddedWebsiteId($websiteId);
+        }
+
+        $deletedWebsiteIds = array_diff($websiteIdsOld, $websiteIdsNew);
+        foreach ($deletedWebsiteIds as $websiteId) {
+            $object->synchWithDeletedWebsiteId($websiteId);
+        }
+    }
+
+    protected function performCategoryAutoActions()
+    {
+        $categoryIdsOld = $this->getProxy()->getCategoriesIds();
+        $categoryIdsNew = $this->getProduct()->getCategoryIds();
+        $addedCategories = array_diff($categoryIdsNew, $categoryIdsOld);
+        $deletedCategories = array_diff($categoryIdsOld, $categoryIdsNew);
+
+        $websiteIdsOld = $this->getProxy()->getWebsiteIds();
+        $websiteIdsNew = $this->getProduct()->getWebsiteIds();
+        $addedWebsites = array_diff($websiteIdsNew, $websiteIdsOld);
+        $deletedWebsites = array_diff($websiteIdsOld, $websiteIdsNew);
+
+        $websitesChanges = [
+            // website for default store view
+            0 => [
+                'added' => $addedCategories,
+                'deleted' => $deletedCategories,
+            ],
+        ];
+
+        foreach ($this->storeManager->getWebsites() as $website) {
+            $websiteId = (int)$website->getId();
+
+            $websiteChanges = [
+                'added' => [],
+                'deleted' => [],
+            ];
+
+            // website has been enabled
+            if (in_array($websiteId, $addedWebsites)) {
+                $websiteChanges['added'] = $categoryIdsNew;
+                // website is enabled
+            } elseif (in_array($websiteId, $websiteIdsNew)) {
+                $websiteChanges['added'] = $addedCategories;
+            }
+
+            // website has been disabled
+            if (in_array($websiteId, $deletedWebsites)) {
+                $websiteChanges['deleted'] = $categoryIdsOld;
+                // website is enabled
+            } elseif (in_array($websiteId, $websiteIdsNew)) {
+                $websiteChanges['deleted'] = $deletedCategories;
+            }
+
+            $websitesChanges[$websiteId] = $websiteChanges;
+        }
+
+        $categoryAutoAction = $this->listingAutoActionsModeFactory->createCategoryMode($this->getProduct());
+        foreach ($websitesChanges as $websiteId => $changes) {
+            $categoryAutoAction->synchWithAddedCategoryId($websiteId, $changes['added']);
+            $categoryAutoAction->synchWithDeletedCategoryId($websiteId, $changes['deleted']);
+        }
     }
 }

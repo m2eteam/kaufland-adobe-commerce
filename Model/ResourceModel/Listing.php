@@ -18,6 +18,16 @@ class Listing extends ActiveRecord\AbstractModel
     public const COLUMN_TEMPLATE_SHIPPING_ID = 'template_shipping_id';
     public const COLUMN_TEMPLATE_DESCRIPTION_ID = 'template_description_id';
     public const COLUMN_ADDITIONAL_DATA = 'additional_data';
+
+    public const COLUMN_AUTO_MODE = 'auto_mode';
+    public const COLUMN_AUTO_GLOBAL_ADDING_MODE = 'auto_global_adding_mode';
+    public const COLUMN_AUTO_GLOBAL_ADDING_ADD_NOT_VISIBLE = 'auto_global_adding_add_not_visible';
+    public const COLUMN_AUTO_GLOBAL_ADDING_TEMPLATE_CATEGORY_ID = 'auto_global_adding_template_category_id';
+    public const COLUMN_AUTO_WEBSITE_ADDING_MODE = 'auto_website_adding_mode';
+    public const COLUMN_AUTO_WEBSITE_ADDING_ADD_NOT_VISIBLE = 'auto_website_adding_add_not_visible';
+    public const COLUMN_AUTO_WEBSITE_ADDING_TEMPLATE_CATEGORY_ID = 'auto_website_adding_template_category_id';
+    public const COLUMN_AUTO_WEBSITE_DELETING_MODE = 'auto_website_deleting_mode';
+
     public const COLUMN_UPDATE_DATE = 'update_date';
     public const COLUMN_CREATE_DATE = 'create_date';
 

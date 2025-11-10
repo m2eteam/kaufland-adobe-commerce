@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace M2E\Kaufland\Model\Listing\Other;
 
-use M2E\Kaufland\Model\ResourceModel\Listing\Other as ListingOtherResource;
 use M2E\Kaufland\Model\ResourceModel\ExternalChange as ExternalChangeResource;
+use M2E\Kaufland\Model\ResourceModel\Listing\Other as ListingOtherResource;
 use Magento\Ui\Component\MassAction\Filter as MassActionFilter;
 
 class Repository
@@ -316,5 +316,31 @@ class Repository
         $collection->addFieldToFilter(\M2E\Kaufland\Model\ResourceModel\Listing\Other::COLUMN_ACCOUNT_ID, $accountId);
 
         return (int)$collection->getSize() > 0;
+    }
+
+    /**
+     * @return array{ array{"id": int, "path": string} }
+     */
+    public function getDistinctCategories(): array
+    {
+        $collection = $this->collectionFactory->create();
+        $collection->distinct(true);
+        $collection->addFieldToSelect(\M2E\Kaufland\Model\ResourceModel\Listing\Other::COLUMN_CATEGORY_ID);
+        $collection->addFieldToSelect(\M2E\Kaufland\Model\ResourceModel\Listing\Other::COLUMN_CATEGORY_TITLE);
+
+        $collection->setOrder(
+            \M2E\Kaufland\Model\ResourceModel\Listing\Other::COLUMN_CATEGORY_TITLE,
+            \Magento\Framework\Data\Collection::SORT_ORDER_ASC
+        );
+
+        $result = [];
+        foreach ($collection->getItems() as $unmanagedProduct) {
+            $result[] = [
+                'id' => $unmanagedProduct->getCategoryId(),
+                'path' => $unmanagedProduct->getCategoryTitle(),
+            ];
+        }
+
+        return $result;
     }
 }

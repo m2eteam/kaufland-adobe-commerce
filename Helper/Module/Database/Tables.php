@@ -25,6 +25,9 @@ class Tables
     public const TABLE_NAME_PRODUCT_SCHEDULED_ACTION = self::PREFIX . 'product_scheduled_action';
     public const TABLE_NAME_PRODUCT_LOCK = self::PREFIX . 'product_lock';
 
+    public const TABLE_NAME_LISTING_AUTO_CATEGORY = self::PREFIX . 'listing_auto_category';
+    public const TABLE_NAME_LISTING_AUTO_CATEGORY_GROUP = self::PREFIX . 'listing_auto_category_group';
+
     public const TABLE_NAME_LOCK_ITEM = self::PREFIX . 'lock_item';
     public const TABLE_NAME_LOCK_TRANSACTIONAL = self::PREFIX . 'lock_transactional';
 
@@ -188,6 +191,9 @@ class Tables
             self::TABLE_NAME_CATEGORY_TREE => \M2E\Kaufland\Model\ResourceModel\Category\Tree::class,
             self::TABLE_NAME_CATEGORY_DICTIONARY => \M2E\Kaufland\Model\ResourceModel\Category\Dictionary::class,
             self::TABLE_NAME_CATEGORY_ATTRIBUTES => \M2E\Kaufland\Model\ResourceModel\Category\Attribute::class,
+
+            self::TABLE_NAME_LISTING_AUTO_CATEGORY => \M2E\Kaufland\Model\ResourceModel\Listing\Auto\Category::class,
+            self::TABLE_NAME_LISTING_AUTO_CATEGORY_GROUP => \M2E\Kaufland\Model\ResourceModel\Listing\Auto\Category\Group::class,
         ];
     }
 
@@ -250,6 +256,9 @@ class Tables
             self::TABLE_NAME_CATEGORY_TREE => \M2E\Kaufland\Model\Category\Tree::class,
             self::TABLE_NAME_CATEGORY_DICTIONARY => \M2E\Kaufland\Model\Category\Dictionary::class,
             self::TABLE_NAME_CATEGORY_ATTRIBUTES => \M2E\Kaufland\Model\Category\Attribute::class,
+
+            self::TABLE_NAME_LISTING_AUTO_CATEGORY => \M2E\Kaufland\Model\Listing\Auto\Category::class,
+            self::TABLE_NAME_LISTING_AUTO_CATEGORY_GROUP => \M2E\Kaufland\Model\Listing\Auto\Category\Group::class,
         ];
     }
 

@@ -99,6 +99,18 @@
                 </settings>
             </filterSelect>
 
+            <filterSelect name="category_id"
+                          provider="${ $.parentName }"
+                          template="ui/grid/filters/elements/ui-select"
+                          component="Magento_Ui/js/form/element/ui-select"
+            >
+                <settings>
+                    <label>Category</label>
+                    <dataScope>category_id</dataScope>
+                    <options class="M2E\Kaufland\Ui\Product\Component\Unmanaged\Select\Category"/>
+                </settings>
+            </filterSelect>
+
 
         </filters>
 

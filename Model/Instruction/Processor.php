@@ -6,31 +6,29 @@ namespace M2E\Kaufland\Model\Instruction;
 
 class Processor
 {
-    private \M2E\Kaufland\Model\ResourceModel\Product\CollectionFactory $listingProductCollectionFactory;
     private \M2E\Kaufland\Helper\Module\Exception $exceptionHelper;
     private \M2E\Kaufland\Model\Instruction\Handler\InputFactory $handlerInputFactory;
-    private SynchronizationTemplate\Handler $synchronizationTemplateHandler;
     private \M2E\Kaufland\Model\Instruction\Repository $instructionRepository;
     /** @var \M2E\Kaufland\Model\Instruction\Processor\Config */
     private Processor\Config $processorConfig;
     private \M2E\Kaufland\Model\Product\Repository $productRepository;
+    /** @var \M2E\Kaufland\Model\Instruction\Handler\HandlerInterface[]  */
+    private array $handlers;
 
     public function __construct(
+        array $handlers,
         \M2E\Kaufland\Model\Instruction\Processor\Config $processorConfig,
         \M2E\Kaufland\Model\Instruction\Repository $instructionRepository,
         \M2E\Kaufland\Model\Product\Repository $productRepository,
-        SynchronizationTemplate\Handler $synchronizationTemplateHandler,
-        \M2E\Kaufland\Model\ResourceModel\Product\CollectionFactory $listingProductCollectionFactory,
         \M2E\Kaufland\Helper\Module\Exception $exceptionHelper,
         \M2E\Kaufland\Model\Instruction\Handler\InputFactory $handlerInputFactory
     ) {
-        $this->synchronizationTemplateHandler = $synchronizationTemplateHandler;
-        $this->listingProductCollectionFactory = $listingProductCollectionFactory;
         $this->exceptionHelper = $exceptionHelper;
         $this->handlerInputFactory = $handlerInputFactory;
         $this->instructionRepository = $instructionRepository;
         $this->processorConfig = $processorConfig;
         $this->productRepository = $productRepository;
+        $this->handlers = $handlers;
     }
 
     public function process(): void
@@ -55,10 +53,12 @@ class Processor
                     $listingProductInstructions,
                 );
 
-                $this->synchronizationTemplateHandler->process($handlerInput);
+                foreach ($this->handlers as $handler) {
+                    $handler->process($handlerInput);
 
-                if ($handlerInput->getListingProduct()->isDeleted()) {
-                    break;
+                    if ($handlerInput->getListingProduct()->isDeleted()) {
+                        break;
+                    }
                 }
             } catch (\Throwable $exception) {
                 $this->exceptionHelper->process($exception);

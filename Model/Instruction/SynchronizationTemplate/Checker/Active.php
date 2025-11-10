@@ -203,6 +203,13 @@ class Active extends \M2E\Kaufland\Model\Instruction\SynchronizationTemplate\Che
             return;
         }
 
+        if (
+            $this->getInput()->getScheduledAction()->isActionTypeStop()
+            && $this->getInput()->getScheduledAction()->isForce()
+        ) {
+            return;
+        }
+
         $this->scheduledActionRepository->remove($this->getInput()->getScheduledAction());
     }
 
