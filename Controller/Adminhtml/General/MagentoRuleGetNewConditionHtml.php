@@ -23,24 +23,20 @@ class MagentoRuleGetNewConditionHtml extends \M2E\Kaufland\Controller\Adminhtml\
         $typeArr = explode('|', str_replace('-', '/', $this->getRequest()->getParam('type')));
         $type = $typeArr[0];
 
-        $ruleModelPrefix = '';
         $attributeCode = !empty($typeArr[1]) ? $typeArr[1] : '';
         if (count($typeArr) == 3) {
-            $ruleModelPrefix = 'Kaufland\\';
             $attributeCode = !empty($typeArr[2]) ? $typeArr[2] : '';
         }
-
-        $ruleClass = '\M2E\Kaufland\Model\\' . $ruleModelPrefix . 'Magento\Product\Rule';
 
         /** @var \M2E\Kaufland\Model\Magento\Product\Rule\Condition\AbstractModel $model */
         $model = $this->objectManager->create($type);
 
         $model->setId($id)
               ->setType($type)
-              ->setRule($this->objectManager->create($ruleClass))
+              ->setRule($this->objectManager->create(\M2E\Kaufland\Model\Magento\Product\Rule::class))
               ->setPrefix($prefix);
 
-        if ($type == '\M2E\Kaufland\Model\\' . $ruleModelPrefix . 'Magento\Product\Rule\Condition\Combine') {
+        if ($type == '\M2E\Kaufland\Model\Magento\Product\Rule\Condition\Combine') {
             $model->setData($prefix, []);
         }
 

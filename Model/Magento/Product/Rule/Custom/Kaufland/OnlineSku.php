@@ -15,6 +15,6 @@ class OnlineSku extends \M2E\Kaufland\Model\Magento\Product\Rule\Custom\Abstract
 
     public function getValueByProductInstance(\Magento\Catalog\Model\Product $product)
     {
-        return $product->getData(\M2E\Kaufland\Model\ResourceModel\Product::COLUMN_OFFER_ID);
+        return $product->getData('sku');
     }
 }

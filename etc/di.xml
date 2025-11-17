@@ -145,6 +145,7 @@
                 <item name="order" xsi:type="object">M2E\Kaufland\Setup\InstallHandler\OrderHandler</item>
                 <item name="category" xsi:type="object">M2E\Kaufland\Setup\InstallHandler\CategoryHandler</item>
                 <item name="processing" xsi:type="object">M2E\Kaufland\Setup\InstallHandler\ProcessingHandler</item>
+                <item name="advanced_filter" xsi:type="object">M2E\Kaufland\Setup\InstallHandler\AdvancedFilterHandler</item>
             </argument>
         </arguments>
     </type>

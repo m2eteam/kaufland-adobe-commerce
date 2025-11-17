@@ -58,6 +58,7 @@ class Tables
     public const TABLE_NAME_CATEGORY_DICTIONARY = self::PREFIX . 'category_dictionary';
     public const TABLE_NAME_CATEGORY_ATTRIBUTES = self::PREFIX . 'category_attributes';
     public const TABLE_NAME_EXTERNAL_CHANGE = self::PREFIX . 'external_change';
+    public const TABLE_NAME_ADVANCED_FILTER = self::PREFIX . 'advanced_filter';
 
     private \Magento\Framework\App\ResourceConnection $resourceConnection;
     private Structure $databaseHelper;
@@ -194,6 +195,7 @@ class Tables
 
             self::TABLE_NAME_LISTING_AUTO_CATEGORY => \M2E\Kaufland\Model\ResourceModel\Listing\Auto\Category::class,
             self::TABLE_NAME_LISTING_AUTO_CATEGORY_GROUP => \M2E\Kaufland\Model\ResourceModel\Listing\Auto\Category\Group::class,
+            self::TABLE_NAME_ADVANCED_FILTER => \M2E\Kaufland\Model\ResourceModel\AdvancedFilter::class,
         ];
     }
 
@@ -259,6 +261,7 @@ class Tables
 
             self::TABLE_NAME_LISTING_AUTO_CATEGORY => \M2E\Kaufland\Model\Listing\Auto\Category::class,
             self::TABLE_NAME_LISTING_AUTO_CATEGORY_GROUP => \M2E\Kaufland\Model\Listing\Auto\Category\Group::class,
+            self::TABLE_NAME_ADVANCED_FILTER => \M2E\Kaufland\Model\AdvancedFilter::class,
         ];
     }
 

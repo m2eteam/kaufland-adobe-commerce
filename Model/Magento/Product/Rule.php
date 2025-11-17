@@ -4,6 +4,11 @@ namespace M2E\Kaufland\Model\Magento\Product;
 
 class Rule extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
 {
+    public const NICK = 'magento_product_rule';
+
+    /** @var string */
+    protected string $nick = self::NICK;
+    private \M2E\Kaufland\Block\Adminhtml\Magento\Product\Rule\ViewState $viewState;
     protected \Magento\Framework\Data\Form $_form;
 
     /**
@@ -65,7 +70,7 @@ class Rule extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
     public function loadFromSerialized($serialized)
     {
         $prefix = $this->getPrefix();
-        if ($prefix === null) {
+        if (empty($prefix)) {
             throw new \M2E\Kaufland\Model\Exception('Prefix must be specified before.');
         }
 
@@ -89,7 +94,7 @@ class Rule extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
     public function loadFromPost(array $post)
     {
         $prefix = $this->getPrefix();
-        if ($prefix === null) {
+        if (empty($prefix)) {
             throw new \M2E\Kaufland\Model\Exception('Prefix must be specified before.');
         }
 
@@ -109,7 +114,7 @@ class Rule extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
     public function getSerializedFromPost(array $post)
     {
         $prefix = $this->getPrefix();
-        if ($prefix === null) {
+        if (empty($prefix)) {
             throw new \M2E\Kaufland\Model\Exception('Prefix must be specified before.');
         }
 
@@ -125,9 +130,9 @@ class Rule extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         return $this->getData('title');
     }
 
-    public function getPrefix(): ?string
+    public function getPrefix(): string
     {
-        return $this->getData('prefix');
+        return (string)$this->getData('prefix');
     }
 
     public function getStoreId()
@@ -195,7 +200,7 @@ class Rule extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
     public function getConditions()
     {
         $prefix = $this->getPrefix();
-        if ($prefix === null) {
+        if (empty($prefix)) {
             throw new \M2E\Kaufland\Model\Exception('Prefix must be specified before.');
         }
 
@@ -338,6 +343,10 @@ class Rule extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
     }
 
     // ---------------------------------------
+    public function getNick(): string
+    {
+        return $this->nick;
+    }
 
     protected function _beforeSave()
     {
@@ -345,6 +354,21 @@ class Rule extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         $this->setData('conditions_serialized', $serialized);
 
         return parent::_beforeSave();
+    }
+
+    public function setViewSate(\M2E\Kaufland\Block\Adminhtml\Magento\Product\Rule\ViewState $viewState): void
+    {
+        $this->viewState = $viewState;
+    }
+
+    public function isExistsViewSate(): bool
+    {
+        return isset($this->viewState);
+    }
+
+    public function getViewState(): \M2E\Kaufland\Block\Adminhtml\Magento\Product\Rule\ViewState
+    {
+        return $this->viewState;
     }
 
     // ---------------------------------------

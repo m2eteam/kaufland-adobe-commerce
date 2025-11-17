@@ -12,6 +12,8 @@ class View extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\AbstractListing
     private \M2E\Kaufland\Model\Listing\Ui\RuntimeStorage $uiListingRuntimeStorage;
     private \M2E\Kaufland\Model\Listing\Wizard\Repository $wizardRepository;
     private \M2E\Kaufland\Model\Channel\Magento\Product\RuleFactory $productRuleFactory;
+    private \M2E\Kaufland\Block\Adminhtml\Magento\Product\Rule\ViewStateFactory $viewStateFactory;
+    private \M2E\Kaufland\Block\Adminhtml\Magento\Product\Rule\ViewState\Manager $viewStateManager;
 
     public function __construct(
         \M2E\Kaufland\Model\Listing\Repository $listingRepository,
@@ -19,7 +21,9 @@ class View extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\AbstractListing
         \M2E\Kaufland\Helper\Data\GlobalData $globalData,
         \M2E\Kaufland\Helper\Data\Session $sessionHelper,
         \M2E\Kaufland\Model\Listing\Wizard\Repository $wizardRepository,
-        \M2E\Kaufland\Model\Channel\Magento\Product\RuleFactory $productRuleFactory
+        \M2E\Kaufland\Model\Channel\Magento\Product\RuleFactory $productRuleFactory,
+        \M2E\Kaufland\Block\Adminhtml\Magento\Product\Rule\ViewStateFactory $viewStateFactory,
+        \M2E\Kaufland\Block\Adminhtml\Magento\Product\Rule\ViewState\Manager $viewStateManager
     ) {
         parent::__construct();
 
@@ -29,6 +33,8 @@ class View extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\AbstractListing
         $this->uiListingRuntimeStorage = $uiListingRuntimeStorage;
         $this->wizardRepository = $wizardRepository;
         $this->productRuleFactory = $productRuleFactory;
+        $this->viewStateFactory = $viewStateFactory;
+        $this->viewStateManager = $viewStateManager;
     }
 
     public function execute()
@@ -48,7 +54,7 @@ class View extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\AbstractListing
         if ($this->getRequest()->getQuery('ajax')) {
             // Set rule model
             // ---------------------------------------
-            $this->setRuleData('kaufland_rule_view_listing', $listing);
+            $this->setRuleData($listing);
             // ---------------------------------------
 
             $this->setAjaxContent(
@@ -77,7 +83,10 @@ class View extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\AbstractListing
             ]);
         }
 
-        $existWizard = $this->wizardRepository->findNotCompletedByListingAndType($listing, \M2E\Kaufland\Model\Listing\Wizard::TYPE_GENERAL);
+        $existWizard = $this->wizardRepository->findNotCompletedByListingAndType(
+            $listing,
+            \M2E\Kaufland\Model\Listing\Wizard::TYPE_GENERAL
+        );
 
         if (($existWizard !== null) && (!$existWizard->isCompleted())) {
             $this->getMessageManager()->addNoticeMessage(
@@ -91,7 +100,7 @@ class View extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\AbstractListing
 
         // Set rule model
         // ---------------------------------------
-        $this->setRuleData('kaufland_rule_view_listing', $listing);
+        $this->setRuleData($listing);
         // ---------------------------------------
 
         $this->setPageHelpLink('https://docs-m2.m2epro.com/m2e-kaufland-listings');
@@ -120,19 +129,44 @@ class View extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\AbstractListing
         return $this->getResult();
     }
 
-    protected function setRuleData($prefix, \M2E\Kaufland\Model\Listing $listing)
+    protected function setRuleData(\M2E\Kaufland\Model\Listing $listing)
     {
-        $storeId = $listing->getStoreId();
-        $prefix .= $listing->getId();
+        $prefix = sprintf(
+            '%s_%s',
+            \M2E\Kaufland\Model\Channel\Magento\Product\Rule::NICK,
+            $listing->getId()
+        );
 
+        $state = $this->viewStateFactory->create($prefix);
+
+        $getRuleBySessionData = function () use ($prefix, $listing) {
+            return $this->createRuleBySessionData($prefix, $listing);
+        };
+        try {
+            $ruleModel = $this->viewStateManager
+                ->getRuleWithViewState(
+                    $state,
+                    \M2E\Kaufland\Model\Channel\Magento\Product\Rule::NICK,
+                    $getRuleBySessionData,
+                    $listing->getStoreId()
+                );
+        } catch (\M2E\Kaufland\Model\Exception\Logic $exception) {
+            $ruleModel = $getRuleBySessionData();
+            $state->reset();
+            $state->setStateUnselect();
+            $ruleModel->setViewSate($state);
+        }
+
+        $this->globalData->setValue('rule_model', $ruleModel);
+    }
+
+    private function createRuleBySessionData(
+        string $prefix,
+        \M2E\Kaufland\Model\Listing $listing
+    ): \M2E\Kaufland\Model\Channel\Magento\Product\Rule {
         $this->globalData->setValue('rule_prefix', $prefix);
 
-        $ruleModel = $this->productRuleFactory->create()->setData(
-            [
-                'prefix' => $prefix,
-                'store_id' => $storeId,
-            ]
-        );
+        $ruleModel = $this->productRuleFactory->create($prefix, $listing->getStoreId());
 
         $ruleParam = $this->getRequest()->getPost('rule');
         if (!empty($ruleParam)) {
@@ -149,6 +183,6 @@ class View extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\AbstractListing
             $ruleModel->loadFromSerialized($sessionRuleData);
         }
 
-        $this->globalData->setValue('rule_model', $ruleModel);
+        return $ruleModel;
     }
 }

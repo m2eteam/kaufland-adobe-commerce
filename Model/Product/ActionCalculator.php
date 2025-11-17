@@ -13,7 +13,7 @@ class ActionCalculator
     public function __construct(
         \M2E\Kaufland\Model\Magento\Product\RuleFactory $ruleFactory,
         Action\Type\ReviseProduct\Checker $reviseChecker,
-        Action\Type\ReviseUnit\Checker  $reviseUnitChecker
+        Action\Type\ReviseUnit\Checker $reviseUnitChecker
     ) {
         $this->ruleFactory = $ruleFactory;
         $this->reviseChecker = $reviseChecker;
@@ -462,12 +462,9 @@ class ActionCalculator
         \M2E\Kaufland\Model\Template\Synchronization $syncPolicy
     ): bool {
         $ruleModel = $this->ruleFactory
-            ->create()
-            ->setData(
-                [
-                    'store_id' => $product->getListing()->getStoreId(),
-                    'prefix' => \M2E\Kaufland\Model\Template\Synchronization::LIST_ADVANCED_RULES_PREFIX,
-                ],
+            ->create(
+                \M2E\Kaufland\Model\Template\Synchronization::LIST_ADVANCED_RULES_PREFIX,
+                $product->getListing()->getStoreId()
             );
         $ruleModel->loadFromSerialized($syncPolicy->getListAdvancedRulesFilters());
 
@@ -483,12 +480,9 @@ class ActionCalculator
         \M2E\Kaufland\Model\Template\Synchronization $syncPolicy
     ): bool {
         $ruleModel = $this->ruleFactory
-            ->create()
-            ->setData(
-                [
-                    'store_id' => $product->getListing()->getStoreId(),
-                    'prefix' => \M2E\Kaufland\Model\Template\Synchronization::STOP_ADVANCED_RULES_PREFIX,
-                ],
+            ->create(
+                \M2E\Kaufland\Model\Template\Synchronization::STOP_ADVANCED_RULES_PREFIX,
+                $product->getListing()->getStoreId()
             );
         $ruleModel->loadFromSerialized($syncPolicy->getStopAdvancedRulesFilters());
 
@@ -504,12 +498,9 @@ class ActionCalculator
         \M2E\Kaufland\Model\Template\Synchronization $syncPolicy
     ): bool {
         $ruleModel = $this->ruleFactory
-            ->create()
-            ->setData(
-                [
-                    'store_id' => $product->getListing()->getStoreId(),
-                    'prefix' => \M2E\Kaufland\Model\Template\Synchronization::RELIST_ADVANCED_RULES_PREFIX,
-                ],
+            ->create(
+                \M2E\Kaufland\Model\Template\Synchronization::RELIST_ADVANCED_RULES_PREFIX,
+                $product->getListing()->getStoreId()
             );
         $ruleModel->loadFromSerialized($syncPolicy->getRelistAdvancedRulesFilters());
 

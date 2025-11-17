@@ -232,10 +232,8 @@ HTML
             ]
         );
 
-        $ruleModel = $this->productRuleFactory->create()
-                                              ->setData(
-                                                  ['prefix' => TemplateSynchronization::LIST_ADVANCED_RULES_PREFIX]
-                                              );
+        $ruleModel = $this->productRuleFactory
+            ->create(TemplateSynchronization::LIST_ADVANCED_RULES_PREFIX);
 
         if (!empty($formData['list_advanced_rules_filters'])) {
             $ruleModel->loadFromSerialized($formData['list_advanced_rules_filters']);

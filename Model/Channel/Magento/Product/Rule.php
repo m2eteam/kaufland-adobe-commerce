@@ -8,6 +8,11 @@ class Rule extends \M2E\Kaufland\Model\Magento\Product\Rule
 {
     private \M2E\Kaufland\Model\Channel\Magento\Product\Rule\Condition\CombineFactory $ruleCombineFactory;
 
+    public const NICK = 'kaufland_product_rule';
+
+    /** @var string */
+    protected string $nick = self::NICK;
+
     /**
      * @psalm-suppress UndefinedClass
      */

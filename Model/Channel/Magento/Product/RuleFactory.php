@@ -13,8 +13,13 @@ class RuleFactory
         $this->objectManager = $objectManager;
     }
 
-    public function create(): Rule
+    public function create(string $prefix, ?int $storeId = null): Rule
     {
-        return $this->objectManager->create(Rule::class);
+        return $this->objectManager->create(Rule::class, [
+            'data' => [
+                'prefix' => $prefix,
+                'store_id' => $storeId,
+            ],
+        ]);
     }
 }

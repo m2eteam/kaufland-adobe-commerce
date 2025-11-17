@@ -248,9 +248,8 @@ HTML
             ]
         );
 
-        $ruleModel = $this->productRuleFactory->create()->setData(
-            ['prefix' => TemplateSynchronization::RELIST_ADVANCED_RULES_PREFIX]
-        );
+        $ruleModel = $this->productRuleFactory
+            ->create(TemplateSynchronization::RELIST_ADVANCED_RULES_PREFIX);
 
         if (!empty($formData['relist_advanced_rules_filters'])) {
             $ruleModel->loadFromSerialized($formData['relist_advanced_rules_filters']);

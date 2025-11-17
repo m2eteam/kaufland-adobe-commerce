@@ -65,7 +65,7 @@ class Product extends AbstractModel
         }
 
         if ('category_ids' === $attrCode) {
-            return $this->validateAttribute($object->getAvailableInCategories());
+            return $this->validateAttribute($object->getCategoryIds());
         }
 
         if (!isset($this->_entityAttributeValues[$object->getId()])) {
