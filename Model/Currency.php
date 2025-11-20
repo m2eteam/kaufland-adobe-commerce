@@ -6,9 +6,10 @@ use Magento\Store\Model\Store;
 
 class Currency
 {
-    public const CURRENCY_KC = 'CZK';
+    public const CURRENCY_CZK = 'CZK';
     public const CURRENCY_EUR = 'EUR';
-    public const CURRENCY_PLZ = 'PLZ';
+    public const CURRENCY_PLN = 'PLN';
+
     private \Magento\Store\Model\StoreManagerInterface $storeManager;
     private \Magento\Framework\Locale\CurrencyInterface $currency;
 

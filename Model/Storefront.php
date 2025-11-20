@@ -18,9 +18,9 @@ class Storefront extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
 
     public const STOREFRONT_CURRENCIES_MAP = [
         'de' => \M2E\Kaufland\Model\Currency::CURRENCY_EUR,
-        'cz' => \M2E\Kaufland\Model\Currency::CURRENCY_KC,
+        'cz' => \M2E\Kaufland\Model\Currency::CURRENCY_CZK,
         'sk' => \M2E\Kaufland\Model\Currency::CURRENCY_EUR,
-        'pl' => \M2E\Kaufland\Model\Currency::CURRENCY_PLZ,
+        'pl' => \M2E\Kaufland\Model\Currency::CURRENCY_PLN,
         'at' => \M2E\Kaufland\Model\Currency::CURRENCY_EUR,
         'it' => \M2E\Kaufland\Model\Currency::CURRENCY_EUR,
         'fr' => \M2E\Kaufland\Model\Currency::CURRENCY_EUR,
