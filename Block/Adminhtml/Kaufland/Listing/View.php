@@ -188,6 +188,8 @@ class View extends \M2E\Kaufland\Block\Adminhtml\Magento\Grid\AbstractContainer
             return parent::getGridHtml();
         }
 
+        $showAutoAction = \M2E\Core\Helper\Json::encode((bool)$this->getRequest()->getParam('auto_actions'));
+
         $helper = $this->dataHelper;
 
         $this->jsUrl->addUrls(
@@ -257,6 +259,9 @@ class View extends \M2E\Kaufland\Block\Adminhtml\Magento\Grid\AbstractContainer
         'Kaufland/External/jstree/jstree.min'
     ], function(){
         window.ListingAutoActionObj = new KauflandListingAutoAction();
+        if ($showAutoAction) {
+            window.ListingAutoActionObj.loadAutoActionHtml();
+        }
     });
 JS
             );

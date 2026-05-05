@@ -34,7 +34,7 @@ define([
             confirm(
                     {
                         title: $t('New Attribute Mapping Detected'),
-                        content: $t('You\'ve successfully saved the default attribute mapping settings for Kauflnd GPSR attributes. Would you like to apply these new default mappings to all your Kaufland categories now?'),
+                        content: $t('You\'ve successfully saved the default attribute mapping settings for Kaufland GPSR attributes. Would you like to apply these new default mappings to all your Kaufland categories now?'),
                         actions: {
                             confirm: () => {
                                 this.gpsrSetToCategories(this.urlSetGpsrToCategory);

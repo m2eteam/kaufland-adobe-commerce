@@ -130,6 +130,19 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Listing\Grid
                 ],
             ],
 
+            'automaticActions' => [
+                'caption' => __('Auto Add/Remove Rules'),
+                'group' => 'products_actions',
+                'field' => 'id',
+                'url' => [
+                    'base' => '*/kaufland_listing/view',
+                    'params' => [
+                        'back' => $backUrl,
+                        'auto_actions' => 1,
+                    ],
+                ],
+            ],
+
             'editTitle' => [
                 'caption' => __('Title'),
                 'group' => 'edit_actions',

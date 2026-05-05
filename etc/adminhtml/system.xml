@@ -9,7 +9,7 @@
             <class>separator-top</class>
             <label>Module</label>
             <tab>m2e_kaufland</tab>
-            <resource>M2E_Kaufland::system_figuration</resource>
+            <resource>M2E_Kaufland::system_configuration</resource>
             <frontend_model>M2E\Kaufland\Block\Adminhtml\System\Config\Sections\ModuleAndChannels</frontend_model>
         </section>
         <section id="kaufland_interface_and_magento_inventory" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">

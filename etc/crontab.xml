@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
-    <group id="m2e_kauflnd">
-        <job name="m2e_kauflnd" instance="M2E\Kaufland\Model\Cron\Runner\Magento" method="process">
+    <group id="m2e_kaufland">
+        <job name="m2e_kaufland" instance="M2E\Kaufland\Model\Cron\Runner\Magento" method="process">
             <schedule>* * * * *</schedule>
         </job>
     </group>

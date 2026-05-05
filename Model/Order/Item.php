@@ -18,7 +18,7 @@ class Item extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
     private ?\M2E\Kaufland\Model\Product $listingProduct = null;
     private \M2E\Core\Helper\Magento\Store $magentoStoreHelper;
     private \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $magentoProductCollectionFactory;
-    private \M2E\Kaufland\Helper\Component\Kaufland $kauflndHelper;
+    private \M2E\Kaufland\Helper\Component\Kaufland $kauflandHelper;
     private \M2E\Kaufland\Helper\Magento\Product $magentoProductHelper;
     private \M2E\Kaufland\Model\Order\Item\OptionsFinder $optionsFinder;
     /** @var \M2E\Kaufland\Model\ProductFactory */
@@ -32,7 +32,7 @@ class Item extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         Repository $repository,
         \M2E\Kaufland\Model\Order\Item\OptionsFinder $optionsFinder,
         \M2E\Kaufland\Helper\Magento\Product $magentoProductHelper,
-        \M2E\Kaufland\Helper\Component\Kaufland $kauflndHelper,
+        \M2E\Kaufland\Helper\Component\Kaufland $kauflandHelper,
         \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $magentoProductCollectionFactory,
         \M2E\Core\Helper\Magento\Store $magentoStoreHelper,
         \M2E\Kaufland\Model\Order\Item\ProxyObjectFactory $proxyObjectFactory,
@@ -61,7 +61,7 @@ class Item extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         $this->proxyObjectFactory = $proxyObjectFactory;
         $this->magentoStoreHelper = $magentoStoreHelper;
         $this->magentoProductCollectionFactory = $magentoProductCollectionFactory;
-        $this->kauflndHelper = $kauflndHelper;
+        $this->kauflandHelper = $kauflandHelper;
         $this->magentoProductHelper = $magentoProductHelper;
         $this->optionsFinder = $optionsFinder;
         $this->kauflandProductRepository = $kauflandProductRepository;
@@ -707,7 +707,7 @@ class Item extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
 
     public function prepareMagentoOptions($options): array
     {
-        return $this->kauflndHelper->prepareOptionsForOrders($options);
+        return $this->kauflandHelper->prepareOptionsForOrders($options);
     }
 
     /**

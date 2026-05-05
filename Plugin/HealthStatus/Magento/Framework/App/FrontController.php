@@ -7,7 +7,7 @@ use M2E\Kaufland\Model\HealthStatus\Task\Result;
 
 class FrontController extends \M2E\Kaufland\Plugin\AbstractPlugin
 {
-    public const MESSAGE_IDENTIFIER = 'kauflnd_health_status_front_controller_message';
+    public const MESSAGE_IDENTIFIER = 'kaufland_health_status_front_controller_message';
 
     /** @var \Magento\Framework\Message\ManagerInterface */
     private $messageManager;

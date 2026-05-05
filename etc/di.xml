@@ -6,88 +6,88 @@
     <!-- stockitem -->
 
     <type name="Magento\CatalogInventory\Model\Stock\Item">
-        <plugin name="kauflnd_plugin_stockitem_magento_cataloginventory_model_stock_item"
+        <plugin name="kaufland_plugin_stockitem_magento_cataloginventory_model_stock_item"
                 type="M2E\Kaufland\Plugin\StockItem\Magento\CatalogInventory\Model\Stock\Item"/>
     </type>
 
     <!-- Bulk Update Products (Website) -->
 
     <type name="Magento\Catalog\Model\Product\Action">
-        <plugin name="kauflnd_plugin_product_action_bulk_update"
+        <plugin name="kaufland_plugin_product_action_bulk_update"
                 type="M2E\Kaufland\Plugin\Product\Action\BulkUpdate"/>
     </type>
 
     <!-- order -->
 
     <type name="Magento\Framework\App\Config">
-        <plugin name="kauflnd_plugin_order_magento_framework_app_config"
+        <plugin name="kaufland_plugin_order_magento_framework_app_config"
                 type="M2E\Kaufland\Plugin\Order\Magento\Framework\App\Config"/>
     </type>
 
     <type name="Magento\Quote\Model\Quote\Item\ToOrderItem">
-        <plugin name="kauflnd_plugin_order_magento_quote_model_quote_item_toorderitem"
+        <plugin name="kaufland_plugin_order_magento_quote_model_quote_item_toorderitem"
                 type="M2E\Kaufland\Plugin\Order\Magento\Quote\Model\Quote\Item\ToOrderItem"/>
     </type>
 
     <type name="Magento\CatalogInventory\Model\Quote\Item\QuantityValidator\QuoteItemQtyList">
-        <plugin name="kauflnd_plugin_stockitem_magento_cataloginventory_model_quote_item_quantityvalidator_quoteitemqtylist"
+        <plugin name="kaufland_plugin_stockitem_magento_cataloginventory_model_quote_item_quantityvalidator_quoteitemqtylist"
                 type="M2E\Kaufland\Plugin\StockItem\Magento\CatalogInventory\Model\Quote\Item\QuantityValidator\QuoteItemQtyList"/>
     </type>
 
     <type name="Magento\Quote\Model\Quote\TotalsCollectorList">
-        <plugin name="kauflnd_plugin_order_magento_quote_model_quote_totalscollectorlist"
+        <plugin name="kaufland_plugin_order_magento_quote_model_quote_totalscollectorlist"
                 type="M2E\Kaufland\Plugin\Order\Magento\Quote\Model\Quote\TotalsCollectorList"/>
     </type>
 
     <!-- MSI -->
 
     <type name="Magento\Inventory\Model\Source\Command\SaveInterface">
-        <plugin name="kauflnd_plugin_msi_magento_inventory_model_source_command_save"
+        <plugin name="kaufland_plugin_msi_magento_inventory_model_source_command_save"
                 type="M2E\Kaufland\Plugin\MSI\Magento\Inventory\Model\Source\Command\Save"/>
     </type>
 
     <type name="Magento\InventoryApi\Api\SourceItemsSaveInterface">
-        <plugin name="kauflnd_plugin_msi_magento_inventory_model_sourceitem_command_save"
+        <plugin name="kaufland_plugin_msi_magento_inventory_model_sourceitem_command_save"
                 type="M2E\Kaufland\Plugin\MSI\Magento\Inventory\Model\SourceItem\Command\Save"/>
     </type>
 
     <type name="Magento\InventoryApi\Api\SourceItemsDeleteInterface">
-        <plugin name="kauflnd_plugin_msi_magento_inventory_model_sourceitem_command_delete"
+        <plugin name="kaufland_plugin_msi_magento_inventory_model_sourceitem_command_delete"
                 type="M2E\Kaufland\Plugin\MSI\Magento\Inventory\Model\SourceItem\Command\Delete"/>
     </type>
 
     <type name="Magento\InventoryApi\Api\StockSourceLinksSaveInterface">
-        <plugin name="kauflnd_plugin_msi_magento_inventory_model_stocksourcelink_command_save"
+        <plugin name="kaufland_plugin_msi_magento_inventory_model_stocksourcelink_command_save"
                 type="M2E\Kaufland\Plugin\MSI\Magento\Inventory\Model\StockSourceLink\Command\Save"/>
     </type>
 
     <type name="Magento\InventoryApi\Api\StockSourceLinksDeleteInterface">
-        <plugin name="kauflnd_plugin_msi_magento_inventory_model_stocksourcelink_command_delete"
+        <plugin name="kaufland_plugin_msi_magento_inventory_model_stocksourcelink_command_delete"
                 type="M2E\Kaufland\Plugin\MSI\Magento\Inventory\Model\StockSourceLink\Command\Delete"/>
     </type>
 
     <type name="Magento\InventorySalesApi\Model\ReplaceSalesChannelsForStockInterface">
-        <plugin name="kauflnd_plugin_msi_magento_inventorysales_model_resourcemodel_replacesaleschannelsdataforstock"
+        <plugin name="kaufland_plugin_msi_magento_inventorysales_model_resourcemodel_replacesaleschannelsdataforstock"
                 type="M2E\Kaufland\Plugin\MSI\Magento\InventorySales\Model\ResourceModel\ReplaceSalesChannelsDataForStock"/>
     </type>
 
     <type name="Magento\InventorySalesApi\Api\PlaceReservationsForSalesEventInterface">
-        <plugin name="kauflnd_plugin_msi_magento_inventorysales_model_placereservationforsalesevent"
+        <plugin name="kaufland_plugin_msi_magento_inventorysales_model_placereservationforsalesevent"
                 type="M2E\Kaufland\Plugin\MSI\Magento\InventorySales\Model\PlaceReservationsForSalesEvent"/>
     </type>
 
     <type name="Magento\InventoryCatalog\Model\ResourceModel\SetDataToLegacyStockItem">
-        <plugin name="kauflnd_plugin_msi_magento_inventorycatalog_model_resourcemodel_setdatatolegacestockitem"
+        <plugin name="kaufland_plugin_msi_magento_inventorycatalog_model_resourcemodel_setdatatolegacestockitem"
                 type="M2E\Kaufland\Plugin\MSI\Magento\InventoryCatalog\Model\ResourceModel\SetDataToLegacyStockItem"/>
     </type>
 
     <type name="Magento\CatalogInventory\Model\Indexer\Stock\Processor">
-        <plugin name="kauflnd_plugin_msi_magento_cataloginventory_model_indexer_stock_processor"
+        <plugin name="kaufland_plugin_msi_magento_cataloginventory_model_indexer_stock_processor"
                 type="M2E\Kaufland\Plugin\MSI\Magento\CatalogInventory\Model\Indexer\Stock\Processor"/>
     </type>
 
     <type name="Magento\InventoryReservations\Model\ResourceModel\GetReservationsQuantityCache">
-        <plugin name="kauflnd_plugin_msi_magento_inventoryreservations_model_resourcemodel_getreservationsquantitycache"
+        <plugin name="kaufland_plugin_msi_magento_inventoryreservations_model_resourcemodel_getreservationsquantitycache"
                 type="M2E\Kaufland\Plugin\MSI\Magento\InventoryReservations\Model\ResourceModel\GetReservationsQuantityCache"/>
     </type>
 

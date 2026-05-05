@@ -46,7 +46,7 @@ class View extends \M2E\Kaufland\Plugin\AbstractPlugin
         );
 
         $interceptor->addButton(
-            'go_to_kauflnd_order',
+            'go_to_kaufland_order',
             [
                 'label' => __(
                     'Show %channel_title Order',
