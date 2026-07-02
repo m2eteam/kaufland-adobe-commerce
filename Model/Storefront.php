@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace M2E\Kaufland\Model;
 
 use M2E\Kaufland\Model\ResourceModel\Storefront as StorefrontResource;
@@ -15,6 +17,8 @@ class Storefront extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
     public const STOREFRONT_AT = 'Austria';
     public const STOREFRONT_IT = 'Italy';
     public const STOREFRONT_FR = 'France';
+    public const STOREFRONT_ES = 'Spain';
+    public const STOREFRONT_NL = 'Netherlands';
 
     public const STOREFRONT_CURRENCIES_MAP = [
         'de' => \M2E\Kaufland\Model\Currency::CURRENCY_EUR,
@@ -24,6 +28,8 @@ class Storefront extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
         'at' => \M2E\Kaufland\Model\Currency::CURRENCY_EUR,
         'it' => \M2E\Kaufland\Model\Currency::CURRENCY_EUR,
         'fr' => \M2E\Kaufland\Model\Currency::CURRENCY_EUR,
+        'es' => \M2E\Kaufland\Model\Currency::CURRENCY_EUR,
+        'nl' => \M2E\Kaufland\Model\Currency::CURRENCY_EUR,
     ];
 
     private Account\Repository $accountRepository;
@@ -155,6 +161,8 @@ class Storefront extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
             'at' => self::STOREFRONT_AT,
             'it' => self::STOREFRONT_IT,
             'fr' => self::STOREFRONT_FR,
+            'es' => self::STOREFRONT_ES,
+            'nl' => self::STOREFRONT_NL,
         ];
 
         return $map[$storefrontCode] ?? $storefrontCode;

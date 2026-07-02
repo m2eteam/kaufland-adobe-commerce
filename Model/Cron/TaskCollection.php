@@ -148,6 +148,12 @@ class TaskCollection
             ),
             new \M2E\Core\Model\Cron\TaskDefinition(
                 self::GROUP_SYSTEM,
+                Task\Magento\Product\DetectDirectlyAdded::NICK,
+                60,
+                Task\Magento\Product\DetectDirectlyAdded::class,
+            ),
+            new \M2E\Core\Model\Cron\TaskDefinition(
+                self::GROUP_SYSTEM,
                 Task\System\Processing\Partial\DownloadDataTask::NICK,
                 60,
                 Task\System\Processing\Partial\DownloadDataTask::class,
