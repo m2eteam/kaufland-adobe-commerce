@@ -204,7 +204,11 @@ HTML;
 
         $countHtml = '';
 
-        if (isset($this->messageCount[$row[$this->entityIdFieldName]])) {
+        $messageCountKey = (string)$row[(string)$this->entityIdFieldName];
+        if (
+            !empty($messageCountKey)
+            && isset($this->messageCount[$messageCountKey])
+        ) {
             $colorMap = [
                 \M2E\Kaufland\Model\Log\AbstractModel::TYPE_INFO => 'gray',
                 \M2E\Kaufland\Model\Log\AbstractModel::TYPE_SUCCESS => 'green',
@@ -212,7 +216,7 @@ HTML;
                 \M2E\Kaufland\Model\Log\AbstractModel::TYPE_ERROR => 'red',
             ];
 
-            $count = $this->messageCount[$row[$this->entityIdFieldName]][$row['description']]['count'];
+            $count = $this->messageCount[$messageCountKey][$row['description']]['count'];
             if ($count > 1) {
                 $color = $colorMap[$row['type']];
                 $countHtml = " <span style='color: {$color}; font-weight: bold'>({$count})</span>";
