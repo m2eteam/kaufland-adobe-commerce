@@ -21,12 +21,12 @@ class Storefront implements OptionSourceInterface
         $options = [];
 
         foreach ($this->repository->getAll() as $storefront) {
-            $options[] = [
+            $options[$storefront->getStorefrontCode()] = [
                 'label' => $storefront->getTitle(),
-                'value' => $storefront->getId(),
+                'value' => $storefront->getStorefrontCode(),
             ];
         }
 
-        return $options;
+        return array_values($options);
     }
 }

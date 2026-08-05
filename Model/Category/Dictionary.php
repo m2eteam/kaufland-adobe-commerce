@@ -126,15 +126,7 @@ class Dictionary extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
      */
     public function getStorefront(): \M2E\Kaufland\Model\Storefront
     {
-        $storefront = $this->storefrontRepository->find($this->getStorefrontId());
-
-        if ($storefront === null) {
-            throw new \M2E\Kaufland\Model\Exception\Logic(
-                sprintf('Not found storefront by id [%d]', $this->getStorefrontId())
-            );
-        }
-
-        return $storefront;
+        return $this->storefrontRepository->get($this->getStorefrontId());
     }
 
     public function setStorefrontId(int $storefrontId): void

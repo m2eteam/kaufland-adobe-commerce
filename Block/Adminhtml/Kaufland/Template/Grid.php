@@ -18,8 +18,10 @@ class Grid extends AbstractGrid
     private \M2E\Kaufland\Model\ResourceModel\Account $accountResource;
     private \M2E\Kaufland\Model\ResourceModel\Account\CollectionFactory $accountCollectionFactory;
     private AccountResource\Collection $accountCollection;
+    private \M2E\Kaufland\Model\ResourceModel\Storefront $storefrontResource;
 
     public function __construct(
+        \M2E\Kaufland\Model\ResourceModel\Storefront $storefrontResource,
         \M2E\Kaufland\Model\ResourceModel\Account $accountResource,
         \M2E\Kaufland\Model\ResourceModel\Account\CollectionFactory $accountCollectionFactory,
         \M2E\Kaufland\Model\ResourceModel\Template\SellingFormat\CollectionFactory $sellingCollectionFactory,
@@ -44,6 +46,7 @@ class Grid extends AbstractGrid
         $this->shippingCollectionFactory = $shippingCollectionFactory;
         $this->descriptionCollectionFactory = $descriptionCollectionFactory;
         $this->storefrontRepository = $storefrontRepository;
+        $this->storefrontResource = $storefrontResource;
     }
 
     public function _construct()
@@ -79,7 +82,7 @@ class Grid extends AbstractGrid
                 ),
                 new \Zend_Db_Expr('NULL as `account_title`'),
                 new \Zend_Db_Expr('\'0\' as `account_id`'),
-                new \Zend_Db_Expr('\'0\' as `storefront_id`'),
+                new \Zend_Db_Expr('NULL as `storefront_code`'),
                 'create_date',
                 'update_date',
             ]
@@ -100,7 +103,7 @@ class Grid extends AbstractGrid
                 ),
                 new \Zend_Db_Expr('NULL as `account_title`'),
                 new \Zend_Db_Expr('\'0\' as `account_id`'),
-                new \Zend_Db_Expr('\'0\' as `storefront_id`'),
+                new \Zend_Db_Expr('NULL as `storefront_code`'),
                 'create_date',
                 'update_date',
             ]
@@ -119,6 +122,15 @@ class Grid extends AbstractGrid
             ),
             []
         );
+        $collectionShipping->getSelect()->join(
+            ['storefront' => $this->storefrontResource->getMainTable()],
+            sprintf(
+                'storefront.%s = main_table.%s',
+                \M2E\Kaufland\Model\ResourceModel\Storefront::COLUMN_ID,
+                \M2E\Kaufland\Model\ResourceModel\Template\Shipping::COLUMN_STOREFRONT_ID
+            ),
+            []
+        );
         $collectionShipping->getSelect()->columns(
             [
                 'id as template_id',
@@ -128,7 +140,7 @@ class Grid extends AbstractGrid
                 ),
                 new \Zend_Db_Expr('account.title as `account_title`'),
                 new \Zend_Db_Expr('account.id as `account_id`'),
-                'storefront_id',
+                'storefront.storefront_code as storefront_code',
                 'create_date',
                 'update_date',
             ]
@@ -146,7 +158,7 @@ class Grid extends AbstractGrid
                 ),
                 new \Zend_Db_Expr('NULL as `account_title`'),
                 new \Zend_Db_Expr('\'0\' as `account_id`'),
-                new \Zend_Db_Expr('\'0\' as `storefront_id`'),
+                new \Zend_Db_Expr('NULL as `storefront_code`'),
                 'create_date',
                 'update_date',
             ]
@@ -176,7 +188,7 @@ class Grid extends AbstractGrid
                 'account_title',
                 'account_id',
                 'nick',
-                'storefront_id',
+                'storefront_code',
                 'create_date',
                 'update_date'
             ]
@@ -232,8 +244,8 @@ class Grid extends AbstractGrid
             'header' => __('Storefront'),
             'align' => 'left',
             'type' => 'options',
-            'index' => 'storefront_id',
-            'filter_index' => 'main_table.storefront_id',
+            'index' => 'storefront_code',
+            'filter_index' => 'main_table.storefront_code',
             'frame_callback' => [$this, 'callbackColumnStorefrontTitle'],
             'filter_condition_callback' => [$this, 'callbackFilterStorefront'],
             'options' => $this->getStorefrontTitles(),
@@ -327,7 +339,7 @@ class Grid extends AbstractGrid
             return;
         }
 
-        $collection->getSelect()->where('storefront_id = ?', (int)$value);
+        $collection->getSelect()->where('storefront_code = ?', (int)$value);
     }
 
     public function callbackColumnStorefrontTitle($value, $row, $column, $isExport): string
@@ -344,7 +356,7 @@ class Grid extends AbstractGrid
         $storefronts = $this->storefrontRepository->getAll();
         $storefrontTitles = [];
         foreach ($storefronts as $storefront) {
-            $storefrontTitles[$storefront->getId()] = $storefront->getTitle();
+            $storefrontTitles[$storefront->getStorefrontCode()] = $storefront->getTitle();
         }
 
         return $storefrontTitles;

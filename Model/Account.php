@@ -166,24 +166,25 @@ class Account extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
 
     public function getStorefrontByCode(string $code): Storefront
     {
-        foreach ($this->getStorefronts() as $storefront) {
-            if ($storefront->getStorefrontCode() === $code) {
-                return $storefront;
-            }
+        $storefront = $this->findStorefrontByCode($code);
+        if ($storefront === null) {
+            throw new \M2E\Kaufland\Model\Exception\Logic(
+                sprintf("Storefront with code '%s' was not found.", $code)
+            );
         }
 
-        throw new \M2E\Kaufland\Model\Exception\Logic((string)__('Storefront %code not found.', ['code' => $code]));
+        return $storefront;
     }
 
     public function findStorefrontByCode(string $code): ?Storefront
     {
-        foreach ($this->getStorefronts() as $storefront) {
-            if ($storefront->getStorefrontCode() === $code) {
-                return $storefront;
-            }
+        $storefront = $this->storefrontRepository
+            ->findForAccountAndCode($this->getId(), $code);
+        if ($storefront !== null) {
+            $storefront->loadAccount($this);
         }
 
-        return null;
+        return $storefront;
     }
 
     /**
@@ -205,9 +206,7 @@ class Account extends \M2E\Kaufland\Model\ActiveRecord\AbstractModel
     }
 
     /**
-     * @param \M2E\Kaufland\Model\Warehouse[] $storefronts
-     *
-     * @return $this
+     * @param \M2E\Kaufland\Model\Warehouse[] $warehouses
      */
     public function setWarehouses(array $warehouses): self
     {

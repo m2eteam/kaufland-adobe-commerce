@@ -9,27 +9,27 @@ use M2E\Kaufland\Model\ResourceModel\Category\Dictionary\CollectionFactory as Di
 
 class Grid extends \M2E\Kaufland\Block\Adminhtml\Magento\Grid\AbstractGrid
 {
+    private \M2E\Kaufland\Model\Storefront\Repository $storefrontRepository;
     private \M2E\Kaufland\Model\ResourceModel\Storefront $storefrontResource;
     private DictionaryCollectionFactory $categoryDictionaryCollectionFactory;
-    private \M2E\Kaufland\Model\ResourceModel\Storefront\CollectionFactory $storefrontCollectionFactory;
     private \M2E\Kaufland\Model\ResourceModel\Product $productResource;
     private \M2E\Core\Ui\AppliedFilters\Manager $appliedFiltersManager;
 
     public function __construct(
+        \M2E\Kaufland\Model\Storefront\Repository $storefrontRepository,
         \M2E\Kaufland\Model\ResourceModel\Product $productResource,
         \M2E\Core\Ui\AppliedFilters\Manager $appliedFiltersManager,
         \M2E\Kaufland\Model\ResourceModel\Storefront $storefrontResource,
         DictionaryCollectionFactory $categoryDictionaryCollectionFactory,
-        \M2E\Kaufland\Model\ResourceModel\Storefront\CollectionFactory $storefrontCollectionFactory,
         \M2E\Kaufland\Block\Adminhtml\Magento\Context\Template $context,
         \Magento\Backend\Helper\Data $backendHelper,
         array $data = []
     ) {
         $this->storefrontResource = $storefrontResource;
         $this->categoryDictionaryCollectionFactory = $categoryDictionaryCollectionFactory;
-        $this->storefrontCollectionFactory = $storefrontCollectionFactory;
 
         parent::__construct($context, $backendHelper, $data);
+        $this->storefrontRepository = $storefrontRepository;
         $this->productResource = $productResource;
         $this->appliedFiltersManager = $appliedFiltersManager;
     }
@@ -50,18 +50,19 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Magento\Grid\AbstractGrid
         $collection = $this->categoryDictionaryCollectionFactory->create();
         $collection->join(
             ['storefront' => $this->storefrontResource->getMainTable()],
-            'main_table.storefront_id=storefront.id',
+            sprintf(
+                'main_table.%s = storefront.%s',
+                \M2E\Kaufland\Model\ResourceModel\Category\Dictionary::COLUMN_STOREFRONT_ID,
+                \M2E\Kaufland\Model\ResourceModel\Storefront::COLUMN_ID,
+            ),
             [
-                'storefront_id' => 'storefront.id',
+                'storefront_code' => \M2E\Kaufland\Model\ResourceModel\Storefront::COLUMN_STOREFRONT_CODE,
             ]
         );
-
-        $collection->getSelect()->where(
-            'main_table.state != ?',
-            Dictionary::DRAFT_STATE
+        $collection->addFieldToFilter(
+            \M2E\Kaufland\Model\ResourceModel\Category\Dictionary::COLUMN_STATE,
+            ['neq' => Dictionary::DRAFT_STATE]
         );
-
-        $collection->getSelect()->columns('storefront.storefront_code');
 
         $collection->joinLeft(
             ['products' => $this->createProductCountJoinTable()],
@@ -106,9 +107,9 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Magento\Grid\AbstractGrid
                 'type' => 'options',
                 'width' => '100px',
                 'index' => 'storefront_code',
+                'filter_index' => 'storefront_code',
                 'frame_callback' => [$this, 'callbackColumnStorefrontTitle'],
-                'filter_condition_callback' => [$this, 'callbackFilterStorefront'],
-                'options' => $this->getStorefrontIdOptions(),
+                'options' => $this->getStorefrontOptions(),
             ]
         );
 
@@ -204,25 +205,35 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Magento\Grid\AbstractGrid
         $collection->getSelect()->where('main_table.path LIKE ?', '%' . $value . '%');
     }
 
-    private function getStorefrontIdOptions(): array
+    private function getStorefrontOptions(): array
     {
-        $collection = $this->storefrontCollectionFactory->create();
-        $options = [];
-        /** @var \M2E\Kaufland\Model\Storefront $item */
-        foreach ($collection as $item) {
-            $options[$item->getId()] = $item->getTitle();
+        $storefronts = $this->storefrontRepository->getAll();
+        foreach ($storefronts as $storefront) {
+            $options[$storefront->getStorefrontCode()] = $storefront->getTitle();
         }
 
         return $options;
     }
 
-    public function callbackColumnStorefrontTitle($value, $row, $column, $isExport)
+    /**
+     * @param mixed $value
+     * @param \M2E\Kaufland\Model\Category\Dictionary $row
+     * @param \M2E\Kaufland\Block\Adminhtml\Widget\Grid\Column\Extended\Rewrite $column
+     * @param bool $isExport
+     *
+     * @throws \M2E\Kaufland\Model\Exception\Logic
+     */
+    public function callbackColumnStorefrontTitle($value, $row, $column, $isExport): string
     {
-        $title = $row->getStorefront()->getTitle();
-
-        return $title;
+        return $row->getStorefront()->getTitle();
     }
 
+    /**
+     * @param mixed $value
+     * @param \M2E\Kaufland\Model\Category\Dictionary $row
+     * @param \M2E\Kaufland\Block\Adminhtml\Widget\Grid\Column\Extended\Rewrite $column
+     * @param bool $isExport
+     */
     public function callbackColumnProductCount($value, $row, $column, $isExport): string
     {
         if (empty($value)) {
@@ -240,22 +251,12 @@ class Grid extends \M2E\Kaufland\Block\Adminhtml\Magento\Grid\AbstractGrid
         return sprintf('<a href="%s" target="_blank">%s</a>', $url, $value);
     }
 
-    protected function callbackFilterStorefront($collection, $column): void
-    {
-        $value = $column->getFilter()->getValue();
-        if ($value == null) {
-            return;
-        }
-
-        $collection->getSelect()->where('main_table.storefront_id = ?', $value);
-    }
-
-    public function getGridUrl()
+    public function getGridUrl(): string
     {
         return $this->getUrl('*/*/grid', ['_current' => true]);
     }
 
-    public function getRowUrl($item)
+    public function getRowUrl($item): bool
     {
         return false;
     }

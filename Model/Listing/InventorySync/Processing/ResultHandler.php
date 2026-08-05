@@ -45,26 +45,8 @@ class ResultHandler implements \M2E\Kaufland\Model\Processing\PartialResultHandl
             throw new \M2E\Kaufland\Model\Exception\Logic('Processing params is not valid.');
         }
 
-        $account = $this->accountRepository->find($params['account_id']);
-        if ($account === null) {
-            throw new \M2E\Kaufland\Model\Exception('Account not found');
-        }
-
-        $this->account = $account;
-
-        $storefront = null;
-        foreach ($this->account->getStorefronts() as $accountStorefront) {
-            if ($accountStorefront->getStorefrontCode() === $params['storefront']) {
-                $storefront = $accountStorefront;
-                break;
-            }
-        }
-
-        if ($storefront === null) {
-            throw new \M2E\Kaufland\Model\Exception('Storefront not found');
-        }
-
-        $this->storefront = $storefront;
+        $this->account = $this->accountRepository->get($params['account_id']);
+        $this->storefront = $this->account->getStorefrontByCode($params['storefront']);
 
         if (isset($params['current_date'])) {
             $this->fromDate = \M2E\Core\Helper\Date::createDateGmt($params['current_date']);

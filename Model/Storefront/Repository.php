@@ -52,30 +52,12 @@ class Repository
         return $storefront;
     }
 
-    public function get(int $storefrontId): \M2E\Kaufland\Model\Storefront
+    public function get(int $id): \M2E\Kaufland\Model\Storefront
     {
-        $storefront = $this->find($storefrontId);
+        $storefront = $this->find($id);
         if ($storefront === null) {
             throw new \M2E\Kaufland\Model\Exception\Logic('Storefront not found.');
         }
-
-        return $storefront;
-    }
-
-    public function getByCode(string $code): \M2E\Kaufland\Model\Storefront
-    {
-        $storefront = $this->findByCode($code);
-        if ($storefront === null) {
-            throw new \M2E\Kaufland\Model\Exception\Logic("Storefront [$code] not found.");
-        }
-
-        return $storefront;
-    }
-
-    public function findByCode(string $code): ?\M2E\Kaufland\Model\Storefront
-    {
-        $storefront = $this->entityFactory->create();
-        $this->resource->loadByCode($storefront, $code);
 
         return $storefront;
     }
@@ -98,9 +80,32 @@ class Repository
     public function findForAccount(int $accountId): array
     {
         $collection = $this->collectionFactory->create();
-        $collection->addFieldToFilter('account_id', $accountId);
+        $collection->addFieldToFilter(
+            \M2E\Kaufland\Model\ResourceModel\Storefront::COLUMN_ACCOUNT_ID,
+            ['eq' => $accountId]
+        );
 
         return array_values($collection->getItems());
+    }
+
+    public function findForAccountAndCode(int $accountId, string $code): ?\M2E\Kaufland\Model\Storefront
+    {
+        $collection = $this->collectionFactory->create();
+        $collection->addFieldToFilter(
+            \M2E\Kaufland\Model\ResourceModel\Storefront::COLUMN_ACCOUNT_ID,
+            ['eq' => $accountId]
+        );
+        $collection->addFieldToFilter(
+            \M2E\Kaufland\Model\ResourceModel\Storefront::COLUMN_STOREFRONT_CODE,
+            ['eq' => $code]
+        );
+
+        $storefront = $collection->getFirstItem();
+        if ($storefront->isObjectNew()) {
+            return null;
+        }
+
+        return $storefront;
     }
 
     public function create(\M2E\Kaufland\Model\Storefront $storefront): void

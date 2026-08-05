@@ -43,7 +43,7 @@ class SynchronizeService
         }
 
         foreach ($shippingGroups as $responseShippingGroup) {
-            $storefront = $this->storefrontRepository->getByCode($responseShippingGroup->getStorefront());
+            $storefront = $account->getStorefrontByCode($responseShippingGroup->getStorefront());
 
             if (isset($exists[$responseShippingGroup->getShippingGroupId()])) {
                 $exist = $exists[$responseShippingGroup->getShippingGroupId()];

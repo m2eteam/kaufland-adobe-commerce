@@ -58,7 +58,9 @@ class Repository
     {
         $account = $this->find($id);
         if ($account === null) {
-            throw new \LogicException("Account '$id' not found.");
+            throw new \M2E\Kaufland\Model\Exception\Logic(
+                sprintf("Account with ID '%s' was not found.", $id)
+            );
         }
 
         return $account;

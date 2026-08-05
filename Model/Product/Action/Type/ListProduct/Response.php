@@ -32,7 +32,7 @@ class Response extends \M2E\Kaufland\Model\Product\Action\Type\AbstractResponse
                 $this->productRepository->save($product);
             }
         } else {
-            $storefront = $this->storefrontRepository->getByCode($responseUnits['storefront']);
+            $storefront = $this->getAccount()->getStorefrontByCode((string)$responseUnits['storefront']);
 
             $product->setUnitId($responseUnits['unit_id'])
                     ->setStoreFrontId($storefront->getId())

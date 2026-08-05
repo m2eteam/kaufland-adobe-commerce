@@ -24,7 +24,7 @@ class Response extends \M2E\Kaufland\Model\Product\Action\Type\AbstractResponse
         $product = $this->getListingProduct();
         $responseUnits = $response['unit'];
 
-        $storefront = $this->storefrontRepository->getByCode($responseUnits['storefront']);
+        $storefront = $this->getAccount()->getStorefrontByCode((string)$responseUnits['storefront']);
 
         $product->setUnitId($responseUnits['unit_id'])
                 ->setStoreFrontId($storefront->getId())

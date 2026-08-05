@@ -152,9 +152,8 @@ define([
         refreshWarehouses: function () {
             const self = this;
 
-            let url = Kaufland.url.get('kaufland_template/refreshWarehouses');
             $.ajax({
-                url: url,
+                url: Kaufland.url.get('kaufland_template/refreshWarehouses'),
                 type: 'POST',
                 data: {
                     account_id: self.getAccountId()
@@ -177,11 +176,13 @@ define([
         },
 
         refreshShippingGroups: function () {
-            let url = Kaufland.url.get('kaufland_template/refreshShippingGroups');
+            const self = this;
+
             $.ajax({
-                url: url,
+                url: Kaufland.url.get('kaufland_template/refreshShippingGroups'),
                 type: 'POST',
                 data: {
+                    account_id: self.getAccountId(),
                     storefront_id: $('#storefront_id').val()
                 },
                 dataType: 'json',

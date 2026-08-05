@@ -27,27 +27,12 @@ class RefreshShippingGroups extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\
 
     public function execute()
     {
-        $accounts = $this->accountRepository->getAll();
-        $storefrontId = (int)$this->getRequest()->getParam('storefront_id');
+        $account = $this->getAccountFromRequest();
+        $storefront = $this->getStorefrontFromRequest();
 
-        if ($storefrontId) {
-            $storefront = $this->storefrontRepository->get($storefrontId);
-            foreach ($accounts as $account) {
-                $this->shippingGroupSynchronizeService->updateShippingGroups($account, $storefront);
-            }
+        $this->shippingGroupSynchronizeService->updateShippingGroups($account, $storefront);
 
-            $shippingGroups = $this->shippingGroupRepository->findByStorefrontId($storefrontId);
-        } else {
-            $storefronts = $this->storefrontRepository->getAll();
-
-            foreach ($accounts as $account) {
-                foreach ($storefronts as $storefront) {
-                    $this->shippingGroupSynchronizeService->updateShippingGroups($account, $storefront);
-                }
-            }
-
-            $shippingGroups = $this->shippingGroupRepository->getAll();
-        }
+        $shippingGroups = $this->shippingGroupRepository->findByStorefrontId($storefront->getId());
 
         $arrayShippingGroups = [];
           /** @var \M2E\Kaufland\Model\ShippingGroup $shippingGroup */
@@ -61,5 +46,19 @@ class RefreshShippingGroups extends \M2E\Kaufland\Controller\Adminhtml\Kaufland\
         $this->setJsonContent($arrayShippingGroups);
 
         return $this->getResult();
+    }
+
+    private function getAccountFromRequest(): \M2E\Kaufland\Model\Account
+    {
+        $accountId = (int)$this->getRequest()->getParam('account_id');
+
+        return $this->accountRepository->get($accountId);
+    }
+
+    private function getStorefrontFromRequest(): \M2E\Kaufland\Model\Storefront
+    {
+        $storefrontId = (int)$this->getRequest()->getParam('storefront_id');
+
+        return $this->storefrontRepository->get($storefrontId);
     }
 }

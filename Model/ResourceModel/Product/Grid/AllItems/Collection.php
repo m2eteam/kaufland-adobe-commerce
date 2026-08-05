@@ -115,6 +115,7 @@ class Collection extends DefaultCollection implements SearchResultInterface
             ['storefront' => $this->storefrontResource->getMainTable()],
             sprintf('%s = listing_%s', StorefrontResource::COLUMN_ID, ListingResource::COLUMN_STOREFRONT_ID),
             [
+                'storefront_' . StorefrontResource::COLUMN_STOREFRONT_CODE => StorefrontResource::COLUMN_STOREFRONT_CODE,
                 'storefront_currency' => $this->createStorefrontCurrencyExpression('storefront')
             ],
         );

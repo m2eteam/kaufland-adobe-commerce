@@ -130,15 +130,18 @@ class Data extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractForm
         );
 
         $style = empty($formData['account_id']) ? 'margin-left: 70px; display: none;' : '';
-        $buttonRefreshWarehouses = $this->getLayout()->createBlock(\M2E\Kaufland\Block\Adminhtml\Magento\Button::class)->addData(
-            [
-                'id' => 'refresh_warehouse',
-                'label' => $this->__('Refresh Warehouses'),
-                'onclick' => 'KauflandTemplateShippingObj.refreshWarehouses()',
-                'class' => 'action-primary',
-                'style' => $style,
-            ]
-        );
+        $buttonRefreshWarehouses = $this
+            ->getLayout()
+            ->createBlock(\M2E\Kaufland\Block\Adminhtml\Magento\Button::class)
+            ->addData(
+                [
+                    'id' => 'refresh_warehouse',
+                    'label' => $this->__('Refresh Warehouses'),
+                    'onclick' => 'KauflandTemplateShippingObj.refreshWarehouses()',
+                    'class' => 'action-primary',
+                    'style' => $style,
+                ]
+            );
 
         $fieldset->addField(
             'warehouse_id',
@@ -152,15 +155,18 @@ class Data extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractForm
         );
 
         $style = empty($formData['storefront_id']) ? 'margin-left: 70px; display: none;' : '';
-        $buttonRefreshShippingGroups = $this->getLayout()->createBlock(\M2E\Kaufland\Block\Adminhtml\Magento\Button::class)->addData(
-            [
-                'id' => 'refresh_shipping_group',
-                'label' => $this->__('Refresh Shipping Group'),
-                'onclick' => 'KauflandTemplateShippingObj.refreshShippingGroups()',
-                'class' => 'action-primary',
-                'style' => $style,
-            ]
-        );
+        $buttonRefreshShippingGroups = $this
+            ->getLayout()
+            ->createBlock(\M2E\Kaufland\Block\Adminhtml\Magento\Button::class)
+            ->addData(
+                [
+                    'id' => 'refresh_shipping_group',
+                    'label' => $this->__('Refresh Shipping Group'),
+                    'onclick' => 'KauflandTemplateShippingObj.refreshShippingGroups()',
+                    'class' => 'action-primary',
+                    'style' => $style,
+                ]
+            );
 
         $fieldset->addField(
             'shipping_group_id',
@@ -223,11 +229,11 @@ class Data extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractForm
         $handlingOptions = [
             [
                 "handling_time_value" => "",
-                "title" => "Not Set"
+                "title" => "Not Set",
             ],
             [
                 "handling_time_value" => "0",
-                "title" => "Same Business Day"
+                "title" => "Same Business Day",
             ],
 
         ];
@@ -242,7 +248,7 @@ class Data extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractForm
         foreach ($days as $day) {
             $handlingOptions[] = [
                 "handling_time_value" => (string)$day,
-                "title" => $day . " Business Day" . ($day > 1 ? "s" : "")
+                "title" => $day . " Business Day" . ($day > 1 ? "s" : ""),
             ];
         }
 
@@ -316,30 +322,14 @@ class Data extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractForm
 
         $this->jsUrl->addUrls(
             [
-                'kaufland_template/refreshWarehouses' => $this->getUrl(
-                    '*/kaufland_template/refreshWarehouses',
-                    [
-
-                    ]
-                ),
-                'kaufland_template/refreshShippingGroups' => $this->getUrl(
-                    '*/kaufland_template/refreshShippingGroups',
-                    [
-
-                    ]
-                ),
-                'kaufland_template/getShippingGroupsByStorefront' => $this->getUrl(
-                    '*/kaufland_template/getShippingGroupsByStorefront',
-                    [
-
-                    ]
-                ),
-                'kaufland_account/getStorefrontsForAccount' => $this->getUrl(
-                    '*/kaufland_account/getStorefrontsForAccount',
-                    [
-
-                    ]
-                ),
+                'kaufland_template/refreshWarehouses' =>
+                    $this->getUrl('*/kaufland_template/refreshWarehouses'),
+                'kaufland_template/refreshShippingGroups' =>
+                    $this->getUrl('*/kaufland_template/refreshShippingGroups'),
+                'kaufland_template/getShippingGroupsByStorefront' =>
+                    $this->getUrl('*/kaufland_template/getShippingGroupsByStorefront'),
+                'kaufland_account/getStorefrontsForAccount' =>
+                    $this->getUrl('*/kaufland_account/getStorefrontsForAccount'),
             ]
         );
 
@@ -367,6 +357,7 @@ class Data extends \M2E\Kaufland\Block\Adminhtml\Magento\Form\AbstractForm
     });
 JS
         );
+
         return parent::_toHtml();
     }
 }

@@ -57,14 +57,14 @@
                 </item>
             </argument>
 
-            <filterSelect name="storefront_id"
+            <filterSelect name="storefront_code"
                           provider="${ $.parentName }"
                           template="ui/grid/filters/elements/ui-select"
                           component="Magento_Ui/js/form/element/ui-select"
             >
                 <settings>
                     <label translate="true">Storefront</label>
-                    <dataScope>storefront_id</dataScope>
+                    <dataScope>storefront_code</dataScope>
                     <options class="M2E\Kaufland\Ui\Select\Storefront"/>
                 </settings>
             </filterSelect>

@@ -83,6 +83,11 @@ define([
                 duplicateClick: function ($super, $headId, chapter_when_duplicate_text) {
                     this.showConfirmMsg = false;
 
+                    const accountIdField =  $('#account_id')
+                    if (accountIdField.length > 0) {
+                        accountIdField.prop('disabled', false);
+                    }
+
                     $super($headId, chapter_when_duplicate_text);
                 },
 
