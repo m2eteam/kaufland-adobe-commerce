@@ -10,7 +10,7 @@ class StopQueueTask implements \M2E\Core\Model\Cron\TaskHandlerInterface
 
     private const MAX_PROCESSED_LIFETIME_HOURS_INTERVAL = 720;
 
-    private const MAXIMUM_PRODUCTS_PER_REQUEST = 20;
+    private const MAXIMUM_PRODUCTS_PER_REQUEST = 50;
 
     private \M2E\Kaufland\Model\StopQueue\Repository $repository;
     private \M2E\Kaufland\Model\Connector\Client\Single $serverClient;

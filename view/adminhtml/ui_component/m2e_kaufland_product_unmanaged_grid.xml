@@ -153,6 +153,19 @@
                     </item>
                 </argument>
             </action>
+            <action name="remove" class="M2E\Kaufland\Ui\Product\Component\Unmanaged\MassAction\UpdateUrl">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">remove</item>
+                        <item name="label" xsi:type="string" translate="true">Remove Item(s) from Kaufland</item>
+                        <item name="url" xsi:type="string">m2e_kaufland/product_unmanaged_mapping/remove</item>
+                        <item name="confirm" xsi:type="array">
+                            <item name="title" xsi:type="string" translate="true">Confirmation</item>
+                            <item name="message" xsi:type="string" translate="true">Are you sure?</item>
+                        </item>
+                    </item>
+                </argument>
+            </action>
         </massaction>
 
         <exportButton name="export_button" class="M2E\Core\Ui\Component\ExportButton">

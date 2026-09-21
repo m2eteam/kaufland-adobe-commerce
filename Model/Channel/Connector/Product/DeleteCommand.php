@@ -17,7 +17,7 @@ class DeleteCommand implements \M2E\Core\Model\Connector\CommandInterface
 
     public function getCommand(): array
     {
-        return ['unit', 'delete', 'Entity'];
+        return ['unit', 'delete', 'entity'];
     }
 
     public function getRequestData(): array

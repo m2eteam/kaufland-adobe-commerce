@@ -130,7 +130,7 @@ class TaskCollection
             new \M2E\Core\Model\Cron\TaskDefinition(
                 self::GROUP_CHANNEL,
                 Task\Product\StopQueueTask::NICK,
-                3600,
+                300,
                 Task\Product\StopQueueTask::class,
             ),
             new \M2E\Core\Model\Cron\TaskDefinition(

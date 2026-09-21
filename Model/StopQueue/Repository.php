@@ -13,7 +13,7 @@ class Repository
     private ResourceModel $stopQueueResource;
 
     public function __construct(
-        \M2E\Kaufland\Model\ResourceModel\StopQueue                                   $stopQueueResource,
+        \M2E\Kaufland\Model\ResourceModel\StopQueue $stopQueueResource,
         ResourceModel\CollectionFactory $collectionFactory
     ) {
         $this->collectionFactory = $collectionFactory;

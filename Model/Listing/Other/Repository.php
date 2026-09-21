@@ -276,6 +276,23 @@ class Repository
     }
 
     /**
+     * @return \M2E\Kaufland\Model\Listing\Other[]
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function findForRemoveByMassActionSelectedProducts(MassActionFilter $filter, int $accountId): array
+    {
+        $collection = $this->collectionFactory->create();
+        $filter->getCollection($collection);
+
+        $collection->addFieldToFilter(
+            ListingOtherResource::COLUMN_ACCOUNT_ID,
+            $accountId
+        );
+
+        return array_values($collection->getItems());
+    }
+
+    /**
      * @param array $ids
      * @param int $accountId
      *

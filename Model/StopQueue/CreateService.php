@@ -53,4 +53,19 @@ class CreateService
             $this->helperException->process($exception);
         }
     }
+
+    public function createFromUnmanagedProduct(\M2E\Kaufland\Model\Listing\Other $unmanagedProduct): void
+    {
+        try {
+            $stopQueue = $this->stopQueueFactory->create();
+            $stopQueue->create(
+                $unmanagedProduct->getAccount()->getServerHash(),
+                $unmanagedProduct->getStorefront()->getStorefrontCode(),
+                $unmanagedProduct->getUnitId(),
+            );
+            $this->repository->create($stopQueue);
+        } catch (\Throwable $exception) {
+            $this->helperException->process($exception);
+        }
+    }
 }
