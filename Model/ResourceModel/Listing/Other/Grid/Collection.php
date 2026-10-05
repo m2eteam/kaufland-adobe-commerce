@@ -10,10 +10,15 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
     use \M2E\Kaufland\Model\ResourceModel\SearchResultTrait;
 
     protected $_idFieldName = 'id';
+
+    private bool $productCategoryTableJoined = false;
+
     private \M2E\Kaufland\Model\ResourceModel\Storefront $storefrontResource;
+    private \Magento\Catalog\Model\ResourceModel\CategoryProduct $catalogProductResource;
 
     public function __construct(
         \M2E\Kaufland\Model\ResourceModel\Storefront $storefrontResource,
+        \Magento\Catalog\Model\ResourceModel\CategoryProduct $catalogProductResource,
         \Magento\Framework\Data\Collection\EntityFactoryInterface $entityFactory,
         \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\Data\Collection\Db\FetchStrategyInterface $fetchStrategy,
@@ -30,6 +35,7 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
             $resource
         );
         $this->storefrontResource = $storefrontResource;
+        $this->catalogProductResource = $catalogProductResource;
     }
 
     public function _construct(): void
@@ -47,6 +53,16 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
     {
         if ($field === 'account') {
             $field = 'main_table.account_id';
+        }
+
+        if ($field === 'category_id') {
+            $field = 'main_table.category_id';
+        }
+
+        if ($field === 'magento_category_id') {
+            $this->buildFilterByMagentoCategoryId($condition);
+
+            return $this;
         }
 
         if ($field === 'linked') {
@@ -99,5 +115,38 @@ class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\Ab
                 ),
                 $condition['in']
             );
+    }
+
+    private function buildFilterByMagentoCategoryId($condition)
+    {
+        $categoryIds = $condition;
+        if (is_array($condition) && isset($condition['in'])) {
+            $categoryIds = $condition['in'];
+        }
+
+        if (!$this->productCategoryTableJoined) {
+            $this
+                ->getSelect()
+                ->joinInner(
+                    ['category_product' => $this->catalogProductResource->getMainTable()],
+                    sprintf(
+                        'main_table.%s = category_product.product_id',
+                        \M2E\Kaufland\Model\ResourceModel\Listing\Other::COLUMN_MAGENTO_PRODUCT_ID
+                    ),
+                    []
+                )
+                ->group(
+                    sprintf(
+                        'main_table.%s',
+                        \M2E\Kaufland\Model\ResourceModel\Listing\Other::COLUMN_MAGENTO_PRODUCT_ID
+                    )
+                );
+
+            $this->productCategoryTableJoined = true;
+        }
+
+        $this
+            ->getSelect()
+            ->where('category_product.category_id IN (?)', $categoryIds);
     }
 }
